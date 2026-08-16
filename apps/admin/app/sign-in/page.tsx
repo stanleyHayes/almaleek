@@ -45,27 +45,43 @@ export default function SignIn() {
         <h1>Welcome back to the operating room.</h1>
       </section>
       <form onSubmit={submit}>
-        <p className="eyebrow">Protected demo access</p>
+        <p className="eyebrow">Secure administrator access</p>
         <h2>Sign in</h2>
-        <label>
-          Email
-          <input
-            name="email"
-            type="email"
-            defaultValue="hayfordstanley@gmail.com"
-            required
-            autoComplete="username"
-            aria-invalid={Boolean(error)}
-            aria-describedby={error ? "sign-in-error" : undefined}
-          />
-        </label>
+        <div className="auth-field">
+          <label htmlFor="admin-email">Email</label>
+          <span className="auth-input-shell">
+            <span className="auth-input-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 6.5h16v11H4z" />
+                <path d="m5 7 7 5 7-5" />
+              </svg>
+            </span>
+            <input
+              id="admin-email"
+              name="email"
+              type="email"
+              placeholder="name@company.com"
+              required
+              autoComplete="username"
+              aria-invalid={Boolean(error)}
+              aria-describedby={error ? "sign-in-error" : undefined}
+            />
+          </span>
+        </div>
         <div className="auth-field">
           <label htmlFor="admin-password">Password</label>
-          <span className="password-field">
+          <span className="auth-input-shell password-field">
+            <span className="auth-input-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="5" y="10" width="14" height="10" rx="2" />
+                <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+              </svg>
+            </span>
             <input
               id="admin-password"
               name="password"
               type={showPassword ? "text" : "password"}
+              placeholder="Enter your password"
               minLength={8}
               required
               autoComplete="current-password"
@@ -114,12 +130,11 @@ export default function SignIn() {
           {loading ? (
             <LoadingDots label="Signing in" />
           ) : (
-            "Start protected session →"
+            "Sign in securely →"
           )}
         </button>
         <small>
-          This demo uses a signed, HttpOnly server session. Use only the
-          credentials supplied by the workspace owner.
+          Your session is protected with a signed, secure HttpOnly cookie.
         </small>
       </form>
     </main>

@@ -26,7 +26,7 @@ func New(cfg config.Config, repo ports.CreatorRepository, sender ports.EmailSend
 			}
 			repo = memory.NewRepository()
 		} else {
-			repo = mongodb.NewRepository(cfg.MongoDBURI)
+			repo = mongodb.NewRepository(cfg.MongoDBURI, cfg.MongoDBDatabase)
 		}
 	}
 	if sender == nil && cfg.ResendAPIKey != "" {

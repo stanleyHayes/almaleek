@@ -159,3 +159,10 @@ The project is complete when deployment credentials, production domains, smoke t
 - Replaced button loading labels with accessible animated dots across conversion, sign-in, onboarding, invitations, event creation, settings, plan updates, and membership changes while preserving stable button geometry.
 - Applied real empty states to search results, community queues, plan collections, and Circle/admin result surfaces instead of showing ambiguous blank space.
 - Verification: all three ESLint suites passed; Playwright rebuilt every application in production mode and passed `17/17` browser tests across public, admin, Circle, and API flows.
+
+## Production admin access and environment-safe seed data — completed 2026-08-16
+- Removed the prefilled administrator email and all demo-access language from sign-in; added email/password placeholders, leading field icons, password visibility, accessible errors, and secure-session messaging.
+- Renamed the server-only login configuration to `ADMIN_EMAIL` and `ADMIN_PASSWORD`, retaining signed HttpOnly sessions without presenting the deployment as a demo.
+- Added explicit Mongo database selection with `MONGODB_DATABASE`; staging is locked to `almaleek_dev` and production is locked to `almaleek_prod` during startup validation.
+- Added an idempotent development seeder with a hard refusal guard for every target other than `almaleek_dev`; seeded representative creators, events, tiered members, intakes, invitations, plans, and CMS settings.
+- Verification: Go tests and vet passed; all application lint and production builds passed; Playwright passed `17/17` cross-app tests; the live development seed completed against `almaleek_dev`.

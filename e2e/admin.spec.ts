@@ -13,7 +13,7 @@ test.describe("admin operations", () => {
     await page.getByRole("button", { name: "Hide password" }).click();
     await expect(password).toHaveAttribute("type", "password");
     await password.fill("e2e-demo-password");
-    await page.getByRole("button", { name: /Start protected session/ }).click();
+    await page.getByRole("button", { name: /Sign in securely/ }).click();
     await expect(page).toHaveURL(`${admin}/`);
     await expect(page.getByText("Operations workspace")).toBeVisible();
   });

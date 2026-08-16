@@ -40,17 +40,21 @@ type PlatformRepository struct {
 func NewRepository(args ...interface{}) *Repository {
 	repo := &Repository{
 		uri:    defaultMongoURI(),
-		dbName: "almaleek",
+		dbName: defaultMongoDatabase(),
 	}
 
+	stringIndex := 0
 	for _, arg := range args {
 		switch value := arg.(type) {
 		case string:
-			if repo.uri == defaultMongoURI() && strings.TrimSpace(value) != "" {
-				repo.uri = value
-			} else if strings.TrimSpace(value) != "" {
-				repo.dbName = value
+			if strings.TrimSpace(value) != "" {
+				if stringIndex == 0 {
+					repo.uri = value
+				} else {
+					repo.dbName = value
+				}
 			}
+			stringIndex++
 		case *mongo.Client:
 			repo.client = value
 		case []string:
@@ -64,6 +68,13 @@ func NewRepository(args ...interface{}) *Repository {
 	}
 
 	return repo
+}
+
+func defaultMongoDatabase() string {
+	if name := strings.TrimSpace(os.Getenv("MONGODB_DATABASE")); name != "" {
+		return name
+	}
+	return "almaleek_dev"
 }
 
 func defaultMongoURI() string {

@@ -13,6 +13,7 @@ type Config struct {
 	Port            string
 	BaseURL         string
 	MongoDBURI      string
+	MongoDBDatabase string
 	CloudName       string
 	CloudAPIKey     string
 	CloudAPISecret  string
@@ -34,6 +35,7 @@ func Load() Config {
 		Port:            strings.TrimSpace(getEnv("PORT", "8080")),
 		BaseURL:         strings.TrimSpace(getEnv("BASE_URL", "http://localhost:8080")),
 		MongoDBURI:      strings.TrimSpace(getEnv("MONGODB_URI", "mongodb://localhost:27017/almaleek")),
+		MongoDBDatabase: strings.TrimSpace(getEnv("MONGODB_DATABASE", defaultMongoDatabase(appEnv))),
 		CloudName:       strings.TrimSpace(getEnv("CLOUDINARY_CLOUD_NAME", "almaleek")),
 		CloudAPIKey:     strings.TrimSpace(getEnv("CLOUDINARY_API_KEY", "")),
 		CloudAPISecret:  strings.TrimSpace(getEnv("CLOUDINARY_API_SECRET", "")),
@@ -94,6 +96,9 @@ func (c Config) Validate() error {
 	if c.MongoDBURI == "" {
 		return fmt.Errorf("MONGODB_URI is required")
 	}
+	if c.MongoDBDatabase == "" {
+		return fmt.Errorf("MONGODB_DATABASE is required")
+	}
 	if !strings.Contains(c.MongoDBURI, "mongodb://") && !strings.Contains(c.MongoDBURI, "mongodb+srv://") {
 		return fmt.Errorf("MONGODB_URI must be a valid MongoDB connection string")
 	}
@@ -107,6 +112,9 @@ func (c Config) Validate() error {
 		}
 	}
 	if strings.EqualFold(c.AppEnv, "production") {
+		if c.MongoDBDatabase != "almaleek_prod" {
+			return fmt.Errorf("production must use MONGODB_DATABASE=almaleek_prod")
+		}
 		for _, origin := range c.AllowedOrigins {
 			if strings.Contains(origin, "localhost") || strings.Contains(origin, "127.0.0.1") {
 				return fmt.Errorf("ALLOWED_ORIGINS must not contain local development origins in production")
@@ -122,8 +130,21 @@ func (c Config) Validate() error {
 			return fmt.Errorf("RESEND_API_KEY is required in production")
 		}
 	}
+	if strings.EqualFold(c.AppEnv, "staging") && c.MongoDBDatabase != "almaleek_dev" {
+		return fmt.Errorf("staging must use MONGODB_DATABASE=almaleek_dev")
+	}
 
 	return nil
+}
+
+func defaultMongoDatabase(appEnv string) string {
+	if strings.EqualFold(appEnv, "production") {
+		return "almaleek_prod"
+	}
+	if strings.EqualFold(appEnv, "test") {
+		return "almaleek_test"
+	}
+	return "almaleek_dev"
 }
 
 func splitCSV(value string) []string {

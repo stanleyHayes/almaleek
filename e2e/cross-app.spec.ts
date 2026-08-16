@@ -7,7 +7,7 @@ async function signInAdmin(page: Page) {
   await page.goto(`${admin}/sign-in`);
   await page.getByLabel("Email").fill("ama@almaleek.com");
   await page.getByLabel("Password", { exact: true }).fill("e2e-demo-password");
-  await page.getByRole("button", { name: /Start protected session/ }).click();
+  await page.getByRole("button", { name: /Sign in securely/ }).click();
   await expect(page).toHaveURL(`${admin}/`);
 }
 

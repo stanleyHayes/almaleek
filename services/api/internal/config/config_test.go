@@ -8,6 +8,7 @@ func validProductionConfig() Config {
 		Port:            "8080",
 		BaseURL:         "https://api.almaleek.com",
 		MongoDBURI:      "mongodb://database/almaleek",
+		MongoDBDatabase: "almaleek_prod",
 		CloudName:       "almaleek",
 		CloudAPIKey:     "cloud-key",
 		CloudAPISecret:  "cloud-secret",
@@ -16,6 +17,23 @@ func validProductionConfig() Config {
 		AdminAPIKey:     "a-long-random-admin-secret",
 		AllowedOrigins:  []string{"https://almaleek.com", "https://admin.almaleek.com"},
 		DataStore:       "mongodb",
+	}
+}
+
+func TestEnvironmentDatabaseIsolation(t *testing.T) {
+	config := validProductionConfig()
+	config.MongoDBDatabase = "almaleek_dev"
+	if err := config.Validate(); err == nil {
+		t.Fatal("expected production dev database to be rejected")
+	}
+	config = validProductionConfig()
+	config.AppEnv = "staging"
+	if err := config.Validate(); err == nil {
+		t.Fatal("expected staging production database to be rejected")
+	}
+	config.MongoDBDatabase = "almaleek_dev"
+	if err := config.Validate(); err != nil {
+		t.Fatalf("valid staging database rejected: %v", err)
 	}
 }
 

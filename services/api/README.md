@@ -17,6 +17,7 @@ DATA_STORE=mongodb
 PORT=8080
 BASE_URL=http://localhost:8080
 MONGODB_URI=mongodb://localhost:27017/almaleek
+MONGODB_DATABASE=almaleek_dev
 CLOUDINARY_CLOUD_NAME=almaleek
 CLOUDINARY_API_KEY=replace-me
 CLOUDINARY_API_SECRET=replace-me
@@ -30,6 +31,7 @@ Production requirements:
 - `APP_ENV` must be set to `production` and be one of `development`, `test`, `staging`, or `production`
 - `BASE_URL` must match the deployed HTTPS endpoint
 - `MONGODB_URI` must be a valid MongoDB connection string
+- `MONGODB_DATABASE` must be `almaleek_dev` for staging and `almaleek_prod` for production; startup validation rejects cross-environment database names
 - `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` are required in production
 - `RESEND_API_KEY` is required in production
 
@@ -40,6 +42,19 @@ cd backend
 cp .env.example .env
 go run ./cmd/server
 ```
+
+## Development seed data
+
+The idempotent seed command is hard-guarded to `almaleek_dev`. It refuses to connect when `MONGODB_DATABASE` has any other value.
+
+```bash
+cd services/api
+MONGODB_URI='your-shared-mongodb-host-uri' \
+MONGODB_DATABASE=almaleek_dev \
+go run ./cmd/seed
+```
+
+It upserts representative creators, community tiers, events, intakes, role invitations, membership plans, and public-site CMS settings using stable identifiers. It never targets `almaleek_prod`.
 
 ## Deployment notes
 - Render runs the service from the `backend/` root with `go build -o bin/server ./cmd/server`

@@ -29,7 +29,7 @@ export default defineConfig({
     },
     {
       command:
-        "API_URL=http://127.0.0.1:18080 ADMIN_API_KEY=e2e-admin-key ADMIN_SESSION_SECRET=e2e-session-secret-at-least-32-characters ADMIN_DEMO_EMAIL=ama@almaleek.com ADMIN_DEMO_PASSWORD=e2e-demo-password NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:18080 NEXT_PUBLIC_API_URL=http://127.0.0.1:18080 NEXT_PUBLIC_CLIENT_URL=http://127.0.0.1:3102 npm run build:admin && API_URL=http://127.0.0.1:18080 ADMIN_API_KEY=e2e-admin-key ADMIN_SESSION_SECRET=e2e-session-secret-at-least-32-characters ADMIN_DEMO_EMAIL=ama@almaleek.com ADMIN_DEMO_PASSWORD=e2e-demo-password NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:18080 NEXT_PUBLIC_API_URL=http://127.0.0.1:18080 NEXT_PUBLIC_CLIENT_URL=http://127.0.0.1:3102 npm --workspace apps/admin run start -- -p 3101",
+        "API_URL=http://127.0.0.1:18080 ADMIN_API_KEY=e2e-admin-key ADMIN_SESSION_SECRET=e2e-session-secret-at-least-32-characters ADMIN_EMAIL=ama@almaleek.com ADMIN_PASSWORD=e2e-demo-password NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:18080 NEXT_PUBLIC_API_URL=http://127.0.0.1:18080 NEXT_PUBLIC_CLIENT_URL=http://127.0.0.1:3102 npm run build:admin && API_URL=http://127.0.0.1:18080 ADMIN_API_KEY=e2e-admin-key ADMIN_SESSION_SECRET=e2e-session-secret-at-least-32-characters ADMIN_EMAIL=ama@almaleek.com ADMIN_PASSWORD=e2e-demo-password NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:18080 NEXT_PUBLIC_API_URL=http://127.0.0.1:18080 NEXT_PUBLIC_CLIENT_URL=http://127.0.0.1:3102 npm --workspace apps/admin run start -- -p 3101",
       url: "http://127.0.0.1:3101",
       reuseExistingServer: !isCI,
       timeout: 180_000,
