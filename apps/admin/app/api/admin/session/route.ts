@@ -1,0 +1,5 @@
+import { cookies } from 'next/headers';
+import { ADMIN_SESSION_COOKIE, createSessionToken, credentialsValid, hasAdminSession, sessionConfigured, sessionCookieOptions } from '@/lib/admin-session';
+export async function GET(){return Response.json({authenticated:await hasAdminSession()})}
+export async function POST(request:Request){if(!sessionConfigured())return Response.json({error:'Admin demo session is not configured on the server.'},{status:503});try{const body=await request.json() as {email?:string;password?:string};if(!credentialsValid(body.email??'',body.password??''))return Response.json({error:'Email or password is incorrect.'},{status:401});(await cookies()).set(ADMIN_SESSION_COOKIE,createSessionToken(),sessionCookieOptions);return Response.json({authenticated:true})}catch{return Response.json({error:'Request body must be valid JSON.'},{status:400})}}
+export async function DELETE(){(await cookies()).set(ADMIN_SESSION_COOKIE,'',{...sessionCookieOptions,maxAge:0});return Response.json({authenticated:false})}

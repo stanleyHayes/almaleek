@@ -1,0 +1,69 @@
+# Dependencies and package-manager caches
+node_modules
+.npm/
+.pnpm-store/
+.yarn/
+
+# Next.js, Turborepo and generated frontend output
+.next/
+/out/
+.turbo/
+.vercel/
+*.tsbuildinfo
+
+# Tests, coverage and browser artifacts
+coverage/
+test-results/
+playwright-report/
+blob-report/
+.nyc_output/
+
+# Local environment files. Keep sanitized templates committed.
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local credentials, certificates and private keys (never commit)
+credentials.txt
+credentials*.txt
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Go build, profiling and test output
+/services/api/bin/
+/services/api/server
+/services/api/.gocache/
+/services/api/coverage.out
+/services/api/*.out
+/services/api/*.prof
+/services/api/*.test
+
+# Logs and diagnostic dumps
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+*.pid
+*.seed
+*.stackdump
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# Editor and local workspace state
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+.cache/
+.tmp/
+tmp/
+temp/

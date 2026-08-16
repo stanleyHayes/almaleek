@@ -1,0 +1,72 @@
+services:
+  - type: web
+    name: almaleek-api-staging
+    env: go
+    plan: free
+    rootDir: services/api
+    branch: dev
+    healthCheckPath: /health
+    autoDeploy: true
+    buildCommand: go mod download && go build -o bin/server ./cmd/server
+    startCommand: ./bin/server
+    envVars:
+      - key: APP_ENV
+        value: staging
+      - key: DATA_STORE
+        value: mongodb
+      - key: PORT
+        value: 8080
+      - key: BASE_URL
+        value: https://almaleek-api-staging.onrender.com
+      - key: MONGODB_URI
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        value: hello@almaleek.com
+
+  - type: web
+    name: almaleek-api-production
+    env: go
+    plan: free
+    rootDir: services/api
+    branch: main
+    healthCheckPath: /health
+    autoDeploy: false
+    buildCommand: go mod download && go build -o bin/server ./cmd/server
+    startCommand: ./bin/server
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATA_STORE
+        value: mongodb
+      - key: PORT
+        value: 8080
+      - key: BASE_URL
+        value: https://api.almaleek.com
+      - key: MONGODB_URI
+        sync: false
+      - key: ADMIN_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        value: hello@almaleek.com
