@@ -23,7 +23,7 @@ services:
       - key: ADMIN_API_KEY
         sync: false
       - key: ALLOWED_ORIGINS
-        sync: false
+        value: https://almaleekgh.vercel.app,https://almaleekgh-admin.vercel.app,https://almaleekgh-circle.vercel.app,https://almaleekgh.com,https://admin.almaleekgh.com,https://circle.almaleekgh.com
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY
@@ -53,13 +53,13 @@ services:
       - key: PORT
         value: 8080
       - key: BASE_URL
-        value: https://api.almaleek.com
+        value: https://api.almaleekgh.com
       - key: MONGODB_URI
         sync: false
       - key: ADMIN_API_KEY
         sync: false
       - key: ALLOWED_ORIGINS
-        sync: false
+        value: https://almaleekgh.vercel.app,https://almaleekgh-admin.vercel.app,https://almaleekgh-circle.vercel.app,https://almaleekgh.com,https://admin.almaleekgh.com,https://circle.almaleekgh.com
       - key: CLOUDINARY_CLOUD_NAME
         sync: false
       - key: CLOUDINARY_API_KEY
