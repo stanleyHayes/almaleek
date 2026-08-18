@@ -5,7 +5,7 @@ import { getSiteContent } from '@/lib/site-content';
 export const metadata = pageMetadata({
   title: 'Media & Stories',
   description:
-    'Films, interviews, press, and working notes from the people and places shaping the AL Maleek ecosystem.',
+    'Skits, films, interviews, press, and working notes from the people and places shaping the AL Maleek ecosystem.',
   path: '/media',
   keywords: ['AL Maleek media', 'Ghana culture stories', 'creator interviews'],
 });

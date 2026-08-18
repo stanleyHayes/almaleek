@@ -69,7 +69,7 @@ export async function GET() {
               fontWeight: 700,
             }}
           >
-            Culture in motion
+            Ghanaian comedy in motion
           </div>
         </div>
 
@@ -92,9 +92,8 @@ export async function GET() {
               maxWidth: "920px",
             }}
           >
-            The digital home for culture, community, creativity, and
-            opportunity — live events, media, learning, commerce, and
-            partnerships.
+            Award-nominated Ghanaian comedy — skits, live shows, community,
+            merch, and creator education, from Accra to the world.
           </div>
         </div>
 

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const SITE_NAME = "AL Maleek";
-export const SITE_TAGLINE = "Culture in motion";
+export const SITE_TAGLINE = "Ghanaian comedy in motion";
 export const SITE_DESCRIPTION =
-  "AL Maleek is the digital home for culture, community, creativity, and opportunity — live events, media, learning, commerce, and partnerships built for culture and business growth.";
+  "AL Maleek is the Ghanaian comedy creator behind Al Maleek & Crew — award-nominated skits, live shows, community, merch, and creator education, from Accra to the world.";
 
 /**
  * Absolute URL for a site path. Defaults to the production domain so canonical
@@ -29,13 +29,15 @@ export function siteUrl(path = "/"): string {
 const BRAND_KEYWORDS = [
   "AL Maleek",
   "almaleekgh",
-  "Ghana culture brand",
-  "creator community Ghana",
+  "Al Maleek and Crew",
+  "Ghanaian comedy",
+  "comedy skits Ghana",
+  "Ghana Comedy Awards",
+  "comedy shows Accra",
   "live events Accra",
-  "comedy night Ghana",
+  "creator community Ghana",
   "creator academy Ghana",
   "African creator economy",
-  "culture and community platform",
   "event merchandise Ghana",
 ];
 

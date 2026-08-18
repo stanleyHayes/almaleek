@@ -5,7 +5,7 @@ import { getSiteContent } from '@/lib/site-content';
 export const metadata = pageMetadata({
   title: 'Shop',
   description:
-    'AL Maleek Shop is where fandom meets identity: limited-edition pieces, event merch, and digital products that carry the culture beyond the screen.',
+    'AL Maleek Shop is where fandom meets identity: own the catchphrases with limited-edition pieces, event merch, and digital products that carry the culture beyond the screen.',
   path: '/shop',
   keywords: ['AL Maleek shop', 'culture merch', 'limited edition drops Ghana'],
 });

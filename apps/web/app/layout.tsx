@@ -26,7 +26,7 @@ const organizationJsonLd = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl('/')),
   title: {
-    default: `${SITE_NAME} | Culture, Community, Creativity, Opportunity`,
+    default: `${SITE_NAME} | Ghanaian Comedy, Skits & Community`,
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,

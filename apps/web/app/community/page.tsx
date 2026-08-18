@@ -5,7 +5,7 @@ import { getSiteContent } from "@/lib/site-content";
 export const metadata = pageMetadata({
   title: "Community",
   description:
-    "Join the AL Maleek community — built for fans, friends, collaborators, and future members who want direct access to the work, the ideas, and the opportunities shaping the brand.",
+    "Join the AL Maleek community — built for fans, friends, collaborators, and future members who want direct access to the skits, the shows, and the opportunities growing around the brand.",
   path: "/community",
   keywords: ["join AL Maleek community", "fan community Ghana"],
 });

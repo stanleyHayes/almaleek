@@ -4,9 +4,9 @@ import { pageMetadata } from "@/lib/seo";
 export const metadata = pageMetadata({
   title: "About",
   description:
-    "The story and mission behind AL Maleek — a creator-led culture engine turning attention into community, opportunity, and brands people belong to.",
+    "The story and mission behind AL Maleek — the Ghanaian comedy creator turning everyday stories into award-nominated skits, live shows, and ventures that move culture forward.",
   path: "/about",
-  keywords: ["about AL Maleek", "creator-led culture engine"],
+  keywords: ["about AL Maleek", "Ghanaian comedy creator"],
 });
 
 export default function AboutPage() {

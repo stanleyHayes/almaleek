@@ -5,7 +5,7 @@ import { getSiteContent } from '@/lib/site-content';
 export const metadata = pageMetadata({
   title: 'Work With AL Maleek',
   description:
-    'Appearances, campaigns, live events, sponsorships, and production — premium, high-trust opportunities for brands that want to connect with an engaged audience authentically.',
+    'Book Ghanaian comedy that delivers: appearances, skits, campaigns, live events, sponsorships, and production — premium, high-trust opportunities for brands that want to connect with an engaged audience authentically.',
   path: '/work-with-al-maleek',
   keywords: ['book AL Maleek', 'brand collaboration Ghana', 'event appearances'],
 });

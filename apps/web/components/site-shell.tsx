@@ -195,7 +195,7 @@ function SiteMobileMenu({
             />
           </span>
           <span>
-            AL MALEEK<small>Culture in motion</small>
+            AL MALEEK<small>Ghanaian comedy in motion</small>
           </span>
         </Link>
         <button
@@ -440,7 +440,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               />
             </span>
             <span>
-              AL MALEEK<small>Culture in motion</small>
+              AL MALEEK<small>Ghanaian comedy in motion</small>
             </span>
           </Link>
           <nav className="main-nav" aria-label="Main navigation">
@@ -632,7 +632,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </div>
           <div className="footer-note">
             <span>© 2026 AL Maleek</span>
-            <span>Made for culture, community, creativity & opportunity.</span>
+            <span>Made in Accra for comedy, community & culture.</span>
             <span>
               <Link href="/privacy">Privacy</Link> ·{" "}
               <Link href="/terms">Terms</Link>
