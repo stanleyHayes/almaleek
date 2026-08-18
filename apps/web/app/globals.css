@@ -635,8 +635,10 @@ h3 {
 }
 @media (max-width: 1050px) {
   .main-nav {
-    overflow-x: auto;
-    justify-content: flex-start;
+    display: none;
+  }
+  .nav-actions {
+    margin-left: auto;
   }
   .nav-cta {
     display: none;
@@ -664,16 +666,7 @@ h3 {
     padding-top: 8px;
   }
   .nav-wrap {
-    display: grid;
-    grid-template-columns: auto 1fr;
     border-radius: 17px;
-  }
-  .main-nav {
-    grid-column: 1/-1;
-    width: 100%;
-  }
-  .nav-link {
-    white-space: nowrap;
   }
   .hero-section {
     padding-top: 62px;
@@ -942,6 +935,314 @@ main {
 @media (max-width: 760px) {
   .nav-portal {
     display: none;
+  }
+}
+
+/* Mobile menu button + full-screen drawer, patterned on the Joe Kuntani shell */
+.nav-menu-button {
+  display: none;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease;
+}
+.nav-menu-button:hover {
+  border-color: var(--mint);
+  transform: translateY(-2px);
+}
+.nav-menu-button:focus-visible {
+  outline: 3px solid rgba(109, 213, 196, 0.55);
+  outline-offset: 2px;
+}
+.nav-menu-button[aria-expanded="true"] {
+  border-color: var(--mint);
+  background: var(--mint-pale);
+}
+.nav-menu-button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+/* Shown below the base rule so it wins the cascade at equal specificity. */
+@media (max-width: 1050px) {
+  .nav-menu-button {
+    display: grid;
+  }
+}
+
+.site-menu {
+  --site-menu-rule: rgba(21, 24, 38, 0.08);
+  --site-menu-bracket: rgba(21, 24, 38, 0.3);
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background:
+    radial-gradient(900px 420px at 100% 0%, rgba(109, 213, 196, 0.3), transparent 55%),
+    radial-gradient(700px 380px at 0% 100%, rgba(184, 192, 255, 0.35), transparent 50%),
+    var(--paper);
+  color: var(--ink);
+  animation: site-menu-in 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.site-menu-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    url("/brand/al-maleek-mark.png"),
+    url("/brand/al-maleek-mark.png");
+  background-repeat: no-repeat;
+  background-position:
+    92% 18%,
+    8% 78%;
+  background-size:
+    min(36vw, 9rem),
+    min(32vw, 8rem);
+  opacity: 0.05;
+}
+.site-menu-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.1rem 1.25rem;
+}
+.site-menu-close {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--ink);
+  cursor: pointer;
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease;
+}
+.site-menu-close:hover {
+  border-color: var(--mint);
+  transform: translateY(-1px);
+}
+.site-menu-close:focus-visible {
+  outline: 3px solid rgba(109, 213, 196, 0.55);
+  outline-offset: 2px;
+}
+.site-menu-close svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.site-menu-nav {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+/* Hairline rules come from the tiles' own borders rather than a gap, so the
+   canvas gradient reads straight through the grid. */
+.site-menu-grid {
+  /* `flex: 1` lets the rows absorb leftover viewport height; short viewports
+     overflow into the panel's own scroll. */
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--site-menu-rule);
+  list-style: none;
+}
+.site-menu-cell {
+  display: flex;
+  border-right: 1px solid var(--site-menu-rule);
+  border-bottom: 1px solid var(--site-menu-rule);
+}
+.site-menu-cell:nth-child(2n) {
+  border-right: 0;
+}
+/* An odd final nav item takes the full row; `nth-last-child(2)` is the last
+   nav cell because the CTA always trails the list. */
+.site-menu-cell:nth-last-child(2):nth-child(odd),
+.site-menu-cta-cell {
+  grid-column: 1 / -1;
+  border-right: 0;
+}
+.site-menu-tile,
+.site-menu-cta-tile {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  transition:
+    color 0.18s ease,
+    background-color 0.18s ease;
+}
+.site-menu-tile {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.85rem;
+  min-height: clamp(6.75rem, 24vw, 9.5rem);
+  padding: 1.65rem 0.9rem 1.4rem;
+}
+.site-menu-tile:hover,
+.site-menu-cta-tile:hover {
+  background: rgba(255, 255, 255, 0.45);
+  color: var(--ink);
+}
+.site-menu-tile:focus-visible,
+.site-menu-cta-tile:focus-visible {
+  outline: 3px solid rgba(109, 213, 196, 0.55);
+  outline-offset: -4px;
+}
+.site-menu-tile:active,
+.site-menu-cta-tile:active {
+  background: rgba(255, 255, 255, 0.7);
+}
+/* Four L-shaped corner marks drawn as eight hairline gradients on one span. */
+.site-menu-corners {
+  --bracket-color: var(--site-menu-bracket);
+  --bracket-length: 0.85rem;
+  position: absolute;
+  inset: 0.55rem;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--bracket-color) 0 0) 0 0 / var(--bracket-length) 1px,
+    linear-gradient(var(--bracket-color) 0 0) 0 0 / 1px var(--bracket-length),
+    linear-gradient(var(--bracket-color) 0 0) 100% 0 / var(--bracket-length) 1px,
+    linear-gradient(var(--bracket-color) 0 0) 100% 0 / 1px var(--bracket-length),
+    linear-gradient(var(--bracket-color) 0 0) 0 100% / var(--bracket-length) 1px,
+    linear-gradient(var(--bracket-color) 0 0) 0 100% / 1px var(--bracket-length),
+    linear-gradient(var(--bracket-color) 0 0) 100% 100% / var(--bracket-length)
+      1px,
+    linear-gradient(var(--bracket-color) 0 0) 100% 100% / 1px
+      var(--bracket-length);
+  background-repeat: no-repeat;
+  transition: opacity 0.18s ease;
+  opacity: 0.55;
+}
+.site-menu-index {
+  position: absolute;
+  top: 0.85rem;
+  left: 1rem;
+  color: rgba(101, 105, 122, 0.68);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+}
+.site-menu-icon {
+  width: 1.65rem;
+  height: 1.65rem;
+  flex-shrink: 0;
+  transition:
+    color 0.18s ease,
+    filter 0.18s ease,
+    transform 0.18s ease;
+}
+.site-menu-label,
+.site-menu-cta-label {
+  font-size: clamp(0.78rem, 3.2vw, 0.92rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+}
+.site-menu-tile[data-active="true"] {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.55);
+}
+.site-menu-tile[data-active="true"] .site-menu-corners {
+  --bracket-color: var(--mint);
+  opacity: 1;
+}
+.site-menu-tile[data-active="true"] .site-menu-icon {
+  color: #2aa08d;
+  filter: drop-shadow(0 0 0.7rem rgba(109, 213, 196, 0.55));
+}
+.site-menu-tile[data-active="true"] .site-menu-label {
+  font-weight: 700;
+}
+/* Lit underline so the current page is findable at a glance. */
+.site-menu-tile[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  right: 1.75rem;
+  bottom: -1px;
+  left: 1.75rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--mint), transparent);
+}
+.site-menu-cta-cell {
+  border-bottom: 0;
+}
+.site-menu-cta-tile {
+  justify-content: center;
+  gap: 0.9rem;
+  min-height: clamp(5.5rem, 19vw, 7rem);
+  padding: 1.5rem 1.25rem;
+  color: var(--ink);
+  background: linear-gradient(
+    135deg,
+    rgba(109, 213, 196, 0.14),
+    rgba(184, 192, 255, 0.16)
+  );
+}
+.site-menu-cta-tile .site-menu-corners {
+  --bracket-color: var(--mint);
+  opacity: 0.9;
+}
+.site-menu-cta-tile .site-menu-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #2aa08d;
+}
+.site-menu-cta-tile:hover .site-menu-icon {
+  transform: translate(2px, -2px);
+}
+.site-menu-cta-label {
+  font-size: clamp(0.95rem, 4vw, 1.15rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+@keyframes site-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (min-width: 1050.01px) {
+  .site-menu {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-menu {
+    animation: none;
+  }
+  .nav-menu-button:hover,
+  .site-menu-close:hover,
+  .site-menu-cta-tile:hover .site-menu-icon {
+    transform: none;
   }
 }
 

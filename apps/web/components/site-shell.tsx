@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { getApiBaseUrl } from "@/lib/api";
 import { InlineSkeleton } from "./state-primitives";
 
@@ -14,6 +14,252 @@ const primaryLinks = [
   { href: "/community", label: "Community" },
   { href: "/media", label: "Media" },
 ];
+
+function linkIsActive(pathname: string, href: string) {
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/* Route icons for the mobile drawer, keyed by top-level path segment. */
+const MENU_ICONS: Record<string, ReactNode> = {
+  "": (
+    <>
+      <path d="M4 10.5 12 4l8 6.5" />
+      <path d="M6 9.5V20h12V9.5" />
+      <path d="M10 20v-5h4v5" />
+    </>
+  ),
+  about: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 11v5.5" />
+      <path d="M12 7.75v.5" />
+    </>
+  ),
+  events: (
+    <>
+      <rect x="3.5" y="5" width="17" height="16" rx="3" />
+      <path d="M3.5 10h17" />
+      <path d="M8 3v4" />
+      <path d="M16 3v4" />
+    </>
+  ),
+  community: (
+    <>
+      <circle cx="9" cy="8" r="3" />
+      <circle cx="17" cy="9" r="2.5" />
+      <path d="M3 20c.5-4 2.5-6 6-6s5.5 2 6 6m0-5c3 0 5 1.5 6 4" />
+    </>
+  ),
+  media: (
+    <>
+      <path d="m12 3 8.5 4.5L12 12 3.5 7.5z" />
+      <path d="m4 12.5 8 4.25 8-4.25" />
+      <path d="m4 17 8 4.25L20 17" />
+    </>
+  ),
+};
+
+const MENU_FALLBACK_ICON = <path d="m12 4 8 8-8 8-8-8z" />;
+
+/** Always `aria-hidden` — the adjacent text label carries the accessible name. */
+function MenuNavIcon({
+  href,
+  className,
+}: {
+  href: string;
+  className?: string;
+}) {
+  const segment = href.replace(/^\/+/, "").split("/")[0]?.toLowerCase() ?? "";
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.6}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      {MENU_ICONS[segment] ?? MENU_FALLBACK_ICON}
+    </svg>
+  );
+}
+
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none">
+      {open ? (
+        <>
+          <path
+            d="M6 6l12 12M18 6L6 18"
+            stroke="currentColor"
+            strokeWidth="2.4"
+            strokeLinecap="round"
+          />
+        </>
+      ) : (
+        <>
+          <circle cx="6" cy="6" r="1.6" fill="currentColor" />
+          <circle cx="12" cy="6" r="1.6" fill="currentColor" />
+          <circle cx="18" cy="6" r="1.6" fill="currentColor" />
+          <circle cx="6" cy="12" r="1.6" fill="currentColor" />
+          <circle cx="12" cy="12" r="1.6" fill="currentColor" />
+          <circle cx="18" cy="12" r="1.6" fill="currentColor" />
+          <circle cx="6" cy="18" r="1.6" fill="currentColor" />
+          <circle cx="12" cy="18" r="1.6" fill="currentColor" />
+          <circle cx="18" cy="18" r="1.6" fill="currentColor" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+/**
+ * Full-screen mobile menu laid out as a bracketed tile grid (patterned on the
+ * Joe Kuntani shell). Focus trap, body scroll lock and Escape-to-close. The
+ * index number and icon inside each tile are `aria-hidden` so the link's
+ * accessible name stays the bare label.
+ */
+function SiteMobileMenu({
+  open,
+  onClose,
+  pathname,
+}: {
+  open: boolean;
+  onClose: () => void;
+  pathname: string;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    closeRef.current?.focus();
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const focusables = panelRef.current?.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      );
+      if (!focusables?.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, onClose]);
+
+  if (!open) return null;
+
+  return (
+    <div
+      ref={panelRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Menu"
+      className="site-menu"
+    >
+      <div className="site-menu-glow" aria-hidden="true" />
+      <div className="site-menu-top">
+        <Link
+          href="/"
+          className="brand"
+          aria-label="AL Maleek home"
+          onClick={onClose}
+        >
+          <span className="brand-mark">
+            <Image
+              src="/brand/al-maleek-mark.png"
+              width={38}
+              height={38}
+              alt=""
+            />
+          </span>
+          <span>
+            AL MALEEK<small>Culture in motion</small>
+          </span>
+        </Link>
+        <button
+          ref={closeRef}
+          type="button"
+          className="site-menu-close"
+          aria-label="Close menu"
+          onClick={onClose}
+        >
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.4}
+            strokeLinecap="round"
+          >
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+
+      <nav aria-label="Mobile navigation" className="site-menu-nav">
+        <ul className="site-menu-grid">
+          {primaryLinks.map((link, index) => {
+            const active = linkIsActive(pathname, link.href);
+            return (
+              <li key={link.href} className="site-menu-cell">
+                <Link
+                  className="site-menu-tile"
+                  href={link.href}
+                  aria-current={active ? "page" : undefined}
+                  data-active={active ? "true" : "false"}
+                  onClick={onClose}
+                >
+                  <span className="site-menu-corners" aria-hidden="true" />
+                  <span className="site-menu-index" aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <MenuNavIcon href={link.href} className="site-menu-icon" />
+                  <span className="site-menu-label">{link.label}</span>
+                </Link>
+              </li>
+            );
+          })}
+          <li className="site-menu-cell site-menu-cta-cell">
+            <Link
+              className="site-menu-cta-tile"
+              href="/community"
+              onClick={onClose}
+            >
+              <span className="site-menu-corners" aria-hidden="true" />
+              <span className="site-menu-index" aria-hidden="true">
+                {String(primaryLinks.length + 1).padStart(2, "0")}
+              </span>
+              <MenuNavIcon href="/community" className="site-menu-icon" />
+              <span className="site-menu-cta-label">Join the community</span>
+            </Link>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
+}
 
 type SiteSettings = {
   footer_description: string;
@@ -165,6 +411,7 @@ function Icon({
 export function SiteShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [settings, setSettings] = useState<SiteSettings | null>(null);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${getApiBaseUrl()}/api/site/settings`, { signal: controller.signal })
@@ -198,10 +445,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </Link>
           <nav className="main-nav" aria-label="Main navigation">
             {primaryLinks.map((link) => {
-              const active =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
+              const active = linkIsActive(pathname, link.href);
               return (
                 <Link
                   key={link.href}
@@ -215,6 +459,16 @@ export function SiteShell({ children }: { children: ReactNode }) {
             })}
           </nav>
           <div className="nav-actions">
+            <button
+              type="button"
+              className="nav-menu-button"
+              aria-expanded={menuOpen}
+              aria-haspopup="dialog"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <MenuIcon open={menuOpen} />
+            </button>
             <a href={`${clientUrl}/sign-in`} className="nav-portal">
               Circle sign in
             </a>
@@ -224,6 +478,11 @@ export function SiteShell({ children }: { children: ReactNode }) {
           </div>
         </div>
       </header>
+      <SiteMobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        pathname={pathname}
+      />
       <main id="main-content">{children}</main>
       <footer className="footer">
         <div className="container">
