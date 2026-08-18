@@ -6,7 +6,28 @@ import { getMembershipPlans, type MembershipPlan } from "@/lib/api";
 import { CommunitySignup } from "./community-signup";
 import { EmptyState, PageSkeleton } from "@/components/state-primitives";
 
-export function CommunityExperience() {
+export type CommunityMutedContent = {
+  muted_eyebrow: string;
+  muted_heading: string;
+  muted_points: string[];
+};
+
+const DEFAULT_MUTED_CONTENT: CommunityMutedContent = {
+  muted_eyebrow: "Why community matters",
+  muted_heading:
+    "Built for retention, value, and participation that actually means something.",
+  muted_points: [
+    "Member-driven access and engagement loops that keep fans invested.",
+    "Polls, Q&A sessions, challenges, and insider updates that create belonging.",
+    "Clear pathways into premium experiences, event access, and brand moments.",
+  ],
+};
+
+export function CommunityExperience({
+  mutedContent = DEFAULT_MUTED_CONTENT,
+}: {
+  mutedContent?: CommunityMutedContent;
+}) {
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -67,24 +88,12 @@ export function CommunityExperience() {
       <section className="section-block muted-block">
         <div className="container detail-grid">
           <div className="detail-card">
-            <p className="eyebrow">Why community matters</p>
-            <h2>
-              Built for retention, value, and participation that actually means
-              something.
-            </h2>
+            <p className="eyebrow">{mutedContent.muted_eyebrow}</p>
+            <h2>{mutedContent.muted_heading}</h2>
             <ul className="detail-list">
-              <li>
-                Member-driven access and engagement loops that keep fans
-                invested.
-              </li>
-              <li>
-                Polls, Q&amp;A sessions, challenges, and insider updates that
-                create belonging.
-              </li>
-              <li>
-                Clear pathways into premium experiences, event access, and brand
-                moments.
-              </li>
+              {mutedContent.muted_points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
             </ul>
           </div>
           {plans.length ? (

@@ -40,7 +40,7 @@ func Load() Config {
 		CloudAPIKey:     strings.TrimSpace(getEnv("CLOUDINARY_API_KEY", "")),
 		CloudAPISecret:  strings.TrimSpace(getEnv("CLOUDINARY_API_SECRET", "")),
 		ResendAPIKey:    strings.TrimSpace(getEnv("RESEND_API_KEY", "")),
-		ResendFromEmail: strings.TrimSpace(getEnv("RESEND_FROM_EMAIL", "hello@almaleek.com")),
+		ResendFromEmail: strings.TrimSpace(getEnv("RESEND_FROM_EMAIL", "hello@almaleekgh.com")),
 		AdminAPIKey:     strings.TrimSpace(getEnv("ADMIN_API_KEY", "dev-admin-key")),
 		AllowedOrigins:  splitCSV(getEnv("ALLOWED_ORIGINS", localOrigins)),
 		DataStore:       strings.ToLower(strings.TrimSpace(getEnv("DATA_STORE", "mongodb"))),

@@ -5,7 +5,7 @@ const admin = "http://127.0.0.1:3101";
 test.describe("admin operations", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(`${admin}/sign-in`);
-    await page.getByLabel("Email").fill("ama@almaleek.com");
+    await page.getByLabel("Email").fill("ama@almaleekgh.com");
     const password = page.getByLabel("Password", { exact: true });
     await expect(password).toHaveAttribute("type", "password");
     await page.getByRole("button", { name: "Show password" }).click();

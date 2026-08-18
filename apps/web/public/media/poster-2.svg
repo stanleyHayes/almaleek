@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="AL Maleek poster artwork in lilac">
+  <defs>
+    <pattern id="halftone" width="30" height="30" patternUnits="userSpaceOnUse">
+      <circle cx="7" cy="7" r="5.5" fill="#151826" opacity="0.13"/>
+    </pattern>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e7d8ff"/>
+      <stop offset="1" stop-color="#b8c0ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#wash)"/>
+  <path d="M 0 0 L 520 0 A 520 520 0 0 1 0 520 Z" fill="#b8c0ff" opacity="0.85"/>
+  <path d="M 1200 675 L 760 675 A 440 440 0 0 1 1200 235 Z" fill="#6dd5c4" opacity="0.55"/>
+  <circle cx="600" cy="338" r="265" fill="none" stroke="#151826" stroke-opacity="0.2" stroke-width="3" stroke-dasharray="2 14"/>
+  <circle cx="600" cy="338" r="200" fill="none" stroke="#151826" stroke-opacity="0.14" stroke-width="3"/>
+  <rect x="880" y="60" width="280" height="240" fill="url(#halftone)"/>
+  <rect x="40" y="420" width="220" height="220" fill="url(#halftone)"/>
+  <circle cx="180" cy="120" r="30" fill="#ffd3b6"/>
+  <rect x="1080" y="520" width="86" height="86" rx="26" fill="#151826" transform="rotate(-10 1123 563)"/>
+  <text x="600" y="365" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="118" font-weight="800" letter-spacing="6" fill="#151826">AL MALEEK</text>
+  <text x="600" y="425" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="27" font-weight="600" letter-spacing="12" fill="#4a5064">COMEDY · CULTURE · COMMUNITY</text>
+</svg>

@@ -48,6 +48,31 @@ func NewEcosystemService(repo interface {
 func (s *EcosystemService) GetSiteSettings(ctx context.Context) (domain.SiteSettings, error) {
 	settings, err := s.settings.GetSiteSettings(ctx)
 	if err == nil {
+		defaults := domain.DefaultSiteSettings()
+		if settings.Home.Hero.Headline == "" {
+			settings.Home = defaults.Home
+		}
+		if settings.Pages.Academy.Hero.Headline == "" {
+			settings.Pages.Academy = defaults.Pages.Academy
+		}
+		if settings.Pages.Live.Hero.Headline == "" {
+			settings.Pages.Live = defaults.Pages.Live
+		}
+		if settings.Pages.Community.Hero.Headline == "" {
+			settings.Pages.Community = defaults.Pages.Community
+		}
+		if settings.Pages.Media.Hero.Headline == "" {
+			settings.Pages.Media = defaults.Pages.Media
+		}
+		if settings.Pages.Partnerships.Hero.Headline == "" {
+			settings.Pages.Partnerships = defaults.Pages.Partnerships
+		}
+		if settings.Pages.Shop.Hero.Headline == "" {
+			settings.Pages.Shop = defaults.Pages.Shop
+		}
+		if settings.Pages.WorkWith.Hero.Headline == "" {
+			settings.Pages.WorkWith = defaults.Pages.WorkWith
+		}
 		return settings, nil
 	}
 	if !errors.Is(err, ports.ErrNotFound) {

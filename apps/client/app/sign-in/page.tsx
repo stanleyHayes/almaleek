@@ -131,7 +131,7 @@ export default function SignIn() {
         )}
         <p className="auth-help">
           Access comes through an invitation. Need help?{" "}
-          <a href="mailto:circle@almaleek.com">Contact the team</a>.
+          <a href="mailto:circle@almaleekgh.com">Contact the team</a>.
         </p>
       </section>
     </main>

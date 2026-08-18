@@ -491,10 +491,96 @@ export function ContentOperations() {
   );
 }
 
+type HeroContent = {
+  eyebrow: string;
+  headline: string;
+  lede: string;
+};
+type PageCard = {
+  kicker: string;
+  title: string;
+  text: string;
+};
+type PageContent = {
+  hero: HeroContent;
+  cards: PageCard[];
+  muted_eyebrow: string;
+  muted_heading: string;
+  muted_points: string[];
+};
+type HomeContent = {
+  hero: HeroContent;
+  hero_card_pill: string;
+  hero_card_title: string;
+  hero_card_points: string[];
+  stats: Array<{ value: string; label: string }>;
+  journey_eyebrow: string;
+  journey_heading: string;
+  journey: Array<{ title: string; text: string; href: string }>;
+  pillars_eyebrow: string;
+  pillars_heading: string;
+  pillars: string[];
+  next_eyebrow: string;
+  next_heading: string;
+  next_moves: Array<{
+    title: string;
+    text: string;
+    link_label: string;
+    href: string;
+  }>;
+};
+type PagesContent = {
+  academy: PageContent;
+  live: PageContent & {
+    events: Array<{ date: string; title: string; text: string; image: string }>;
+  };
+  community: PageContent;
+  media: PageContent & {
+    stories: Array<{
+      kind: string;
+      title: string;
+      meta: string;
+      image: string;
+    }>;
+    press_eyebrow: string;
+    press_heading: string;
+    press_lede: string;
+    press_email: string;
+  };
+  partnerships: PageContent;
+  shop: PageContent;
+  work_with: PageContent;
+};
+const EMPTY_HERO: HeroContent = { eyebrow: "", headline: "", lede: "" };
+const EMPTY_PAGE: PageContent = {
+  hero: EMPTY_HERO,
+  cards: [],
+  muted_eyebrow: "",
+  muted_heading: "",
+  muted_points: [],
+};
+const EMPTY_HOME: HomeContent = {
+  hero: EMPTY_HERO,
+  hero_card_pill: "",
+  hero_card_title: "",
+  hero_card_points: [],
+  stats: [],
+  journey_eyebrow: "",
+  journey_heading: "",
+  journey: [],
+  pillars_eyebrow: "",
+  pillars_heading: "",
+  pillars: [],
+  next_eyebrow: "",
+  next_heading: "",
+  next_moves: [],
+};
 type SiteSettings = {
   footer_description: string;
   contact_email: string;
   location: string;
+  home: HomeContent;
+  pages: PagesContent;
   about_eyebrow: string;
   about_headline: string;
   about_introduction: string;
@@ -515,6 +601,18 @@ type SiteSettings = {
     audience: string;
   }>;
 };
+const mergePage = (page: Partial<PageContent> | undefined): PageContent => ({
+  hero: { ...EMPTY_HERO, ...page?.hero },
+  cards: page?.cards ?? EMPTY_PAGE.cards,
+  muted_eyebrow: page?.muted_eyebrow ?? "",
+  muted_heading: page?.muted_heading ?? "",
+  muted_points: page?.muted_points ?? EMPTY_PAGE.muted_points,
+});
+const mergeHome = (home: Partial<HomeContent> | undefined): HomeContent => ({
+  ...EMPTY_HOME,
+  ...home,
+  hero: { ...EMPTY_HERO, ...home?.hero },
+});
 export function SettingsOperations() {
   const [site, setSite] = useState<SiteSettings | null>(null),
     [notice, setNotice] = useState(""),
@@ -530,7 +628,43 @@ export function SettingsOperations() {
         const body = await response.json();
         if (!response.ok)
           throw new Error(body.error || "Unable to load CMS settings");
-        setSite(body);
+        setSite({
+          ...body,
+          home: mergeHome(body.home),
+          pages: {
+            academy: mergePage(body.pages?.academy),
+            live: {
+              ...mergePage(body.pages?.live),
+              events: (body.pages?.live?.events ?? []).map(
+                (event: {
+                  date: string;
+                  title: string;
+                  text: string;
+                  image?: string;
+                }) => ({ ...event, image: event.image ?? "" }),
+              ),
+            },
+            community: mergePage(body.pages?.community),
+            media: {
+              ...mergePage(body.pages?.media),
+              stories: (body.pages?.media?.stories ?? []).map(
+                (story: {
+                  kind: string;
+                  title: string;
+                  meta: string;
+                  image?: string;
+                }) => ({ ...story, image: story.image ?? "" }),
+              ),
+              press_eyebrow: body.pages?.media?.press_eyebrow ?? "",
+              press_heading: body.pages?.media?.press_heading ?? "",
+              press_lede: body.pages?.media?.press_lede ?? "",
+              press_email: body.pages?.media?.press_email ?? "",
+            },
+            partnerships: mergePage(body.pages?.partnerships),
+            shop: mergePage(body.pages?.shop),
+            work_with: mergePage(body.pages?.work_with),
+          },
+        });
       })
       .catch((reason) => {
         if (reason.name !== "AbortError") setError(reason.message);
@@ -555,15 +689,32 @@ export function SettingsOperations() {
         return;
       }
       setSite(body);
-      setNotice(
-        "Brand story, portfolio, social presence and footer published across the public site.",
-      );
+      setNotice("All public page copy and site settings published.");
     } finally {
       setSaving(false);
     }
   };
   const update = (key: keyof SiteSettings, value: unknown) =>
     setSite((current) => (current ? { ...current, [key]: value } : current));
+  const updateHome = (patch: Partial<HomeContent>) =>
+    setSite((current) =>
+      current ? { ...current, home: { ...current.home, ...patch } } : current,
+    );
+  const updatePage = <K extends keyof PagesContent>(
+    page: K,
+    patch: Partial<PagesContent[K]>,
+  ) =>
+    setSite((current) =>
+      current
+        ? {
+            ...current,
+            pages: {
+              ...current.pages,
+              [page]: { ...current.pages[page], ...patch },
+            },
+          }
+        : current,
+    );
   if (!site)
     return error ? (
       <>
@@ -580,6 +731,147 @@ export function SettingsOperations() {
     ) : (
       <PageSkeleton cards={3} />
     );
+  const updateHero = (page: keyof PagesContent, patch: Partial<HeroContent>) =>
+    updatePage(page, { hero: { ...site.pages[page].hero, ...patch } });
+  const updateHomeHero = (patch: Partial<HeroContent>) =>
+    updateHome({ hero: { ...site.home.hero, ...patch } });
+  const renderPageSection = (
+    page: "academy" | "partnerships" | "shop" | "work_with",
+    title: string,
+    helper: string,
+  ) => (
+    <section className="panel-card cms-section">
+      <div>
+        <p className="eyebrow">Public pages · {title}</p>
+        <h2>{title}</h2>
+        <p>{helper}</p>
+      </div>
+      <div className="light-form-grid">
+        <label>
+          Eyebrow
+          <input
+            value={site.pages[page].hero.eyebrow}
+            onChange={(e) => updateHero(page, { eyebrow: e.target.value })}
+          />
+        </label>
+        <label>
+          Headline
+          <input
+            value={site.pages[page].hero.headline}
+            onChange={(e) => updateHero(page, { headline: e.target.value })}
+          />
+        </label>
+        <label className="full-field">
+          Lede
+          <textarea
+            rows={3}
+            value={site.pages[page].hero.lede}
+            onChange={(e) => updateHero(page, { lede: e.target.value })}
+          />
+        </label>
+      </div>
+      <div className="cms-repeaters">
+        {site.pages[page].cards.map((card, index) => (
+          <article key={`${page}-card-${index}`}>
+            <label>
+              Kicker
+              <input
+                value={card.kicker}
+                onChange={(e) =>
+                  updatePage(page, {
+                    cards: site.pages[page].cards.map((item, i) =>
+                      i === index ? { ...item, kicker: e.target.value } : item,
+                    ),
+                  })
+                }
+              />
+            </label>
+            <label>
+              Title
+              <input
+                value={card.title}
+                onChange={(e) =>
+                  updatePage(page, {
+                    cards: site.pages[page].cards.map((item, i) =>
+                      i === index ? { ...item, title: e.target.value } : item,
+                    ),
+                  })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Text
+              <textarea
+                rows={3}
+                value={card.text}
+                onChange={(e) =>
+                  updatePage(page, {
+                    cards: site.pages[page].cards.map((item, i) =>
+                      i === index ? { ...item, text: e.target.value } : item,
+                    ),
+                  })
+                }
+              />
+            </label>
+            <button
+              type="button"
+              onClick={() =>
+                updatePage(page, {
+                  cards: site.pages[page].cards.filter((_, i) => i !== index),
+                })
+              }
+            >
+              Remove card
+            </button>
+          </article>
+        ))}
+        <button
+          type="button"
+          className="button button-soft"
+          onClick={() =>
+            updatePage(page, {
+              cards: [
+                ...site.pages[page].cards,
+                { kicker: "New", title: "New card", text: "" },
+              ],
+            })
+          }
+        >
+          + Add card
+        </button>
+      </div>
+      <div className="light-form-grid">
+        <label>
+          Muted eyebrow
+          <input
+            value={site.pages[page].muted_eyebrow}
+            onChange={(e) =>
+              updatePage(page, { muted_eyebrow: e.target.value })
+            }
+          />
+        </label>
+        <label>
+          Muted heading
+          <input
+            value={site.pages[page].muted_heading}
+            onChange={(e) =>
+              updatePage(page, { muted_heading: e.target.value })
+            }
+          />
+        </label>
+        <label className="full-field">
+          Muted points — one per line
+          <textarea
+            rows={4}
+            value={site.pages[page].muted_points.join("\n")}
+            onChange={(e) =>
+              updatePage(page, { muted_points: e.target.value.split("\n") })
+            }
+          />
+        </label>
+      </div>
+    </section>
+  );
   return (
     <form onSubmit={submit}>
       <header className="top-strip">
@@ -587,7 +879,8 @@ export function SettingsOperations() {
           <p className="eyebrow">Public CMS</p>
           <h1>Brand & site settings</h1>
           <p>
-            Control the public story, portfolio, social presence and footer.
+            Control the copy across every public page, plus the brand story,
+            portfolio, social presence and footer.
           </p>
         </div>
         <button
@@ -922,6 +1215,792 @@ export function SettingsOperations() {
                 value={site.location}
                 onChange={(e) => update("location", e.target.value)}
                 required
+              />
+            </label>
+          </div>
+        </section>
+        <section className="panel-card cms-section">
+          <div>
+            <p className="eyebrow">Public pages · Home</p>
+            <h2>Home page</h2>
+            <p>
+              Hero, stats, journey, pillars and next moves on the public home
+              page (/).
+            </p>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Eyebrow
+              <input
+                value={site.home.hero.eyebrow}
+                onChange={(e) => updateHomeHero({ eyebrow: e.target.value })}
+              />
+            </label>
+            <label>
+              Headline
+              <input
+                value={site.home.hero.headline}
+                onChange={(e) => updateHomeHero({ headline: e.target.value })}
+              />
+            </label>
+            <label className="full-field">
+              Lede
+              <textarea
+                rows={3}
+                value={site.home.hero.lede}
+                onChange={(e) => updateHomeHero({ lede: e.target.value })}
+              />
+            </label>
+            <label>
+              Hero card pill
+              <input
+                value={site.home.hero_card_pill}
+                onChange={(e) =>
+                  updateHome({ hero_card_pill: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Hero card title
+              <input
+                value={site.home.hero_card_title}
+                onChange={(e) =>
+                  updateHome({ hero_card_title: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Hero card points — one per line
+              <textarea
+                rows={4}
+                value={site.home.hero_card_points.join("\n")}
+                onChange={(e) =>
+                  updateHome({ hero_card_points: e.target.value.split("\n") })
+                }
+              />
+            </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.home.stats.map((stat, index) => (
+              <article key={`stat-${index}`}>
+                <label>
+                  Value
+                  <input
+                    value={stat.value}
+                    onChange={(e) =>
+                      updateHome({
+                        stats: site.home.stats.map((item, i) =>
+                          i === index
+                            ? { ...item, value: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Label
+                  <input
+                    value={stat.label}
+                    onChange={(e) =>
+                      updateHome({
+                        stats: site.home.stats.map((item, i) =>
+                          i === index
+                            ? { ...item, label: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateHome({
+                      stats: site.home.stats.filter((_, i) => i !== index),
+                    })
+                  }
+                >
+                  Remove stat
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updateHome({
+                  stats: [
+                    ...site.home.stats,
+                    { value: "0", label: "New stat" },
+                  ],
+                })
+              }
+            >
+              + Add stat
+            </button>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Journey eyebrow
+              <input
+                value={site.home.journey_eyebrow}
+                onChange={(e) =>
+                  updateHome({ journey_eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Journey heading
+              <input
+                value={site.home.journey_heading}
+                onChange={(e) =>
+                  updateHome({ journey_heading: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.home.journey.map((step, index) => (
+              <article key={`journey-${index}`}>
+                <label>
+                  Title
+                  <input
+                    value={step.title}
+                    onChange={(e) =>
+                      updateHome({
+                        journey: site.home.journey.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Link href
+                  <input
+                    value={step.href}
+                    onChange={(e) =>
+                      updateHome({
+                        journey: site.home.journey.map((item, i) =>
+                          i === index
+                            ? { ...item, href: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={step.text}
+                    onChange={(e) =>
+                      updateHome({
+                        journey: site.home.journey.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateHome({
+                      journey: site.home.journey.filter((_, i) => i !== index),
+                    })
+                  }
+                >
+                  Remove journey card
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updateHome({
+                  journey: [
+                    ...site.home.journey,
+                    { title: "New path", text: "", href: "/" },
+                  ],
+                })
+              }
+            >
+              + Add journey card
+            </button>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Pillars eyebrow
+              <input
+                value={site.home.pillars_eyebrow}
+                onChange={(e) =>
+                  updateHome({ pillars_eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Pillars heading
+              <input
+                value={site.home.pillars_heading}
+                onChange={(e) =>
+                  updateHome({ pillars_heading: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Pillars — one per line
+              <textarea
+                rows={4}
+                value={site.home.pillars.join("\n")}
+                onChange={(e) =>
+                  updateHome({ pillars: e.target.value.split("\n") })
+                }
+              />
+            </label>
+            <label>
+              Next-move eyebrow
+              <input
+                value={site.home.next_eyebrow}
+                onChange={(e) => updateHome({ next_eyebrow: e.target.value })}
+              />
+            </label>
+            <label>
+              Next-move heading
+              <input
+                value={site.home.next_heading}
+                onChange={(e) => updateHome({ next_heading: e.target.value })}
+              />
+            </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.home.next_moves.map((move, index) => (
+              <article key={`next-move-${index}`}>
+                <label>
+                  Title
+                  <input
+                    value={move.title}
+                    onChange={(e) =>
+                      updateHome({
+                        next_moves: site.home.next_moves.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Link label
+                  <input
+                    value={move.link_label}
+                    onChange={(e) =>
+                      updateHome({
+                        next_moves: site.home.next_moves.map((item, i) =>
+                          i === index
+                            ? { ...item, link_label: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Link href
+                  <input
+                    value={move.href}
+                    onChange={(e) =>
+                      updateHome({
+                        next_moves: site.home.next_moves.map((item, i) =>
+                          i === index
+                            ? { ...item, href: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={move.text}
+                    onChange={(e) =>
+                      updateHome({
+                        next_moves: site.home.next_moves.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updateHome({
+                      next_moves: site.home.next_moves.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove next-move card
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updateHome({
+                  next_moves: [
+                    ...site.home.next_moves,
+                    {
+                      title: "New audience",
+                      text: "",
+                      link_label: "Learn more →",
+                      href: "/",
+                    },
+                  ],
+                })
+              }
+            >
+              + Add next-move card
+            </button>
+          </div>
+        </section>
+        {renderPageSection(
+          "academy",
+          "Academy",
+          "Hero, programme cards and the muted closing block on /academy.",
+        )}
+        {renderPageSection(
+          "partnerships",
+          "Partnerships",
+          "Hero, partnership cards and the muted closing block on /partnerships.",
+        )}
+        {renderPageSection(
+          "shop",
+          "Shop",
+          "Hero, category cards and the muted closing block on /shop.",
+        )}
+        {renderPageSection(
+          "work_with",
+          "Work with Al Maleek",
+          "Hero, service cards and the muted closing block on /work-with-al-maleek.",
+        )}
+        <section className="panel-card cms-section">
+          <div>
+            <p className="eyebrow">Public pages · Live</p>
+            <h2>Live events</h2>
+            <p>
+              Hero, upcoming events and the muted closing block on
+              /events/live. Leave the image blank to use the branded poster
+              artwork.
+            </p>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Eyebrow
+              <input
+                value={site.pages.live.hero.eyebrow}
+                onChange={(e) => updateHero("live", { eyebrow: e.target.value })}
+              />
+            </label>
+            <label>
+              Headline
+              <input
+                value={site.pages.live.hero.headline}
+                onChange={(e) =>
+                  updateHero("live", { headline: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Lede
+              <textarea
+                rows={3}
+                value={site.pages.live.hero.lede}
+                onChange={(e) => updateHero("live", { lede: e.target.value })}
+              />
+            </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.pages.live.events.map((event, index) => (
+              <article key={`live-event-${index}`}>
+                <label>
+                  Date
+                  <input
+                    value={event.date}
+                    onChange={(e) =>
+                      updatePage("live", {
+                        events: site.pages.live.events.map((item, i) =>
+                          i === index
+                            ? { ...item, date: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Title
+                  <input
+                    value={event.title}
+                    onChange={(e) =>
+                      updatePage("live", {
+                        events: site.pages.live.events.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={event.text}
+                    onChange={(e) =>
+                      updatePage("live", {
+                        events: site.pages.live.events.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Image URL (optional)
+                  <input
+                    type="url"
+                    value={event.image}
+                    onChange={(e) =>
+                      updatePage("live", {
+                        events: site.pages.live.events.map((item, i) =>
+                          i === index
+                            ? { ...item, image: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                    placeholder="https://…"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updatePage("live", {
+                      events: site.pages.live.events.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove event
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updatePage("live", {
+                  events: [
+                    ...site.pages.live.events,
+                    { date: "TBA", title: "New event", text: "", image: "" },
+                  ],
+                })
+              }
+            >
+              + Add event
+            </button>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Muted eyebrow
+              <input
+                value={site.pages.live.muted_eyebrow}
+                onChange={(e) =>
+                  updatePage("live", { muted_eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Muted heading
+              <input
+                value={site.pages.live.muted_heading}
+                onChange={(e) =>
+                  updatePage("live", { muted_heading: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Muted points — one per line
+              <textarea
+                rows={4}
+                value={site.pages.live.muted_points.join("\n")}
+                onChange={(e) =>
+                  updatePage("live", {
+                    muted_points: e.target.value.split("\n"),
+                  })
+                }
+              />
+            </label>
+          </div>
+        </section>
+        <section className="panel-card cms-section">
+          <div>
+            <p className="eyebrow">Public pages · Community</p>
+            <h2>Community</h2>
+            <p>
+              Hero and the muted closing block on /community. The membership
+              plans grid is managed in the Plans workspace.
+            </p>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Eyebrow
+              <input
+                value={site.pages.community.hero.eyebrow}
+                onChange={(e) =>
+                  updateHero("community", { eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Headline
+              <input
+                value={site.pages.community.hero.headline}
+                onChange={(e) =>
+                  updateHero("community", { headline: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Lede
+              <textarea
+                rows={3}
+                value={site.pages.community.hero.lede}
+                onChange={(e) =>
+                  updateHero("community", { lede: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Muted eyebrow
+              <input
+                value={site.pages.community.muted_eyebrow}
+                onChange={(e) =>
+                  updatePage("community", { muted_eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Muted heading
+              <input
+                value={site.pages.community.muted_heading}
+                onChange={(e) =>
+                  updatePage("community", { muted_heading: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Muted points — one per line
+              <textarea
+                rows={4}
+                value={site.pages.community.muted_points.join("\n")}
+                onChange={(e) =>
+                  updatePage("community", {
+                    muted_points: e.target.value.split("\n"),
+                  })
+                }
+              />
+            </label>
+          </div>
+        </section>
+        <section className="panel-card cms-section">
+          <div>
+            <p className="eyebrow">Public pages · Media</p>
+            <h2>Media</h2>
+            <p>
+              Hero, editorial stories and the press room on /media. Leave the
+              image blank to use the branded poster artwork.
+            </p>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Eyebrow
+              <input
+                value={site.pages.media.hero.eyebrow}
+                onChange={(e) =>
+                  updateHero("media", { eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Headline
+              <input
+                value={site.pages.media.hero.headline}
+                onChange={(e) =>
+                  updateHero("media", { headline: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Lede
+              <textarea
+                rows={3}
+                value={site.pages.media.hero.lede}
+                onChange={(e) => updateHero("media", { lede: e.target.value })}
+              />
+            </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.pages.media.stories.map((story, index) => (
+              <article key={`media-story-${index}`}>
+                <label>
+                  Kind
+                  <input
+                    value={story.kind}
+                    onChange={(e) =>
+                      updatePage("media", {
+                        stories: site.pages.media.stories.map((item, i) =>
+                          i === index
+                            ? { ...item, kind: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Title
+                  <input
+                    value={story.title}
+                    onChange={(e) =>
+                      updatePage("media", {
+                        stories: site.pages.media.stories.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Meta
+                  <input
+                    value={story.meta}
+                    onChange={(e) =>
+                      updatePage("media", {
+                        stories: site.pages.media.stories.map((item, i) =>
+                          i === index
+                            ? { ...item, meta: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Image URL (optional)
+                  <input
+                    type="url"
+                    value={story.image}
+                    onChange={(e) =>
+                      updatePage("media", {
+                        stories: site.pages.media.stories.map((item, i) =>
+                          i === index
+                            ? { ...item, image: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                    placeholder="https://…"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updatePage("media", {
+                      stories: site.pages.media.stories.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove story
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updatePage("media", {
+                  stories: [
+                    ...site.pages.media.stories,
+                    { kind: "Story", title: "New story", meta: "", image: "" },
+                  ],
+                })
+              }
+            >
+              + Add story
+            </button>
+          </div>
+          <div className="light-form-grid">
+            <label>
+              Press eyebrow
+              <input
+                value={site.pages.media.press_eyebrow}
+                onChange={(e) =>
+                  updatePage("media", { press_eyebrow: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Press heading
+              <input
+                value={site.pages.media.press_heading}
+                onChange={(e) =>
+                  updatePage("media", { press_heading: e.target.value })
+                }
+              />
+            </label>
+            <label className="full-field">
+              Press lede
+              <textarea
+                rows={3}
+                value={site.pages.media.press_lede}
+                onChange={(e) =>
+                  updatePage("media", { press_lede: e.target.value })
+                }
+              />
+            </label>
+            <label>
+              Press email
+              <input
+                type="email"
+                value={site.pages.media.press_email}
+                onChange={(e) =>
+                  updatePage("media", { press_email: e.target.value })
+                }
               />
             </label>
           </div>

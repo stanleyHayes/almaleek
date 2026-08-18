@@ -2131,3 +2131,32 @@ main {
   white-space: nowrap;
   border: 0;
 }
+
+/* Media thumbnails and visual story/event cards */
+.media-thumb {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--mint-pale);
+}
+.media-card .media-thumb {
+  margin-bottom: 22px;
+  transition: transform 0.25s ease;
+}
+.media-card:hover .media-thumb {
+  transform: scale(1.02);
+}
+/* Feature cards pack content to the bottom; thumbnails lead, so top-align. */
+.feature-card.media-card {
+  justify-content: flex-start;
+}
+/* Detail cards get the same hover lift as feature cards once they carry media. */
+.detail-card.media-card {
+  transition: transform 0.25s ease;
+}
+.detail-card.media-card:hover {
+  transform: translateY(-6px) rotate(-0.3deg);
+}

@@ -255,7 +255,7 @@ export function PublicActionForm({ kind }: { kind: Kind }) {
       : status === "offline"
         ? "The service is temporarily unavailable. Your draft is saved on this device only; please retry later."
         : status === "error"
-          ? "We could not save that request. Please try again or email hello@almaleek.com."
+          ? "We could not save that request. Please try again or email hello@almaleekgh.com."
           : "";
   return (
     <form className="form-card" onSubmit={submit}>

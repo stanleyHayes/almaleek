@@ -1,63 +1,16 @@
 import Link from 'next/link';
+import { getSiteContent } from '@/lib/site-content';
 
-const journeyCards = [
-  {
-    title: 'Work With AL Maleek',
-    href: '/work-with-al-maleek',
-    text: 'Book appearances, campaigns, event partnerships, and creator collaborations built for culture-first impact.',
-  },
-  {
-    title: 'AL Maleek Live',
-    href: '/events/live',
-    text: 'Discover the next comedy night, premiere, campus showcase, or community event with seamless ticketing.',
-  },
-  {
-    title: 'Community',
-    href: '/community',
-    text: 'Join a space designed for fans, friends, and future members who want access, belonging, and early opportunity.',
-  },
-  {
-    title: 'Media & stories',
-    href: '/media',
-    text: 'Watch films, read field notes, and find press stories from inside the wider AL Maleek ecosystem.',
-  },
-  {
-    title: 'Shop',
-    href: '/shop',
-    text: 'Own culture-driven drops, event merch, and premium collectibles that turn fandom into identity.',
-  },
-  {
-    title: 'Academy',
-    href: '/academy',
-    text: 'Learn the craft of content, comedy, performance, and creator business with practical, real-world frameworks.',
-  },
-  {
-    title: 'Partnerships',
-    href: '/partnerships',
-    text: 'Build sponsor, activation, and collaboration opportunities that feel aligned to the audience and the brand.',
-  },
-];
-
-const pillars = [
-  'Premium brand trust with creator-led personality',
-  'A community flywheel that turns attention into belonging',
-  'Events, commerce, and education that convert excitement into action',
-  'Clear business pathways for brands, learners, collaborators, and fans',
-];
-
-export default function HomePage() {
+export default async function HomePage() {
+  const { home, pages } = await getSiteContent();
   return (
     <div className="page-shell">
       <section className="hero-section">
         <div className="container split-layout">
           <div>
-            <p className="eyebrow">Creator-led culture engine</p>
-            <h1>Turn attention into a brand people belong to.</h1>
-            <p className="lede">
-              AL Maleek is the digital home for culture, community, creativity, and opportunity. From
-              live experiences and commerce to education and partnerships, every touchpoint is designed
-              to move people from discovery into deeper connection and action.
-            </p>
+            <p className="eyebrow">{home.hero.eyebrow}</p>
+            <h1>{home.hero.headline}</h1>
+            <p className="lede">{home.hero.lede}</p>
             <div className="cta-row">
               <Link href="/community" className="button button-primary">
                 Join the community
@@ -69,13 +22,12 @@ export default function HomePage() {
           </div>
 
           <div className="hero-card">
-            <span className="pill">Built to convert</span>
-            <h3>Culture with commercial momentum</h3>
+            <span className="pill">{home.hero_card_pill}</span>
+            <h3>{home.hero_card_title}</h3>
             <ul>
-              <li>Low-friction community growth</li>
-              <li>Premium tickets and live experiences</li>
-              <li>Creator education and retail pathways</li>
-              <li>Brand and partnership opportunities</li>
+              {home.hero_card_points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -83,34 +35,24 @@ export default function HomePage() {
 
       <section className="stats-bar">
         <div className="container stats-grid">
-          <div>
-            <strong>1k+</strong>
-            <span>Community signups</span>
-          </div>
-          <div>
-            <strong>5</strong>
-            <span>Core growth loops</span>
-          </div>
-          <div>
-            <strong>24/7</strong>
-            <span>Audience conversion path</span>
-          </div>
-          <div>
-            <strong>100%</strong>
-            <span>Owned ecosystem focus</span>
-          </div>
+          {home.stats.map((stat) => (
+            <div key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
       <section className="section-block">
         <div className="container">
           <div className="section-head">
-            <p className="eyebrow">Built for the full ecosystem</p>
-            <h2>From discovery to deeper conversion, every path has a clear next step.</h2>
+            <p className="eyebrow">{home.journey_eyebrow}</p>
+            <h2>{home.journey_heading}</h2>
           </div>
 
           <div className="card-grid three-up">
-            {journeyCards.map((card) => (
+            {home.journey.map((card) => (
               <Link key={card.href} href={card.href} className="feature-card">
                 <span className="card-kicker">Explore</span>
                 <h3>{card.title}</h3>
@@ -121,15 +63,41 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="section-block">
+        <div className="container">
+          <div className="section-head">
+            <p className="eyebrow">Fresh from the timeline</p>
+            <h2>Skits, stories, and press — straight from the studio.</h2>
+          </div>
+
+          <div className="card-grid three-up">
+            {pages.media.stories.map((story, index) => (
+              <Link key={story.title} href="/media" className="feature-card media-card">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  className="media-thumb"
+                  src={story.image || `/media/poster-${(index % 3) + 1}.svg`}
+                  alt=""
+                  loading="lazy"
+                />
+                <span className="card-kicker">{story.kind}</span>
+                <h3>{story.title}</h3>
+                <p>{story.meta}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="section-block muted-block">
         <div className="container split-layout align-start">
           <div>
-            <p className="eyebrow">Why it works</p>
-            <h2>Premium, social, and commercially credible without losing authenticity.</h2>
+            <p className="eyebrow">{home.pillars_eyebrow}</p>
+            <h2>{home.pillars_heading}</h2>
           </div>
 
           <div className="check-list" aria-label="Brand pillars list">
-            {pillars.map((item) => (
+            {home.pillars.map((item) => (
               <div key={item} className="check-item">
                 <span aria-hidden="true">✓</span>
                 <p>{item}</p>
@@ -142,26 +110,20 @@ export default function HomePage() {
       <section className="section-block">
         <div className="container">
           <div className="section-head narrow">
-            <p className="eyebrow">Next move</p>
-            <h2>Choose the path that fits your intent.</h2>
+            <p className="eyebrow">{home.next_eyebrow}</p>
+            <h2>{home.next_heading}</h2>
           </div>
 
           <div className="card-grid two-up">
-            <div className="mini-card highlight-card">
-              <h3>For fans and community members</h3>
-              <p>Get the updates, access, and invites that make the brand feel personal and worth showing up for.</p>
-              <Link href="/community" className="inline-link">
-                Join the community →
-              </Link>
-            </div>
-
-            <div className="mini-card highlight-card">
-              <h3>For brands and collaborators</h3>
-              <p>Start a structured conversation around events, partnerships, sponsorships, and culture-led growth.</p>
-              <Link href="/partnerships" className="inline-link">
-                Explore partnerships →
-              </Link>
-            </div>
+            {home.next_moves.map((move) => (
+              <div key={move.href} className="mini-card highlight-card">
+                <h3>{move.title}</h3>
+                <p>{move.text}</p>
+                <Link href={move.href} className="inline-link">
+                  {move.link_label}
+                </Link>
+              </div>
+            ))}
           </div>
         </div>
       </section>

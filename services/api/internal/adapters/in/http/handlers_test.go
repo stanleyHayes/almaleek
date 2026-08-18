@@ -128,8 +128,24 @@ func TestPublicSiteSettingsReadAndProtectedUpdate(t *testing.T) {
 	if settings.FounderName == "" || len(settings.Brands) == 0 || len(settings.SocialProfiles) == 0 {
 		t.Fatalf("default site settings are incomplete: %#v", settings)
 	}
+	if settings.Home.Hero.Headline == "" {
+		t.Fatalf("default home hero headline is empty: %#v", settings.Home.Hero)
+	}
+	if len(settings.Home.Journey) != 7 {
+		t.Fatalf("default home journey entries = %d, want 7", len(settings.Home.Journey))
+	}
+	if settings.Pages.Academy.Hero.Headline == "" {
+		t.Fatalf("default academy hero headline is empty: %#v", settings.Pages.Academy.Hero)
+	}
+	if len(settings.Pages.Live.Events) != 3 {
+		t.Fatalf("default live events = %d, want 3", len(settings.Pages.Live.Events))
+	}
+	if len(settings.Pages.Media.Stories) != 3 {
+		t.Fatalf("default media stories = %d, want 3", len(settings.Pages.Media.Stories))
+	}
 
 	settings.AboutHeadline = "A CMS-managed headline"
+	settings.Home.Hero.Headline = "A CMS-managed home headline"
 	payload, err := json.Marshal(settings)
 	if err != nil {
 		t.Fatal(err)
@@ -141,6 +157,9 @@ func TestPublicSiteSettingsReadAndProtectedUpdate(t *testing.T) {
 	updated := decodeResponse[domain.SiteSettings](t, response)
 	if updated.AboutHeadline != "A CMS-managed headline" {
 		t.Fatalf("updated headline = %q", updated.AboutHeadline)
+	}
+	if updated.Home.Hero.Headline != "A CMS-managed home headline" {
+		t.Fatalf("updated home headline = %q", updated.Home.Hero.Headline)
 	}
 
 	unauthorizedRequest, err := http.NewRequest(http.MethodPut, server.URL+"/api/site/settings", bytes.NewReader(payload))
@@ -361,7 +380,7 @@ func TestStrictJSONAndCreatorCompatibility(t *testing.T) {
 	}
 	response.Body.Close()
 
-	payload := []byte(`{"name":"AL Maleek","handle":"almaleek","email":"hello@almaleek.com"}`)
+	payload := []byte(`{"name":"AL Maleek","handle":"almaleek","email":"hello@almaleekgh.com"}`)
 	response = request(t, server.Client(), http.MethodPost, server.URL+"/api/creators", string(payload), "application/json")
 	if response.StatusCode != http.StatusCreated {
 		var body bytes.Buffer
@@ -371,7 +390,7 @@ func TestStrictJSONAndCreatorCompatibility(t *testing.T) {
 	response.Body.Close()
 	response = request(t, server.Client(), http.MethodGet, server.URL+"/api/creators", "", "")
 	items := decodeResponse[[]domain.Creator](t, response)
-	if len(items) != 1 || items[0].Email != "hello@almaleek.com" {
+	if len(items) != 1 || items[0].Email != "hello@almaleekgh.com" {
 		t.Fatalf("unexpected creators: %#v", items)
 	}
 }
@@ -380,7 +399,7 @@ func TestCreatorInternalAndPostCommitErrorsAreClassified(t *testing.T) {
 	ecosystem := usecases.NewEcosystemService(memory.NewRepository())
 	server := httptest.NewServer(NewHandler(usecases.NewCreatorService(&failingCreatorRepository{}, nil), ecosystem, "test-admin-key", []string{"http://localhost:3100"}).Route())
 	defer server.Close()
-	payload := `{"name":"AL Maleek","handle":"almaleek","email":"hello@almaleek.com"}`
+	payload := `{"name":"AL Maleek","handle":"almaleek","email":"hello@almaleekgh.com"}`
 	response := request(t, server.Client(), http.MethodPost, server.URL+"/api/creators", payload, "application/json")
 	if response.StatusCode != http.StatusInternalServerError {
 		t.Fatalf("repository error status = %d", response.StatusCode)

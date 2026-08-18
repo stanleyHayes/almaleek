@@ -13,7 +13,7 @@ func validProductionConfig() Config {
 		CloudAPIKey:     "cloud-key",
 		CloudAPISecret:  "cloud-secret",
 		ResendAPIKey:    "resend-key",
-		ResendFromEmail: "hello@almaleek.com",
+		ResendFromEmail: "hello@almaleekgh.com",
 		AdminAPIKey:     "a-long-random-admin-secret",
 		AllowedOrigins:  []string{"https://almaleek.com", "https://admin.almaleek.com"},
 		DataStore:       "mongodb",

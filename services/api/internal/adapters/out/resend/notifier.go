@@ -38,7 +38,7 @@ func (s *Service) SendWelcomeEmail(ctx context.Context, email, name string) erro
         return fmt.Errorf("email and name are required")
     }
     if s.From == "" {
-        s.From = "hello@almaleek.com"
+        s.From = "hello@almaleekgh.com"
     }
 
     payload := map[string]any{

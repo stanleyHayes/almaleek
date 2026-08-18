@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="AL Maleek poster artwork in peach">
+  <defs>
+    <pattern id="speckle" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="4" fill="#151826" opacity="0.12"/>
+      <circle cx="27" cy="27" r="2.5" fill="#151826" opacity="0.09"/>
+    </pattern>
+    <radialGradient id="soft" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#fff0e3" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff0e3" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="#ffd3b6"/>
+  <circle cx="150" cy="560" r="300" fill="#a7c4a0"/>
+  <circle cx="150" cy="560" r="370" fill="none" stroke="#151826" stroke-opacity="0.13" stroke-width="2.5"/>
+  <path d="M 760 -40 A 300 300 0 0 1 1060 260" fill="none" stroke="#a7c4a0" stroke-width="30" stroke-linecap="round"/>
+  <path d="M 700 -60 A 360 360 0 0 1 1060 300" fill="none" stroke="#151826" stroke-opacity="0.16" stroke-width="4"/>
+  <rect x="430" y="70" width="360" height="240" fill="url(#speckle)"/>
+  <circle cx="1050" cy="420" r="190" fill="url(#soft)"/>
+  <rect x="960" y="440" width="110" height="110" rx="32" fill="#151826" transform="rotate(9 1015 495)"/>
+  <circle cx="620" cy="520" r="24" fill="#6dd5c4"/>
+  <text x="80" y="180" font-family="Outfit, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="10" fill="#8a5a33">AL MALEEK</text>
+  <text x="74" y="360" font-family="Outfit, Arial, sans-serif" font-size="150" font-weight="800" letter-spacing="-9" fill="#151826">AM</text>
+  <text x="82" y="412" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="4" fill="#65697a">LIVE · LOUD · LOCAL</text>
+</svg>

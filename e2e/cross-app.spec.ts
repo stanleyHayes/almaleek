@@ -5,7 +5,7 @@ const web = "http://127.0.0.1:3100",
   client = "http://127.0.0.1:3102";
 async function signInAdmin(page: Page) {
   await page.goto(`${admin}/sign-in`);
-  await page.getByLabel("Email").fill("ama@almaleek.com");
+  await page.getByLabel("Email").fill("ama@almaleekgh.com");
   await page.getByLabel("Password", { exact: true }).fill("e2e-demo-password");
   await page.getByRole("button", { name: /Sign in securely/ }).click();
   await expect(page).toHaveURL(`${admin}/`);

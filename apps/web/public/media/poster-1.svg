@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="AL Maleek poster artwork in mint">
+  <defs>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="4.5" fill="#151826" opacity="0.16"/>
+    </pattern>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="675" fill="#dff6f0"/>
+  <circle cx="1010" cy="120" r="330" fill="#6dd5c4"/>
+  <circle cx="1010" cy="120" r="410" fill="none" stroke="#151826" stroke-opacity="0.14" stroke-width="2.5"/>
+  <circle cx="1010" cy="120" r="480" fill="none" stroke="#151826" stroke-opacity="0.09" stroke-width="2"/>
+  <path d="M -60 560 A 400 400 0 0 1 340 160" fill="none" stroke="#6dd5c4" stroke-width="26" stroke-linecap="round"/>
+  <path d="M -30 620 A 460 460 0 0 1 430 170" fill="none" stroke="#151826" stroke-opacity="0.18" stroke-width="4"/>
+  <rect x="60" y="380" width="430" height="250" fill="url(#dots)"/>
+  <circle cx="240" cy="150" r="150" fill="url(#glow)"/>
+  <rect x="872" y="330" width="120" height="120" rx="34" fill="#151826" transform="rotate(12 932 390)"/>
+  <circle cx="1095" cy="470" r="26" fill="#ffd3b6"/>
+  <text x="70" y="150" font-family="Outfit, Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="10" fill="#4a7069">AL MALEEK</text>
+  <text x="64" y="330" font-family="Outfit, Arial, sans-serif" font-size="150" font-weight="800" letter-spacing="-9" fill="#151826">AM</text>
+  <text x="72" y="382" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="600" letter-spacing="4" fill="#65697a">SKITS · STORIES · PRESS</text>
+</svg>

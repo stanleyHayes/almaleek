@@ -22,7 +22,7 @@ CLOUDINARY_CLOUD_NAME=almaleek
 CLOUDINARY_API_KEY=replace-me
 CLOUDINARY_API_SECRET=replace-me
 RESEND_API_KEY=replace-me
-RESEND_FROM_EMAIL=hello@almaleek.com
+RESEND_FROM_EMAIL=hello@almaleekgh.com
 ADMIN_API_KEY=replace-with-a-long-random-secret
 ALLOWED_ORIGINS=http://localhost:3100,http://localhost:3101,http://localhost:3102
 ```

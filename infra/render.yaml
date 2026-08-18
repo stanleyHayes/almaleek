@@ -35,7 +35,7 @@ services:
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL
-        value: hello@almaleek.com
+        value: hello@almaleekgh.com
 
   - type: web
     name: almaleek-api-production
@@ -73,4 +73,4 @@ services:
       - key: RESEND_API_KEY
         sync: false
       - key: RESEND_FROM_EMAIL
-        value: hello@almaleek.com
+        value: hello@almaleekgh.com

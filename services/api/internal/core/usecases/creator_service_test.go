@@ -40,7 +40,7 @@ func TestRegisterCreator(t *testing.T) {
 	creator := domain.Creator{
 		Name:   "AL Maleek",
 		Handle: "almaleek",
-		Email:  "hello@almaleek.com",
+		Email:  "hello@almaleekgh.com",
 		Bio:    "Creator and community builder",
 	}
 

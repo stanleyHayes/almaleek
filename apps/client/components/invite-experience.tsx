@@ -113,7 +113,7 @@ export function InviteExperience({ token }: { token: string }) {
               Sign in <span>→</span>
             </Link>
           )}
-          <a href="mailto:circle@almaleek.com">Contact Circle support</a>
+          <a href="mailto:circle@almaleekgh.com">Contact Circle support</a>
         </section>
       </main>
     );
