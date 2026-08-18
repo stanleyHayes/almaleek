@@ -1,4 +1,13 @@
 import { PublicActionForm } from '@/components/public-action-form';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Shop',
+  description:
+    'AL Maleek Shop is where fandom meets identity: limited-edition pieces, event merch, and digital products that carry the culture beyond the screen.',
+  path: '/shop',
+  keywords: ['AL Maleek shop', 'culture merch', 'limited edition drops Ghana'],
+});
 
 export default function ShopPage() {
   return (

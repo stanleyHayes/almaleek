@@ -1,4 +1,13 @@
 import { PublicActionForm } from '@/components/public-action-form';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Academy',
+  description:
+    'AL Maleek Academy gives aspiring creators, operators, and performers practical education that translates into real income, stronger positioning, and sustainable creative growth.',
+  path: '/academy',
+  keywords: ['creator education', 'creative business training Ghana'],
+});
 
 export default function AcademyPage() {
   return (

@@ -1,4 +1,13 @@
 import { PublicActionForm } from '@/components/public-action-form';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Work With AL Maleek',
+  description:
+    'Appearances, campaigns, live events, sponsorships, and production — premium, high-trust opportunities for brands that want to connect with an engaged audience authentically.',
+  path: '/work-with-al-maleek',
+  keywords: ['book AL Maleek', 'brand collaboration Ghana', 'event appearances'],
+});
 
 export default function WorkWithALMaleekPage() {
   return (

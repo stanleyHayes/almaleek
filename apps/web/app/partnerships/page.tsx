@@ -1,4 +1,13 @@
 import { PublicActionForm } from '@/components/public-action-form';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Partnerships',
+  description:
+    'AL Maleek partnerships create value for brands and community — clear, premium, and structured around real alignment, not superficial promotions.',
+  path: '/partnerships',
+  keywords: ['brand partnerships Ghana', 'cultural marketing Africa', 'sponsorship Ghana'],
+});
 
 export default function PartnershipsPage() {
   return (

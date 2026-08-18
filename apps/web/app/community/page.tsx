@@ -1,4 +1,13 @@
 import { CommunityExperience } from "./community-experience";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "Community",
+  description:
+    "Join the AL Maleek community — built for fans, friends, collaborators, and future members who want direct access to the work, the ideas, and the opportunities shaping the brand.",
+  path: "/community",
+  keywords: ["join AL Maleek community", "fan community Ghana"],
+});
 
 export default function CommunityPage() {
   return (

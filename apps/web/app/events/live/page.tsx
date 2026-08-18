@@ -1,4 +1,13 @@
 import { PublicActionForm } from '@/components/public-action-form';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'AL Maleek Live',
+  description:
+    'Discover AL Maleek Live: comedy nights, premieres, campus events, creator showcases, and intimate live moments that bring the audience together.',
+  path: '/events/live',
+  keywords: ['AL Maleek Live', 'comedy shows Accra', 'campus events Ghana', 'event tickets Ghana'],
+});
 
 export default function LivePage() {
   return (

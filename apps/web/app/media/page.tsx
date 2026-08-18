@@ -1,4 +1,13 @@
 import Link from 'next/link';
+import { pageMetadata } from '@/lib/seo';
+
+export const metadata = pageMetadata({
+  title: 'Media & Stories',
+  description:
+    'Films, interviews, press, and working notes from the people and places shaping the AL Maleek ecosystem.',
+  path: '/media',
+  keywords: ['AL Maleek media', 'Ghana culture stories', 'creator interviews'],
+});
 
 const stories = [
   { type: 'New film', title: 'The room before the room', meta: '08:24 · Behind the scenes' },
