@@ -105,7 +105,7 @@ a {
   );
   border: 1px solid rgba(255, 255, 255, 0.75);
   outline: 1px solid rgba(21, 24, 38, 0.05);
-  border-radius: 24px;
+  border-radius: 999px;
   box-shadow: 0 18px 50px rgba(38, 42, 62, 0.12);
 }
 .brand {
@@ -691,8 +691,9 @@ h3 {
     padding-top: 8px;
   }
   .topbar[data-nav-state="floating"] .nav-wrap {
-    width: min(100% - 24px, 1240px);
-    border-radius: 17px;
+    /* Full-bleed capsule on phones: no side gaps, fully rounded ends. */
+    width: 100%;
+    border-radius: 999px;
   }
   .hero-section {
     padding-top: 62px;
