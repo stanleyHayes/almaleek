@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 
@@ -18,6 +19,24 @@ var (
 	ErrInvitationExpired         = errors.New("invitation has expired")
 	ErrInvitationAlreadyAccepted = errors.New("invitation has already been accepted")
 )
+
+// Exact values the original seed wrote, kept so GetSiteSettings can recognise
+// untouched installs and migrate them to the verified audience figures.
+var legacySeedAboutStats = []domain.HomeStat{
+	{Value: "3", Label: "2026 Ghana Comedy Awards nominations"},
+	{Value: "6", Label: "Platforms, one voice"},
+	{Value: "4", Label: "Live event formats"},
+	{Value: "100%", Label: "Made in Ghana"},
+}
+
+var legacySeedSocialProfiles = []domain.SocialProfile{
+	{Platform: "instagram", Handle: "@almaleekgh", URL: "https://instagram.com/almaleekgh", Audience: "Skits & behind the scenes"},
+	{Platform: "tiktok", Handle: "@almaleekgh", URL: "https://tiktok.com/@almaleekgh", Audience: "Comedy & culture"},
+	{Platform: "youtube", Handle: "@almaleekgh", URL: "https://youtube.com/@almaleekgh", Audience: "Skits & long-form"},
+	{Platform: "x", Handle: "@almaleekgh", URL: "https://x.com/almaleekgh", Audience: "Conversation"},
+	{Platform: "facebook", Handle: "Al Maleek", URL: "https://facebook.com/almaleekgh", Audience: "Community"},
+	{Platform: "linkedin", Handle: "AL Maleek", URL: "https://linkedin.com/company/almaleekgh", Audience: "Business & partnerships"},
+}
 
 type ValidationError struct{ Err error }
 
@@ -49,6 +68,15 @@ func (s *EcosystemService) GetSiteSettings(ctx context.Context) (domain.SiteSett
 	settings, err := s.settings.GetSiteSettings(ctx)
 	if err == nil {
 		defaults := domain.DefaultSiteSettings()
+		// Seed migration: the first seed shipped placeholder stats and guessed
+		// social handles. Installations still carrying those exact seed values
+		// get the verified audience numbers; admin-customised values win.
+		if slices.Equal(settings.AboutStats, legacySeedAboutStats) {
+			settings.AboutStats = defaults.AboutStats
+		}
+		if slices.Equal(settings.SocialProfiles, legacySeedSocialProfiles) {
+			settings.SocialProfiles = defaults.SocialProfiles
+		}
 		if settings.Home.Hero.Headline == "" {
 			settings.Home = defaults.Home
 		}

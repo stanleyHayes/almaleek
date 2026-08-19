@@ -3,6 +3,7 @@ package usecases
 import (
 	"context"
 	"errors"
+	"slices"
 	"testing"
 	"time"
 
@@ -33,5 +34,39 @@ func TestExpiredInvitationCannotBeAccepted(t *testing.T) {
 	}
 	if stored.Status != domain.InvitationStatusPending || stored.AcceptedAt != nil {
 		t.Fatalf("expired invitation was mutated: %#v", stored)
+	}
+}
+
+func TestLegacySeedStatsAreMigrated(t *testing.T) {
+	service := NewEcosystemService(memory.NewRepository())
+	seeded := domain.DefaultSiteSettings()
+	seeded.AboutStats = legacySeedAboutStats
+	seeded.SocialProfiles = legacySeedSocialProfiles
+	if _, err := service.SaveSiteSettings(context.Background(), seeded); err != nil {
+		t.Fatalf("SaveSiteSettings returned error: %v", err)
+	}
+	loaded, err := service.GetSiteSettings(context.Background())
+	if err != nil {
+		t.Fatalf("GetSiteSettings returned error: %v", err)
+	}
+	defaults := domain.DefaultSiteSettings()
+	if !slices.Equal(loaded.AboutStats, defaults.AboutStats) {
+		t.Fatalf("legacy stats were not migrated: %#v", loaded.AboutStats)
+	}
+	if !slices.Equal(loaded.SocialProfiles, defaults.SocialProfiles) {
+		t.Fatalf("legacy social profiles were not migrated: %#v", loaded.SocialProfiles)
+	}
+
+	customised := loaded
+	customised.AboutStats = []domain.HomeStat{{Value: "500K+", Label: "Combined audience"}}
+	if _, err := service.SaveSiteSettings(context.Background(), customised); err != nil {
+		t.Fatalf("SaveSiteSettings returned error: %v", err)
+	}
+	reloaded, err := service.GetSiteSettings(context.Background())
+	if err != nil {
+		t.Fatalf("GetSiteSettings returned error: %v", err)
+	}
+	if !slices.Equal(reloaded.AboutStats, customised.AboutStats) {
+		t.Fatalf("admin-customised stats were overwritten: %#v", reloaded.AboutStats)
 	}
 }

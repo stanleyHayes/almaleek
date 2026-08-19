@@ -29,10 +29,10 @@ type Settings = {
 };
 
 const DEFAULT_ABOUT_STATS = [
-  { value: "3", label: "2026 Ghana Comedy Awards nominations" },
-  { value: "6", label: "Platforms, one voice" },
-  { value: "4", label: "Live event formats" },
-  { value: "100%", label: "Made in Ghana" },
+  { value: "435K+", label: "Combined audience across platforms" },
+  { value: "244.8K", label: "TikTok followers" },
+  { value: "177.8K", label: "Facebook community" },
+  { value: "2.4M", label: "TikTok likes on the skits" },
 ];
 
 export function AboutExperience() {
