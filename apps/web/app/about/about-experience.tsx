@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getApiBaseUrl } from "@/lib/api";
 import { SocialIcon } from "@/components/site-shell";
-import { PageSkeleton } from "@/components/state-primitives";
+import { EmptyState, PageSkeleton } from "@/components/state-primitives";
 
 type Settings = {
   about_eyebrow: string;
@@ -29,7 +29,8 @@ type Settings = {
 
 export function AboutExperience() {
   const [content, setContent] = useState<Settings | null>(null),
-    [error, setError] = useState("");
+    [error, setError] = useState(false),
+    [attempt, setAttempt] = useState(0);
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${getApiBaseUrl()}/api/site/settings`, { signal: controller.signal })
@@ -40,14 +41,30 @@ export function AboutExperience() {
         setContent(body);
       })
       .catch((reason) => {
-        if (reason.name !== "AbortError") setError(reason.message);
+        if (reason.name !== "AbortError") setError(true);
       });
     return () => controller.abort();
-  }, []);
+  }, [attempt]);
   if (!content)
     return error ? (
       <main className="about-loading">
-        <p role="alert">{error}</p>
+        <div role="alert">
+          <EmptyState
+            title="We couldn't load this page"
+            description="Check your internet connection and try again. If it keeps happening, email hello@almaleekgh.com and we'll sort it out."
+            action={
+              <button
+                className="button button-primary"
+                onClick={() => {
+                  setError(false);
+                  setAttempt((count) => count + 1);
+                }}
+              >
+                Try again
+              </button>
+            }
+          />
+        </div>
       </main>
     ) : (
       <PageSkeleton />

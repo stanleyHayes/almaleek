@@ -1681,6 +1681,22 @@ main {
   border-radius: 50%;
   animation: about-spin 0.7s linear infinite;
 }
+.plans-error {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 22px 26px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--white);
+}
+.plans-error span {
+  color: var(--muted);
+}
+.plans-error .button {
+  margin-top: 6px;
+}
 .about-hero {
   padding: 150px 0 90px;
   background:

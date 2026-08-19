@@ -29,23 +29,18 @@ export function CommunityExperience({
   mutedContent?: CommunityMutedContent;
 }) {
   const [plans, setPlans] = useState<MembershipPlan[]>([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
     getMembershipPlans()
       .then(setPlans)
-      .catch((reason) =>
-        setError(
-          reason instanceof Error
-            ? reason.message
-            : "Unable to load membership plans",
-        ),
-      )
+      .catch(() => setError(true))
       .finally(() => setLoading(false));
     return () => controller.abort();
-  }, []);
+  }, [attempt]);
 
   if (loading) return <PageSkeleton />;
 
@@ -80,7 +75,20 @@ export function CommunityExperience({
           {error ? (
             <div className="plans-error" role="alert">
               <strong>Plans are temporarily unavailable.</strong>
-              <span>{error}</span>
+              <span>
+                Check your internet connection and try again. If it keeps
+                happening, email hello@almaleekgh.com and we&rsquo;ll help.
+              </span>
+              <button
+                className="button button-secondary"
+                onClick={() => {
+                  setError(false);
+                  setLoading(true);
+                  setAttempt((count) => count + 1);
+                }}
+              >
+                Try again
+              </button>
             </div>
           ) : null}
         </div>
