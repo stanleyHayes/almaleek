@@ -55,6 +55,10 @@ export function CommunityExperience({
             alt="Illustration of the Al Maleek community at a live show"
             loading="lazy"
           />
+          <div className="section-head">
+            <p className="eyebrow">Choose your circle</p>
+            <h2>Pick the access level that fits.</h2>
+          </div>
           <div className="tier-grid">
             {plans.map((plan) => (
             <article className="tier-card" key={plan.code}>

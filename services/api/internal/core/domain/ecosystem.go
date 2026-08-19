@@ -173,6 +173,7 @@ type WorkWithPageContent struct {
 	MutedHeading string         `json:"muted_heading" bson:"muted_heading"`
 	MutedPoints  []string       `json:"muted_points" bson:"muted_points"`
 }
+type CommunityPageContent = WorkWithPageContent
 type LivePageContent struct {
 	PageContent
 	Events []LiveEvent `json:"events" bson:"events"`
@@ -186,13 +187,13 @@ type MediaPageContent struct {
 	PressEmail   string       `json:"press_email" bson:"press_email"`
 }
 type PageSet struct {
-	Academy      PageContent         `json:"academy" bson:"academy"`
-	Live         LivePageContent     `json:"live" bson:"live"`
-	Community    PageContent         `json:"community" bson:"community"`
-	Media        MediaPageContent    `json:"media" bson:"media"`
-	Partnerships PageContent         `json:"partnerships" bson:"partnerships"`
-	Shop         PageContent         `json:"shop" bson:"shop"`
-	WorkWith     WorkWithPageContent `json:"work_with" bson:"work_with"`
+	Academy      PageContent          `json:"academy" bson:"academy"`
+	Live         LivePageContent      `json:"live" bson:"live"`
+	Community    CommunityPageContent `json:"community" bson:"community"`
+	Media        MediaPageContent     `json:"media" bson:"media"`
+	Partnerships PageContent          `json:"partnerships" bson:"partnerships"`
+	Shop         PageContent          `json:"shop" bson:"shop"`
+	WorkWith     WorkWithPageContent  `json:"work_with" bson:"work_with"`
 }
 
 func DefaultSiteSettings() SiteSettings {
@@ -253,8 +254,14 @@ func DefaultSiteSettings() SiteSettings {
 					{Date: "July 19", Title: "Creator Circle Showcase", Text: "Live performances, creative conversations, and behind-the-scenes moments from the wider ecosystem."},
 				},
 			},
-			Community: PageContent{
-				Hero:         PageHero{Eyebrow: "Community", Headline: "Join the movement and turn attention into belonging.", Lede: "The Al Maleek community is built for fans, friends, collaborators, and future members who want direct access to the skits, the shows, and the opportunities shaping the brand."},
+			Community: CommunityPageContent{
+				Hero: PageHero{Eyebrow: "Community", Headline: "Join the movement and turn attention into belonging.", Lede: "The Al Maleek community is built for fans, friends, collaborators, and future members who want direct access to the skits, the shows, and the opportunities shaping the brand."},
+				Cards: []WorkOffering{
+					{Kicker: "First access", Title: "See it before the timeline", Text: "Members watch the new skit first and hear every announcement before the public timeline does.", Image: "", Points: []string{"Early access to new skits and episodes", "Drop alerts for merch and releases", "Announcements before they go public", "Priority ticket windows for live events"}},
+					{Kicker: "Member-only moments", Title: "Experiences the public never sees", Text: "Private rooms, live conversations, and behind-the-scenes moments reserved for the Circle.", Image: "", Points: []string{"Invites to member-only events and hangouts", "Live Q&As with Al Maleek & Crew", "Behind-the-scenes access from sets and shows", "Recordings of moments you missed live"}},
+					{Kicker: "Direct line", Title: "Your voice inside the room", Text: "The community is not an audience — members shape what gets made and hear it straight from the source.", Image: "", Points: []string{"Polls that shape upcoming skits and shows", "Community challenges with real recognition", "Direct updates from Al Maleek", "A say in what the brand builds next"}},
+					{Kicker: "Pathways", Title: "From fan to collaborator", Text: "Fandom is the on-ramp — the Circle opens doors into learning, stages, and the wider ecosystem.", Image: "", Points: []string{"A clear route into AL Maleek Academy", "Opportunities at live events and showcases", "Introductions to the wider creative ecosystem", "Room to grow from fan to collaborator"}},
+				},
 				MutedEyebrow: "Why community matters",
 				MutedHeading: "Built for retention, value, and participation that actually means something.",
 				MutedPoints:  []string{"Member-driven access and engagement loops that keep fans invested.", "Polls, Q&A sessions, challenges, and insider updates that create belonging.", "Clear pathways into premium experiences, event access, and brand moments."},
@@ -341,7 +348,7 @@ func (s *SiteSettings) Normalize() {
 		s.Pages.Live.Events[index].Text = strings.TrimSpace(s.Pages.Live.Events[index].Text)
 		s.Pages.Live.Events[index].Image = strings.TrimSpace(s.Pages.Live.Events[index].Image)
 	}
-	normalizePageContent(&s.Pages.Community)
+	normalizeWorkWithContent(&s.Pages.Community)
 	normalizePageContent(&s.Pages.Media.PageContent)
 	for index := range s.Pages.Media.Stories {
 		s.Pages.Media.Stories[index].Kind = strings.TrimSpace(s.Pages.Media.Stories[index].Kind)

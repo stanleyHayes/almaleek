@@ -541,7 +541,7 @@ type PagesContent = {
   live: PageContent & {
     events: Array<{ date: string; title: string; text: string; image: string }>;
   };
-  community: PageContent;
+  community: WorkWithPageContent;
   media: PageContent & {
     stories: Array<{
       kind: string;
@@ -651,7 +651,22 @@ export function SettingsOperations() {
                 }) => ({ ...event, image: event.image ?? "" }),
               ),
             },
-            community: mergePage(body.pages?.community),
+            community: {
+              ...mergePage(body.pages?.community),
+              cards: (body.pages?.community?.cards ?? []).map(
+                (card: {
+                  kicker: string;
+                  title: string;
+                  text: string;
+                  image?: string;
+                  points?: string[];
+                }) => ({
+                  ...card,
+                  image: card.image ?? "",
+                  points: card.points ?? [],
+                }),
+              ),
+            },
             media: {
               ...mergePage(body.pages?.media),
               stories: (body.pages?.media?.stories ?? []).map(
@@ -1911,8 +1926,9 @@ export function SettingsOperations() {
             <p className="eyebrow">Public pages · Community</p>
             <h2>Community</h2>
             <p>
-              Hero and the muted closing block on /community. The membership
-              plans grid is managed in the Plans workspace.
+              Hero, benefit sections, and the muted closing block on
+              /community. The membership plans grid is managed in the Plans
+              workspace.
             </p>
           </div>
           <div className="light-form-grid">
@@ -1944,6 +1960,129 @@ export function SettingsOperations() {
                 }
               />
             </label>
+          </div>
+          <div className="cms-repeaters">
+            {site.pages.community.cards.map((card, index) => (
+              <article key={`community-card-${index}`}>
+                <label>
+                  Kicker
+                  <input
+                    value={card.kicker}
+                    onChange={(e) =>
+                      updatePage("community", {
+                        cards: site.pages.community.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, kicker: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Title
+                  <input
+                    value={card.title}
+                    onChange={(e) =>
+                      updatePage("community", {
+                        cards: site.pages.community.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={card.text}
+                    onChange={(e) =>
+                      updatePage("community", {
+                        cards: site.pages.community.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Image URL (optional)
+                  <input
+                    type="url"
+                    value={card.image}
+                    onChange={(e) =>
+                      updatePage("community", {
+                        cards: site.pages.community.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, image: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                    placeholder="https://…"
+                  />
+                  <small>Leave blank to use the branded artwork</small>
+                </label>
+                <label className="full-field">
+                  What members get (one per line)
+                  <textarea
+                    rows={4}
+                    value={card.points.join("\n")}
+                    onChange={(e) =>
+                      updatePage("community", {
+                        cards: site.pages.community.cards.map((item, i) =>
+                          i === index
+                            ? {
+                                ...item,
+                                points: e.target.value.split("\n"),
+                              }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updatePage("community", {
+                      cards: site.pages.community.cards.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove card
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                updatePage("community", {
+                  cards: [
+                    ...site.pages.community.cards,
+                    {
+                      kicker: "New",
+                      title: "New card",
+                      text: "",
+                      image: "",
+                      points: [],
+                    },
+                  ],
+                })
+              }
+            >
+              + Add card
+            </button>
+          </div>
+          <div className="light-form-grid">
             <label>
               Muted eyebrow
               <input

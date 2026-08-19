@@ -64,7 +64,7 @@ export type SiteContent = {
   pages: {
     academy: PageContent;
     live: LivePageContent;
-    community: PageContent;
+    community: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
     media: MediaPageContent;
     partnerships: PageContent;
     shop: PageContent;
@@ -239,7 +239,56 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
         headline: "Join the movement and turn attention into belonging.",
         lede: "The Al Maleek community is built for fans, friends, collaborators, and future members who want direct access to the skits, the shows, and the opportunities shaping the brand.",
       },
-      cards: [],
+      cards: [
+        {
+          kicker: "First access",
+          title: "See it before the timeline",
+          text: "Members watch the new skit first and hear every announcement before the public timeline does.",
+          image: "",
+          points: [
+            "Early access to new skits and episodes",
+            "Drop alerts for merch and releases",
+            "Announcements before they go public",
+            "Priority ticket windows for live events",
+          ],
+        },
+        {
+          kicker: "Member-only moments",
+          title: "Experiences the public never sees",
+          text: "Private rooms, live conversations, and behind-the-scenes moments reserved for the Circle.",
+          image: "",
+          points: [
+            "Invites to member-only events and hangouts",
+            "Live Q&As with Al Maleek & Crew",
+            "Behind-the-scenes access from sets and shows",
+            "Recordings of moments you missed live",
+          ],
+        },
+        {
+          kicker: "Direct line",
+          title: "Your voice inside the room",
+          text: "The community is not an audience — members shape what gets made and hear it straight from the source.",
+          image: "",
+          points: [
+            "Polls that shape upcoming skits and shows",
+            "Community challenges with real recognition",
+            "Direct updates from Al Maleek",
+            "A say in what the brand builds next",
+          ],
+        },
+        {
+          kicker: "Pathways",
+          title: "From fan to collaborator",
+          text: "Fandom is the on-ramp — the Circle opens doors into learning, stages, and the wider ecosystem.",
+          image: "",
+          points: [
+            "A clear route into AL Maleek Academy",
+            "Opportunities at live events and showcases",
+            "Introductions to the wider creative ecosystem",
+            "Room to grow from fan to collaborator",
+          ],
+        },
+      ],
       muted_eyebrow: "Why community matters",
       muted_heading:
         "Built for retention, value, and participation that actually means something.",
