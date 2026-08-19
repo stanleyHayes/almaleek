@@ -955,6 +955,10 @@ main {
   }
 }
 .nav-actions {
+  /* Explicit column so it stays at the right end even when .main-nav is
+     display:none on small screens (auto-placement would drop it in the
+     middle auto column). */
+  grid-column: 3;
   justify-self: end;
   display: flex;
   align-items: center;
