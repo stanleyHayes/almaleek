@@ -159,6 +159,20 @@ type PageContent struct {
 	MutedHeading string        `json:"muted_heading" bson:"muted_heading"`
 	MutedPoints  []string      `json:"muted_points" bson:"muted_points"`
 }
+type WorkOffering struct {
+	Kicker string   `json:"kicker" bson:"kicker"`
+	Title  string   `json:"title" bson:"title"`
+	Text   string   `json:"text" bson:"text"`
+	Image  string   `json:"image" bson:"image"`
+	Points []string `json:"points" bson:"points"`
+}
+type WorkWithPageContent struct {
+	Hero         PageHero       `json:"hero" bson:"hero"`
+	Cards        []WorkOffering `json:"cards" bson:"cards"`
+	MutedEyebrow string         `json:"muted_eyebrow" bson:"muted_eyebrow"`
+	MutedHeading string         `json:"muted_heading" bson:"muted_heading"`
+	MutedPoints  []string       `json:"muted_points" bson:"muted_points"`
+}
 type LivePageContent struct {
 	PageContent
 	Events []LiveEvent `json:"events" bson:"events"`
@@ -172,13 +186,13 @@ type MediaPageContent struct {
 	PressEmail   string       `json:"press_email" bson:"press_email"`
 }
 type PageSet struct {
-	Academy      PageContent      `json:"academy" bson:"academy"`
-	Live         LivePageContent  `json:"live" bson:"live"`
-	Community    PageContent      `json:"community" bson:"community"`
-	Media        MediaPageContent `json:"media" bson:"media"`
-	Partnerships PageContent      `json:"partnerships" bson:"partnerships"`
-	Shop         PageContent      `json:"shop" bson:"shop"`
-	WorkWith     PageContent      `json:"work_with" bson:"work_with"`
+	Academy      PageContent         `json:"academy" bson:"academy"`
+	Live         LivePageContent     `json:"live" bson:"live"`
+	Community    PageContent         `json:"community" bson:"community"`
+	Media        MediaPageContent    `json:"media" bson:"media"`
+	Partnerships PageContent         `json:"partnerships" bson:"partnerships"`
+	Shop         PageContent         `json:"shop" bson:"shop"`
+	WorkWith     WorkWithPageContent `json:"work_with" bson:"work_with"`
 }
 
 func DefaultSiteSettings() SiteSettings {
@@ -281,12 +295,12 @@ func DefaultSiteSettings() SiteSettings {
 				MutedHeading: "Merch that feels like part of the story, not just a product add-on.",
 				MutedPoints:  []string{"Limited-edition energy with scarcity and meaningful story context.", "Premium design language that still feels accessible and culturally relevant.", "Member-first access, drop alerts, and post-purchase retention built into the experience."},
 			},
-			WorkWith: PageContent{
+			WorkWith: WorkWithPageContent{
 				Hero: PageHero{Eyebrow: "Work with Al Maleek", Headline: "Build a partnership that feels native to culture.", Lede: "From skit integrations and campaigns to live events, sponsorships, and production, Al Maleek creates premium, high-trust opportunities for brands and organizations that want to connect with an engaged audience in a way that feels authentic, not forced."},
-				Cards: []ContentCard{
-					{Kicker: "Brand deals", Title: "Campaigns & activations", Text: "High-impact partnerships designed to build visibility, community trust, and measurable response."},
-					{Kicker: "Events", Title: "Appearances & hostings", Text: "On-stage talent, live hosting, and branded experiences that convert attention into attendance."},
-					{Kicker: "Productions", Title: "Collaborative content", Text: "Story-led creative work that blends talent, narrative, and distribution without losing the brand voice."},
+				Cards: []WorkOffering{
+					{Kicker: "Brand deals", Title: "Campaigns & activations", Text: "High-impact partnerships designed to build visibility, community trust, and measurable response.", Image: "", Points: []string{"Skit integrations written around your brand, not pasted onto it", "Campaign concepts tailored to Ghanaian and diaspora audiences", "Distribution across Instagram, TikTok, YouTube, and X", "Post-campaign reporting with reach and engagement numbers"}},
+					{Kicker: "Events", Title: "Appearances & hostings", Text: "On-stage talent, live hosting, and branded experiences that convert attention into attendance.", Image: "", Points: []string{"Hosting, MC work, and stage appearances", "Branded event segments that feel like part of the show", "Crowd warm-up and audience engagement", "Promotion to the community before the event"}},
+					{Kicker: "Productions", Title: "Collaborative content", Text: "Story-led creative work that blends talent, narrative, and distribution without losing the brand voice.", Image: "", Points: []string{"Co-created skits and series with your team", "Script-to-screen production with Al Maleek & Crew", "Brand voice preserved inside native comedy formats", "Usage rights agreed upfront"}},
 				},
 				MutedEyebrow: "What partners get",
 				MutedHeading: "A clear, structured path from brief to launch.",
@@ -341,7 +355,7 @@ func (s *SiteSettings) Normalize() {
 	s.Pages.Media.PressEmail = strings.ToLower(strings.TrimSpace(s.Pages.Media.PressEmail))
 	normalizePageContent(&s.Pages.Partnerships)
 	normalizePageContent(&s.Pages.Shop)
-	normalizePageContent(&s.Pages.WorkWith)
+	normalizeWorkWithContent(&s.Pages.WorkWith)
 }
 
 func normalizePageHero(hero *PageHero) {
@@ -389,6 +403,24 @@ func normalizePageContent(page *PageContent) {
 		page.Cards[index].Kicker = strings.TrimSpace(page.Cards[index].Kicker)
 		page.Cards[index].Title = strings.TrimSpace(page.Cards[index].Title)
 		page.Cards[index].Text = strings.TrimSpace(page.Cards[index].Text)
+	}
+	page.MutedEyebrow = strings.TrimSpace(page.MutedEyebrow)
+	page.MutedHeading = strings.TrimSpace(page.MutedHeading)
+	for index := range page.MutedPoints {
+		page.MutedPoints[index] = strings.TrimSpace(page.MutedPoints[index])
+	}
+}
+
+func normalizeWorkWithContent(page *WorkWithPageContent) {
+	normalizePageHero(&page.Hero)
+	for index := range page.Cards {
+		page.Cards[index].Kicker = strings.TrimSpace(page.Cards[index].Kicker)
+		page.Cards[index].Title = strings.TrimSpace(page.Cards[index].Title)
+		page.Cards[index].Text = strings.TrimSpace(page.Cards[index].Text)
+		page.Cards[index].Image = strings.TrimSpace(page.Cards[index].Image)
+		for point := range page.Cards[index].Points {
+			page.Cards[index].Points[point] = strings.TrimSpace(page.Cards[index].Points[point])
+		}
 	}
 	page.MutedEyebrow = strings.TrimSpace(page.MutedEyebrow)
 	page.MutedHeading = strings.TrimSpace(page.MutedHeading)

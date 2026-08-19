@@ -1,6 +1,12 @@
 import { PublicActionForm } from '@/components/public-action-form';
 import { pageMetadata } from '@/lib/seo';
-import { getSiteContent } from '@/lib/site-content';
+import { DEFAULT_SITE_CONTENT, getSiteContent } from '@/lib/site-content';
+
+const fallbackArt = [
+  '/media/work-campaigns.svg',
+  '/media/work-appearances.svg',
+  '/media/work-collab.svg',
+];
 
 export const metadata = pageMetadata({
   title: 'Work With AL Maleek',
@@ -22,19 +28,35 @@ export default async function WorkWithALMaleekPage() {
         </div>
       </header>
 
-      <section className="section-block">
-        <div className="container">
-          <div className="card-grid three-up">
-            {workWith.cards.map((card) => (
-              <article className="detail-card" key={card.title}>
+      {workWith.cards.map((card, index) => {
+        const points = card.points?.length
+          ? card.points
+          : DEFAULT_SITE_CONTENT.pages.work_with.cards[index]?.points ?? [];
+        const image = card.image || fallbackArt[index % fallbackArt.length];
+        return (
+          <section className="section-block" key={card.title}>
+            <div
+              className={`container offering-grid${index % 2 === 1 ? ' offering-flip' : ''}`}
+            >
+              <div className="offering-media">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image} alt="" loading="lazy" />
+              </div>
+              <div className="offering-copy">
                 <span className="card-kicker">{card.kicker}</span>
-                <h3>{card.title}</h3>
+                <h2>{card.title}</h2>
                 <p>{card.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+                <p className="offering-points-label">What you get</p>
+                <ul className="detail-list">
+                  {points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       <section className="section-block muted-block">
         <div className="container detail-grid">

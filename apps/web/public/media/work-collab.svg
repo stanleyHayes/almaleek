@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Two creators co-building a video frame together with clapperboard, plus signs and merging speech bubbles">
+  <defs>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="4.5" fill="#151826" opacity="0.16"/>
+    </pattern>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="#fff0e3"/>
+
+  <!-- background geometry -->
+  <circle cx="70" cy="60" r="250" fill="#a7c4a0"/>
+  <circle cx="70" cy="60" r="318" fill="none" stroke="#151826" stroke-opacity="0.13" stroke-width="2.5"/>
+  <circle cx="70" cy="60" r="376" fill="none" stroke="#151826" stroke-opacity="0.08" stroke-width="2"/>
+  <path d="M 1270 830 A 420 420 0 0 0 850 410" fill="none" stroke="#b8c0ff" stroke-width="26" stroke-linecap="round"/>
+  <path d="M 1240 890 A 500 500 0 0 0 742 392" fill="none" stroke="#151826" stroke-opacity="0.14" stroke-width="4"/>
+  <rect x="880" y="620" width="270" height="220" fill="url(#dots)"/>
+  <circle cx="1030" cy="240" r="140" fill="url(#glow)"/>
+  <circle cx="1120" cy="500" r="16" fill="#a7c4a0"/>
+  <circle cx="180" cy="560" r="14" fill="#b8c0ff"/>
+
+  <!-- header -->
+  <text x="70" y="110" font-family="Outfit, Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="8" fill="#151826">COLLABS · AL MALEEK &amp; CREW</text>
+  <text x="72" y="152" font-family="Outfit, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="5" fill="#65697a">CO-CREATED CONTENT · BETTER TOGETHER</text>
+
+  <!-- merging speech bubbles -->
+  <g transform="translate(330,196) rotate(-6)">
+    <rect x="0" y="0" width="188" height="104" rx="28" fill="#ffffff" stroke="#151826" stroke-width="5"/>
+    <path d="M 36 100 L 20 138 L 74 102 Z" fill="#ffffff" stroke="#151826" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="26" y="30" width="118" height="12" rx="6" fill="#151826" opacity="0.7"/>
+    <rect x="26" y="56" width="88" height="12" rx="6" fill="#151826" opacity="0.35"/>
+  </g>
+  <g transform="translate(508,178) rotate(5)">
+    <rect x="0" y="0" width="188" height="104" rx="28" fill="#b8c0ff" stroke="#151826" stroke-width="5"/>
+    <path d="M 152 100 L 168 138 L 114 102 Z" fill="#b8c0ff" stroke="#151826" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="26" y="30" width="118" height="12" rx="6" fill="#151826" opacity="0.7"/>
+    <rect x="26" y="56" width="88" height="12" rx="6" fill="#ffffff" opacity="0.9"/>
+  </g>
+  <!-- merge plus -->
+  <g transform="translate(498,210)">
+    <circle cx="0" cy="0" r="26" fill="#6dd5c4" stroke="#151826" stroke-width="5"/>
+    <path d="M -11 0 L 11 0 M 0 -11 L 0 11" stroke="#151826" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- video frame being built -->
+  <g transform="translate(600,408) rotate(-2)">
+    <rect x="-232" y="-152" width="464" height="304" rx="32" fill="#ffffff" stroke="#151826" stroke-width="6"/>
+    <!-- play button -->
+    <circle cx="0" cy="-22" r="56" fill="#6dd5c4" stroke="#151826" stroke-width="6"/>
+    <path d="M -16 -46 L 30 -22 L -16 2 Z" fill="#151826"/>
+    <!-- timeline -->
+    <rect x="-180" y="86" width="360" height="14" rx="7" fill="#151826" opacity="0.18"/>
+    <rect x="-180" y="86" width="212" height="14" rx="7" fill="#a7c4a0"/>
+    <circle cx="32" cy="93" r="14" fill="#ffffff" stroke="#151826" stroke-width="5"/>
+    <!-- corner plus marks (building motif) -->
+    <g stroke-width="9" stroke-linecap="round">
+      <path d="M -286 -206 L -250 -206 M -268 -224 L -268 -188" stroke="#a7c4a0"/>
+      <path d="M 250 -206 L 286 -206 M 268 -224 L 268 -188" stroke="#b8c0ff"/>
+      <path d="M -286 206 L -250 206 M -268 188 L -268 224" stroke="#b8c0ff"/>
+      <path d="M 250 206 L 286 206 M 268 188 L 268 224" stroke="#a7c4a0"/>
+    </g>
+  </g>
+
+  <!-- left figure (ink) -->
+  <g transform="translate(330,812)">
+    <circle cx="0" cy="-296" r="58" fill="#151826"/>
+    <path d="M -30 -312 A 11 11 0 0 1 -8 -312" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <path d="M 8 -312 A 11 11 0 0 1 30 -312" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="0" cy="-278" rx="21" ry="15" fill="#ffd3b6"/>
+    <path d="M -76 0 L -76 -212 A 76 76 0 0 1 76 -212 L 76 0 Z" fill="#151826"/>
+    <!-- inner arm reaching to frame -->
+    <g transform="rotate(-16 61 -190)">
+      <rect x="44" y="-300" width="34" height="120" rx="17" fill="#151826"/>
+    </g>
+  </g>
+
+  <!-- right figure (mint) -->
+  <g transform="translate(872,812)">
+    <circle cx="0" cy="-296" r="58" fill="#6dd5c4" stroke="#151826" stroke-width="5"/>
+    <path d="M -30 -312 A 11 11 0 0 1 -8 -312" fill="none" stroke="#151826" stroke-width="6" stroke-linecap="round"/>
+    <path d="M 8 -312 A 11 11 0 0 1 30 -312" fill="none" stroke="#151826" stroke-width="6" stroke-linecap="round"/>
+    <ellipse cx="0" cy="-276" rx="21" ry="15" fill="#151826"/>
+    <path d="M -76 0 L -76 -212 A 76 76 0 0 1 76 -212 L 76 0 Z" fill="#6dd5c4" stroke="#151826" stroke-width="5"/>
+    <!-- inner arm reaching to frame -->
+    <g transform="rotate(16 -61 -190)">
+      <rect x="-78" y="-300" width="34" height="120" rx="17" fill="#6dd5c4" stroke="#151826" stroke-width="5"/>
+    </g>
+  </g>
+
+  <!-- clapperboard -->
+  <g transform="translate(1012,282) rotate(10)">
+    <rect x="-92" y="-16" width="184" height="124" rx="14" fill="#151826"/>
+    <g transform="rotate(-14 -92 -16)">
+      <rect x="-92" y="-58" width="184" height="44" rx="10" fill="#151826"/>
+      <path d="M -78 -58 L -52 -58 L -72 -14 L -98 -14 Z" fill="#f8f8f3"/>
+      <path d="M -30 -58 L -4 -58 L -24 -14 L -50 -14 Z" fill="#f8f8f3"/>
+      <path d="M 18 -58 L 44 -58 L 24 -14 L -2 -14 Z" fill="#f8f8f3"/>
+      <path d="M 66 -58 L 92 -58 L 72 -14 L 46 -14 Z" fill="#f8f8f3"/>
+    </g>
+    <circle cx="-92" cy="-16" r="11" fill="#65697a"/>
+    <rect x="-66" y="16" width="120" height="11" rx="5.5" fill="#f8f8f3" opacity="0.85"/>
+    <rect x="-66" y="42" width="86" height="11" rx="5.5" fill="#f8f8f3" opacity="0.45"/>
+    <rect x="-66" y="68" width="104" height="11" rx="5.5" fill="#6dd5c4"/>
+  </g>
+
+  <!-- AM badge -->
+  <g transform="translate(600,792) rotate(-6)">
+    <rect x="-58" y="-58" width="116" height="116" rx="32" fill="#151826"/>
+    <text x="0" y="21" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="54" font-weight="800" letter-spacing="-3" fill="#6dd5c4">AM</text>
+  </g>
+
+  <!-- floating plus signs -->
+  <g stroke-width="10" stroke-linecap="round">
+    <path d="M 176 380 L 212 380 M 194 362 L 194 398" stroke="#a7c4a0"/>
+    <path d="M 1050 560 L 1086 560 M 1068 542 L 1068 578" stroke="#6dd5c4"/>
+    <path d="M 740 130 L 772 130 M 756 114 L 756 146" stroke="#b8c0ff"/>
+  </g>
+</svg>

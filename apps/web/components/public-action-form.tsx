@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { LoadingDots } from "./state-primitives";
 
 type Kind = "academy" | "shop" | "partnership" | "work" | "ticket";
@@ -94,63 +94,6 @@ function Fields({ kind }: { kind: Kind }) {
         />
       </label>
     );
-  if (kind === "partnership")
-    return (
-      <>
-        <label className="field">
-          <span>Company</span>
-          <input name="company" required placeholder="Brand or organization" />
-        </label>
-        <label className="field">
-          <span>Email</span>
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="hello@brand.com"
-          />
-        </label>
-        <label className="field">
-          <span>Goal</span>
-          <textarea
-            name="goal"
-            required
-            rows={4}
-            placeholder="Tell us about the partnership or campaign"
-          />
-        </label>
-      </>
-    );
-  if (kind === "work")
-    return (
-      <>
-        <label className="field">
-          <span>Brand / organization</span>
-          <input name="company" required placeholder="Your company" />
-        </label>
-        <label className="field">
-          <span>Email</span>
-          <input
-            name="email"
-            type="email"
-            required
-            placeholder="hello@brand.com"
-          />
-        </label>
-        <label className="field">
-          <span>Opportunity type</span>
-          <select name="type" required defaultValue="">
-            <option value="" disabled>
-              Choose a category
-            </option>
-            <option>Campaign partnership</option>
-            <option>Event appearance</option>
-            <option>Brand sponsorship</option>
-            <option>Content collaboration</option>
-          </select>
-        </label>
-      </>
-    );
   return (
     <>
       <label className="field">
@@ -188,11 +131,468 @@ function Fields({ kind }: { kind: Kind }) {
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Stepwise enquiry flow (work + partnership), patterned on the        */
+/* Joe Kuntani booking dossier: intent → details → contact → review,   */
+/* with per-step validation and a draft autosaved on the device.       */
+/* ------------------------------------------------------------------ */
+
+type EnquiryKind = "partnership" | "work";
+
+type EnquiryValues = {
+  type: string;
+  source: string;
+  brief: string;
+  budget: string;
+  timeline: string;
+  name: string;
+  company: string;
+  email: string;
+  phone: string;
+};
+
+const BLANK_ENQUIRY: EnquiryValues = {
+  type: "",
+  source: "",
+  brief: "",
+  budget: "",
+  timeline: "",
+  name: "",
+  company: "",
+  email: "",
+  phone: "",
+};
+
+const ENQUIRY_STEPS = [
+  { label: "Intent", heading: "What are we building together?" },
+  { label: "Details", heading: "Shape the engagement" },
+  { label: "Contact", heading: "Who should we reply to?" },
+  { label: "Review", heading: "Final check before it lands" },
+];
+
+const OPPORTUNITY_TYPES: Record<EnquiryKind, string[]> = {
+  work: [
+    "Campaign partnership",
+    "Event appearance",
+    "Brand sponsorship",
+    "Content collaboration",
+  ],
+  partnership: [
+    "Sponsorship",
+    "Campaign",
+    "Event partnership",
+    "Media collaboration",
+  ],
+};
+
+const SOURCE_OPTIONS = [
+  "Instagram",
+  "TikTok",
+  "YouTube",
+  "X",
+  "Referral",
+  "Press",
+  "Other",
+];
+
+const BUDGET_OPTIONS = [
+  "Under GH₵10,000",
+  "GH₵10,000 – GH₵50,000",
+  "GH₵50,000+",
+  "Prefer to discuss",
+];
+
+const DRAFT_KEY = "almaleek.enquiry.draft";
+
+function stepIsValid(step: number, values: EnquiryValues) {
+  if (step === 0) return Boolean(values.type && values.source);
+  if (step === 1) return Boolean(values.brief.trim() && values.budget);
+  if (step === 2)
+    return (
+      values.name.trim().length >= 2 &&
+      values.company.trim().length >= 2 &&
+      /^\S+@\S+\.\S+$/.test(values.email)
+    );
+  return true;
+}
+
+function composeMessage(values: EnquiryValues) {
+  const summary = [values.type, values.budget, values.timeline]
+    .filter(Boolean)
+    .join(" · ");
+  const lines = [
+    summary,
+    "",
+    values.brief,
+    values.source ? `Heard about us via: ${values.source}` : "",
+    values.phone ? `Phone: ${values.phone}` : "",
+  ];
+  return lines.filter((line, index) => line || index === 1).join("\n").trim();
+}
+
+function SteppedEnquiry({ kind }: { kind: EnquiryKind }) {
+  const details = copy[kind];
+  // Restore any in-progress draft lazily on mount, then autosave on change.
+  const [restored] = useState(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as {
+        kind?: EnquiryKind;
+        values?: Partial<EnquiryValues>;
+        step?: number;
+      };
+      return parsed.kind === kind && parsed.values ? parsed : null;
+    } catch {
+      return null;
+    }
+  });
+  const [step, setStep] = useState(() =>
+    Math.min(Math.max(restored?.step ?? 0, 0), 3),
+  );
+  const [values, setValues] = useState<EnquiryValues>(() => ({
+    ...BLANK_ENQUIRY,
+    ...restored?.values,
+  }));
+  const [error, setError] = useState("");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "offline" | "error"
+  >("idle");
+
+  useEffect(() => {
+    if (status === "success") return;
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ kind, values, step }));
+    } catch {
+      /* storage unavailable — the flow still works without drafts */
+    }
+  }, [kind, values, step, status]);
+
+  const update =
+    (name: keyof EnquiryValues) =>
+    (
+      event: React.ChangeEvent<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >,
+    ) =>
+      setValues((current) => ({ ...current, [name]: event.target.value }));
+
+  const goNext = () => {
+    if (!stepIsValid(step, values)) {
+      setError("Complete the required fields before continuing.");
+      return;
+    }
+    setError("");
+    setStep((current) => Math.min(3, current + 1));
+  };
+
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!stepIsValid(2, values)) {
+      setError("Review your contact details before sending.");
+      return;
+    }
+    try {
+      setStatus("loading");
+      const response = await fetch(`${apiUrl}/api/intakes`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          kind,
+          name: values.name,
+          email: values.email,
+          organization: values.company,
+          message: composeMessage(values),
+        }),
+      });
+      if (!response.ok)
+        throw new Error(
+          (await response.json().catch(() => null))?.error || "Request failed",
+        );
+      try {
+        localStorage.removeItem(DRAFT_KEY);
+      } catch {
+        /* nothing to clear */
+      }
+      setStatus("success");
+    } catch (submissionError) {
+      try {
+        const key = "almaleek.public.drafts";
+        const existing = JSON.parse(localStorage.getItem(key) ?? "[]");
+        localStorage.setItem(
+          key,
+          JSON.stringify(
+            [
+              {
+                id: crypto.randomUUID(),
+                kind,
+                createdAt: new Date().toISOString(),
+                ...values,
+              },
+              ...existing,
+            ].slice(0, 25),
+          ),
+        );
+        setStatus("offline");
+      } catch {
+        setStatus("error");
+      }
+      console.warn("AL Maleek intake submission failed", submissionError);
+    }
+  };
+
+  if (status === "success")
+    return (
+      <div className="form-card">
+        <p className="eyebrow">{details.eyebrow}</p>
+        <h3>{details.title}</h3>
+        <p className="success-message" role="status">
+          {details.success}
+        </p>
+      </div>
+    );
+
+  const message =
+    status === "offline"
+      ? "The service is temporarily unavailable. Your draft is saved on this device only; please retry later."
+      : status === "error"
+        ? "We could not save that request. Please try again or email hello@almaleekgh.com."
+        : "";
+
+  return (
+    <form className="form-card" onSubmit={submit} noValidate>
+      <p className="eyebrow">{details.eyebrow}</p>
+      <h3>{details.title}</h3>
+
+      <ol className="form-steps" aria-label="Enquiry progress">
+        {ENQUIRY_STEPS.map((item, index) => (
+          <li
+            key={item.label}
+            aria-current={step === index ? "step" : undefined}
+            data-complete={index < step ? "true" : "false"}
+          >
+            {item.label}
+          </li>
+        ))}
+      </ol>
+      <p className="form-step-heading">
+        <span>
+          Step {step + 1} of {ENQUIRY_STEPS.length}
+        </span>
+        {ENQUIRY_STEPS[step].heading}
+      </p>
+
+      <div className="form-grid">
+        {step === 0 && (
+          <>
+            <label className="field">
+              <span>Opportunity type</span>
+              <select
+                aria-label="Opportunity type"
+                required
+                value={values.type}
+                onChange={update("type")}
+              >
+                <option value="" disabled>
+                  Choose a category
+                </option>
+                {OPPORTUNITY_TYPES[kind].map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              <span>How did you hear about us?</span>
+              <select
+                aria-label="How did you hear about us?"
+                required
+                value={values.source}
+                onChange={update("source")}
+              >
+                <option value="" disabled>
+                  Choose one
+                </option>
+                {SOURCE_OPTIONS.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+          </>
+        )}
+        {step === 1 && (
+          <>
+            <label className="field">
+              <span>Your brief</span>
+              <textarea
+                aria-label="Your brief"
+                required
+                rows={4}
+                placeholder="Tell us about the campaign, event, or collaboration"
+                value={values.brief}
+                onChange={update("brief")}
+              />
+            </label>
+            <label className="field">
+              <span>Budget range</span>
+              <select
+                aria-label="Budget range"
+                required
+                value={values.budget}
+                onChange={update("budget")}
+              >
+                <option value="" disabled>
+                  Choose a range
+                </option>
+                {BUDGET_OPTIONS.map((option) => (
+                  <option key={option}>{option}</option>
+                ))}
+              </select>
+            </label>
+            <label className="field">
+              <span>Timeline (optional)</span>
+              <input
+                aria-label="Timeline"
+                type="date"
+                value={values.timeline}
+                onChange={update("timeline")}
+              />
+            </label>
+          </>
+        )}
+        {step === 2 && (
+          <>
+            <label className="field">
+              <span>Your name</span>
+              <input
+                aria-label="Your name"
+                required
+                placeholder="Full name"
+                value={values.name}
+                onChange={update("name")}
+              />
+            </label>
+            <label className="field">
+              <span>Brand / organization</span>
+              <input
+                aria-label="Brand or organization"
+                required
+                placeholder="Your company"
+                value={values.company}
+                onChange={update("company")}
+              />
+            </label>
+            <label className="field">
+              <span>Email</span>
+              <input
+                aria-label="Email"
+                type="email"
+                required
+                placeholder="hello@brand.com"
+                value={values.email}
+                onChange={update("email")}
+              />
+            </label>
+            <label className="field">
+              <span>Phone (optional)</span>
+              <input
+                aria-label="Phone"
+                type="tel"
+                placeholder="+233 ..."
+                value={values.phone}
+                onChange={update("phone")}
+              />
+            </label>
+          </>
+        )}
+        {step === 3 && (
+          <dl className="form-summary">
+            <div>
+              <dt>Opportunity</dt>
+              <dd>{values.type}</dd>
+            </div>
+            <div>
+              <dt>Budget</dt>
+              <dd>
+                {values.budget}
+                {values.timeline ? ` · by ${values.timeline}` : ""}
+              </dd>
+            </div>
+            <div>
+              <dt>Brief</dt>
+              <dd>{values.brief}</dd>
+            </div>
+            <div>
+              <dt>Contact</dt>
+              <dd>
+                {values.name} · {values.company} · {values.email}
+                {values.phone ? ` · ${values.phone}` : ""}
+              </dd>
+            </div>
+          </dl>
+        )}
+      </div>
+
+      {error && (
+        <p className="error-message" role="alert">
+          {error}
+        </p>
+      )}
+      {message && (
+        <p className="error-message" role="status">
+          {message}
+        </p>
+      )}
+
+      <div className="form-nav">
+        {step > 0 && (
+          <button
+            type="button"
+            className="button button-secondary"
+            onClick={() => {
+              setError("");
+              setStep((current) => current - 1);
+            }}
+          >
+            Back
+          </button>
+        )}
+        {step < 3 ? (
+          <button
+            type="button"
+            className="button button-primary"
+            onClick={goNext}
+          >
+            Continue
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="button button-primary"
+            disabled={status === "loading"}
+          >
+            {status === "loading" ? (
+              <LoadingDots label="Sending request" />
+            ) : (
+              details.action
+            )}
+          </button>
+        )}
+      </div>
+      <p className="form-draft-note">Your draft is saved on this device as you go.</p>
+    </form>
+  );
+}
+
 export function PublicActionForm({ kind }: { kind: Kind }) {
   const [status, setStatus] = useState<
     "idle" | "loading" | "success" | "offline" | "error"
   >("idle");
   const details = copy[kind];
+
+  if (kind === "work" || kind === "partnership")
+    return <SteppedEnquiry kind={kind} />;
+
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;

@@ -508,6 +508,13 @@ type PageContent = {
   muted_heading: string;
   muted_points: string[];
 };
+type WorkOfferingCard = PageCard & {
+  image: string;
+  points: string[];
+};
+type WorkWithPageContent = Omit<PageContent, "cards"> & {
+  cards: WorkOfferingCard[];
+};
 type HomeContent = {
   hero: HeroContent;
   hero_card_pill: string;
@@ -549,7 +556,7 @@ type PagesContent = {
   };
   partnerships: PageContent;
   shop: PageContent;
-  work_with: PageContent;
+  work_with: WorkWithPageContent;
 };
 const EMPTY_HERO: HeroContent = { eyebrow: "", headline: "", lede: "" };
 const EMPTY_PAGE: PageContent = {
@@ -662,7 +669,22 @@ export function SettingsOperations() {
             },
             partnerships: mergePage(body.pages?.partnerships),
             shop: mergePage(body.pages?.shop),
-            work_with: mergePage(body.pages?.work_with),
+            work_with: {
+              ...mergePage(body.pages?.work_with),
+              cards: (body.pages?.work_with?.cards ?? []).map(
+                (card: {
+                  kicker: string;
+                  title: string;
+                  text: string;
+                  image?: string;
+                  points?: string[];
+                }) => ({
+                  ...card,
+                  image: card.image ?? "",
+                  points: card.points ?? [],
+                }),
+              ),
+            },
           },
         });
       })
@@ -771,70 +793,191 @@ export function SettingsOperations() {
         </label>
       </div>
       <div className="cms-repeaters">
-        {site.pages[page].cards.map((card, index) => (
-          <article key={`${page}-card-${index}`}>
-            <label>
-              Kicker
-              <input
-                value={card.kicker}
-                onChange={(e) =>
-                  updatePage(page, {
-                    cards: site.pages[page].cards.map((item, i) =>
-                      i === index ? { ...item, kicker: e.target.value } : item,
-                    ),
-                  })
-                }
-              />
-            </label>
-            <label>
-              Title
-              <input
-                value={card.title}
-                onChange={(e) =>
-                  updatePage(page, {
-                    cards: site.pages[page].cards.map((item, i) =>
-                      i === index ? { ...item, title: e.target.value } : item,
-                    ),
-                  })
-                }
-              />
-            </label>
-            <label className="full-field">
-              Text
-              <textarea
-                rows={3}
-                value={card.text}
-                onChange={(e) =>
-                  updatePage(page, {
-                    cards: site.pages[page].cards.map((item, i) =>
-                      i === index ? { ...item, text: e.target.value } : item,
-                    ),
-                  })
-                }
-              />
-            </label>
-            <button
-              type="button"
-              onClick={() =>
-                updatePage(page, {
-                  cards: site.pages[page].cards.filter((_, i) => i !== index),
-                })
-              }
-            >
-              Remove card
-            </button>
-          </article>
-        ))}
+        {page === "work_with"
+          ? site.pages.work_with.cards.map((card, index) => (
+              <article key={`work-with-card-${index}`}>
+                <label>
+                  Kicker
+                  <input
+                    value={card.kicker}
+                    onChange={(e) =>
+                      updatePage("work_with", {
+                        cards: site.pages.work_with.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, kicker: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Title
+                  <input
+                    value={card.title}
+                    onChange={(e) =>
+                      updatePage("work_with", {
+                        cards: site.pages.work_with.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={card.text}
+                    onChange={(e) =>
+                      updatePage("work_with", {
+                        cards: site.pages.work_with.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Image URL (optional)
+                  <input
+                    type="url"
+                    value={card.image}
+                    onChange={(e) =>
+                      updatePage("work_with", {
+                        cards: site.pages.work_with.cards.map((item, i) =>
+                          i === index
+                            ? { ...item, image: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                    placeholder="https://…"
+                  />
+                  <small>Leave blank to use the branded artwork</small>
+                </label>
+                <label className="full-field">
+                  What you get (one per line)
+                  <textarea
+                    rows={4}
+                    value={card.points.join("\n")}
+                    onChange={(e) =>
+                      updatePage("work_with", {
+                        cards: site.pages.work_with.cards.map((item, i) =>
+                          i === index
+                            ? {
+                                ...item,
+                                points: e.target.value.split("\n"),
+                              }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updatePage("work_with", {
+                      cards: site.pages.work_with.cards.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove card
+                </button>
+              </article>
+            ))
+          : site.pages[page].cards.map((card, index) => (
+              <article key={`${page}-card-${index}`}>
+                <label>
+                  Kicker
+                  <input
+                    value={card.kicker}
+                    onChange={(e) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
+                          i === index
+                            ? { ...item, kicker: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label>
+                  Title
+                  <input
+                    value={card.title}
+                    onChange={(e) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
+                          i === index
+                            ? { ...item, title: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <label className="full-field">
+                  Text
+                  <textarea
+                    rows={3}
+                    value={card.text}
+                    onChange={(e) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
+                          i === index
+                            ? { ...item, text: e.target.value }
+                            : item,
+                        ),
+                      })
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    updatePage(page, {
+                      cards: site.pages[page].cards.filter(
+                        (_, i) => i !== index,
+                      ),
+                    })
+                  }
+                >
+                  Remove card
+                </button>
+              </article>
+            ))}
         <button
           type="button"
           className="button button-soft"
           onClick={() =>
-            updatePage(page, {
-              cards: [
-                ...site.pages[page].cards,
-                { kicker: "New", title: "New card", text: "" },
-              ],
-            })
+            page === "work_with"
+              ? updatePage("work_with", {
+                  cards: [
+                    ...site.pages.work_with.cards,
+                    {
+                      kicker: "New",
+                      title: "New card",
+                      text: "",
+                      image: "",
+                      points: [],
+                    },
+                  ],
+                })
+              : updatePage(page, {
+                  cards: [
+                    ...site.pages[page].cards,
+                    { kicker: "New", title: "New card", text: "" },
+                  ],
+                })
           }
         >
           + Add card

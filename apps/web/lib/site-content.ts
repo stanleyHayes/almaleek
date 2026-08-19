@@ -6,6 +6,14 @@ export type PageCard = {
   text: string;
 };
 
+export type WorkWithCard = {
+  kicker: string;
+  title: string;
+  text: string;
+  image: string;
+  points: string[];
+};
+
 export type PageContent = {
   hero: { eyebrow: string; headline: string; lede: string };
   cards: PageCard[];
@@ -60,7 +68,7 @@ export type SiteContent = {
     media: MediaPageContent;
     partnerships: PageContent;
     shop: PageContent;
-    work_with: PageContent;
+    work_with: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
   };
 };
 
@@ -353,16 +361,37 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
           kicker: "Brand deals",
           title: "Campaigns & activations",
           text: "High-impact partnerships designed to build visibility, community trust, and measurable response.",
+          image: "",
+          points: [
+            "Skit integrations written around your brand, not pasted onto it",
+            "Campaign concepts tailored to Ghanaian and diaspora audiences",
+            "Distribution across Instagram, TikTok, YouTube, and X",
+            "Post-campaign reporting with reach and engagement numbers",
+          ],
         },
         {
           kicker: "Events",
           title: "Appearances & hostings",
           text: "On-stage talent, live hosting, and branded experiences that convert attention into attendance.",
+          image: "",
+          points: [
+            "Hosting, MC work, and stage appearances",
+            "Branded event segments that feel like part of the show",
+            "Crowd warm-up and audience engagement",
+            "Promotion to the community before the event",
+          ],
         },
         {
           kicker: "Productions",
           title: "Collaborative content",
           text: "Story-led creative work that blends talent, narrative, and distribution without losing the brand voice.",
+          image: "",
+          points: [
+            "Co-created skits and series with your team",
+            "Script-to-screen production with Al Maleek & Crew",
+            "Brand voice preserved inside native comedy formats",
+            "Usage rights agreed upfront",
+          ],
         },
       ],
       muted_eyebrow: "What partners get",

@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="MC on stage under a mint spotlight with microphone, ON STAGE sign and a cheering crowd">
+  <defs>
+    <linearGradient id="coneMint" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6dd5c4" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#6dd5c4" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="coneLilac" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e7d8ff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#e7d8ff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="floorglow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6dd5c4" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#6dd5c4" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="nightdots" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="3" fill="#f8f8f3" opacity="0.07"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="900" fill="#151826"/>
+  <rect x="0" y="0" width="760" height="260" fill="url(#nightdots)"/>
+  <circle cx="1080" cy="600" r="220" fill="none" stroke="#f8f8f3" stroke-opacity="0.07" stroke-width="2.5"/>
+  <circle cx="1080" cy="600" r="280" fill="none" stroke="#f8f8f3" stroke-opacity="0.04" stroke-width="2"/>
+
+  <!-- spotlight cones -->
+  <path d="M 180 -20 L -40 700 L 400 700 Z" fill="url(#coneLilac)" opacity="0.7"/>
+  <path d="M 600 -20 L 330 700 L 870 700 Z" fill="url(#coneMint)"/>
+  <path d="M 1020 -20 L 800 700 L 1240 700 Z" fill="url(#coneLilac)" opacity="0.5"/>
+
+  <!-- stage floor glow + line -->
+  <ellipse cx="600" cy="700" rx="500" ry="110" fill="url(#floorglow)"/>
+  <path d="M 40 700 L 1160 700" stroke="#2a2f45" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 40 712 L 1160 712" stroke="#6dd5c4" stroke-opacity="0.25" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- header -->
+  <text x="70" y="92" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="8" fill="#6dd5c4">APPEARANCES · AL MALEEK &amp; CREW</text>
+  <text x="72" y="130" font-family="Outfit, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="5" fill="#8a8fa3">MC · HOSTINGS · SHOWS</text>
+
+  <!-- ON STAGE sign -->
+  <g transform="translate(1000,104)">
+    <rect x="-132" y="-46" width="264" height="92" rx="24" fill="#e7d8ff" opacity="0.1"/>
+    <rect x="-132" y="-46" width="264" height="92" rx="24" fill="none" stroke="#e7d8ff" stroke-width="6"/>
+    <circle cx="-92" cy="0" r="14" fill="#b8c0ff"/>
+    <text x="24" y="14" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="4" fill="#e7d8ff">ON STAGE</text>
+  </g>
+
+  <!-- MC figure -->
+  <g transform="translate(600,700)">
+    <!-- rim light -->
+    <circle cx="0" cy="-336" r="86" fill="none" stroke="#6dd5c4" stroke-opacity="0.5" stroke-width="4"/>
+    <!-- head -->
+    <circle cx="0" cy="-336" r="64" fill="#0c0e18"/>
+    <!-- happy closed eyes -->
+    <path d="M -34 -352 A 12 12 0 0 1 -10 -352" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <path d="M 10 -352 A 12 12 0 0 1 34 -352" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <!-- open laugh -->
+    <ellipse cx="0" cy="-314" rx="24" ry="17" fill="#ffd3b6"/>
+    <!-- torso -->
+    <path d="M -84 0 L -84 -220 A 84 84 0 0 1 84 -220 L 84 0 Z" fill="#0c0e18"/>
+    <path d="M -84 0 L -84 -220 A 84 84 0 0 1 84 -220 L 84 0 Z" fill="none" stroke="#2a2f45" stroke-width="4"/>
+    <!-- collar accent -->
+    <path d="M -40 -250 L 0 -216 L 40 -250" fill="none" stroke="#6dd5c4" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- raised mic arm -->
+    <g transform="rotate(32 84 -220)">
+      <rect x="66" y="-360" width="34" height="150" rx="17" fill="#0c0e18" stroke="#2a2f45" stroke-width="4"/>
+    </g>
+    <!-- mic -->
+    <circle cx="168" cy="-356" r="26" fill="#65697a"/>
+    <path d="M 146 -364 L 190 -364" stroke="#dff6f0" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <path d="M 144 -352 L 192 -352" stroke="#dff6f0" stroke-width="4" stroke-linecap="round" opacity="0.8"/>
+    <circle cx="168" cy="-356" r="34" fill="none" stroke="#6dd5c4" stroke-width="4" opacity="0.7"/>
+    <rect x="160" y="-332" width="16" height="34" rx="8" fill="#65697a" transform="rotate(20 168 -315)"/>
+    <!-- free arm down at side -->
+    <g transform="rotate(16 -105 -225)">
+      <rect x="-122" y="-235" width="34" height="150" rx="17" fill="#0c0e18" stroke="#2a2f45" stroke-width="4"/>
+    </g>
+  </g>
+
+  <!-- mic sound arcs -->
+  <path d="M 806 300 A 92 92 0 0 1 838 404" fill="none" stroke="#6dd5c4" stroke-width="7" stroke-linecap="round" opacity="0.85"/>
+  <path d="M 844 272 A 146 146 0 0 1 892 428" fill="none" stroke="#e7d8ff" stroke-width="5" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- crowd silhouettes -->
+  <g fill="#0c0e18">
+    <circle cx="30" cy="918" r="64"/>
+    <circle cx="160" cy="932" r="56"/>
+    <circle cx="290" cy="912" r="68"/>
+    <circle cx="440" cy="934" r="58"/>
+    <circle cx="580" cy="918" r="64"/>
+    <circle cx="720" cy="932" r="56"/>
+    <circle cx="860" cy="914" r="66"/>
+    <circle cx="1000" cy="932" r="58"/>
+    <circle cx="1140" cy="916" r="64"/>
+  </g>
+  <!-- raised hands -->
+  <g fill="#0c0e18">
+    <g transform="translate(220,760) rotate(-14)">
+      <rect x="-13" y="0" width="26" height="140" rx="13"/>
+      <ellipse cx="0" cy="-14" rx="22" ry="28"/>
+    </g>
+    <g transform="translate(508,748) rotate(10)">
+      <rect x="-13" y="0" width="26" height="140" rx="13"/>
+      <ellipse cx="0" cy="-14" rx="22" ry="28"/>
+    </g>
+    <g transform="translate(960,756) rotate(-10)">
+      <rect x="-13" y="0" width="26" height="140" rx="13"/>
+      <ellipse cx="0" cy="-14" rx="22" ry="28"/>
+    </g>
+  </g>
+  <!-- phone filming up -->
+  <g transform="translate(736,742) rotate(9)">
+    <rect x="-14" y="16" width="28" height="130" rx="14" fill="#0c0e18"/>
+    <rect x="-26" y="-96" width="52" height="94" rx="11" fill="#f8f8f3"/>
+    <rect x="-18" y="-86" width="36" height="58" rx="6" fill="#6dd5c4"/>
+  </g>
+
+  <!-- floating accents -->
+  <circle cx="250" cy="250" r="10" fill="#ffd3b6" opacity="0.9"/>
+  <circle cx="450" cy="190" r="8" fill="#6dd5c4" opacity="0.8"/>
+  <circle cx="820" cy="180" r="9" fill="#b8c0ff" opacity="0.8"/>
+  <circle cx="1120" cy="330" r="8" fill="#e7d8ff" opacity="0.7"/>
+</svg>
