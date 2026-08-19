@@ -939,23 +939,6 @@ main {
   gap: 6px;
   padding-left: 2px;
 }
-.nav-portal {
-  padding: 0.62rem 0.72rem;
-  border-radius: 10px;
-  color: var(--ink);
-  font-size: 0.68rem;
-  font-weight: 750;
-  white-space: nowrap;
-  transition: background 0.2s ease;
-}
-.nav-portal:hover {
-  background: var(--mint-pale);
-}
-@media (max-width: 760px) {
-  .nav-portal {
-    display: none;
-  }
-}
 
 /* Desktop "More" dropdown (hidden with .main-nav below 1050px) */
 .nav-dropdown-wrap {

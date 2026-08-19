@@ -628,12 +628,14 @@ export function SiteShell({ children }: { children: ReactNode }) {
             >
               <MenuIcon open={menuOpen} />
             </button>
-            <a href={`${clientUrl}/sign-in`} className="nav-portal">
+            <a
+              href={`${clientUrl}/sign-in`}
+              className="button button-primary nav-cta"
+              target="_blank"
+              rel="noreferrer"
+            >
               Circle sign in
             </a>
-            <Link href="/community" className="button button-primary nav-cta">
-              Join the community
-            </Link>
           </div>
         </div>
       </header>
