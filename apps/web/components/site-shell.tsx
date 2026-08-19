@@ -216,6 +216,12 @@ const MENU_ICONS: Record<string, ReactNode> = {
       <path d="m4 17 8 4.25L20 17" />
     </>
   ),
+  shop: (
+    <>
+      <path d="M5 8h14l-1.2 12.5H6.2z" />
+      <path d="M9 8a3 3 0 0 1 6 0" />
+    </>
+  ),
 };
 
 const MENU_FALLBACK_ICON = <path d="m12 4 8 8-8 8-8-8z" />;
@@ -566,10 +572,80 @@ function Icon({
   );
 }
 
+/**
+ * Thumb-reach tab bar on small screens (patterned on the Joe Kuntani bottom
+ * nav): two shortcuts either side of a centered join action. Docks flush to
+ * the screen edges when the footer scrolls into view.
+ */
+const BOTTOM_NAV_LEAD = [
+  { href: "/", label: "Home" },
+  { href: "/events/live", label: "Live" },
+];
+const BOTTOM_NAV_TRAIL = [
+  { href: "/media", label: "Media" },
+  { href: "/shop", label: "Shop" },
+];
+
+function MobileBottomNav({ pathname }: { pathname: string }) {
+  const [docked, setDocked] = useState(false);
+  useEffect(() => {
+    const footer = document.querySelector(".footer");
+    if (!footer || !("IntersectionObserver" in window)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setDocked(entry.isIntersecting),
+      { threshold: 0.08 },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
+  const joinActive = linkIsActive(pathname, "/community");
+  const renderTab = (link: { href: string; label: string }) => {
+    const active = linkIsActive(pathname, link.href);
+    return (
+      <li key={link.href} className="bottom-nav-item">
+        <Link
+          href={link.href}
+          className="bottom-nav-link"
+          aria-current={active ? "page" : undefined}
+          data-active={active ? "true" : "false"}
+        >
+          <MenuNavIcon href={link.href} className="bottom-nav-icon" />
+          <span className="bottom-nav-label">{link.label}</span>
+        </Link>
+      </li>
+    );
+  };
+  return (
+    <nav
+      className="bottom-nav"
+      aria-label="Quick navigation"
+      data-docked={docked ? "true" : "false"}
+    >
+      <ul className="bottom-nav-list">
+        {BOTTOM_NAV_LEAD.map(renderTab)}
+        <li className="bottom-nav-item">
+          <Link
+            href="/community"
+            className="bottom-nav-action"
+            aria-current={joinActive ? "page" : undefined}
+            data-active={joinActive ? "true" : "false"}
+          >
+            <MenuNavIcon href="/community" className="bottom-nav-icon" />
+            <span className="bottom-nav-label">Join</span>
+          </Link>
+        </li>
+        {BOTTOM_NAV_TRAIL.map(renderTab)}
+      </ul>
+    </nav>
+  );
+}
+
 export function SiteShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const [settings, setSettings] = useState<SiteSettings | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const scrollFrame = useRef<number | null>(null);
   useEffect(() => {
     const controller = new AbortController();
     fetch(`${getApiBaseUrl()}/api/site/settings`, { signal: controller.signal })
@@ -578,6 +654,28 @@ export function SiteShell({ children }: { children: ReactNode }) {
       .catch(() => {});
     return () => controller.abort();
   }, []);
+  /* Docked full-width at the top of the page; morphs into the floating pill
+     once the page scrolls (patterned on the Joe Kuntani header). */
+  useEffect(() => {
+    const update = () => {
+      scrollFrame.current = null;
+      setScrolled(window.scrollY > 48);
+    };
+    const onScroll = () => {
+      if (scrollFrame.current !== null) return;
+      scrollFrame.current = requestAnimationFrame(update);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => {
+      if (scrollFrame.current !== null)
+        cancelAnimationFrame(scrollFrame.current);
+      // StrictMode re-runs this effect: without resetting the ref, the remount
+      // sees a stale frame id and never schedules again.
+      scrollFrame.current = null;
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
   const clientUrl =
     process.env.NEXT_PUBLIC_CLIENT_URL ??
     (process.env.NEXT_PUBLIC_APP_ENV === "production"
@@ -585,7 +683,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
       : "http://localhost:3102");
   return (
     <>
-      <header className="topbar">
+      <header
+        className="topbar"
+        data-nav-state={scrolled ? "floating" : "docked"}
+      >
         <div className="container nav-wrap">
           <Link href="/" className="brand" aria-label="AL Maleek home">
             <span className="brand-mark">
@@ -644,6 +745,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         onClose={() => setMenuOpen(false)}
         pathname={pathname}
       />
+      <MobileBottomNav pathname={pathname} />
       <main id="main-content">{children}</main>
       <footer className="footer">
         <div className="container">

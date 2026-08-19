@@ -66,14 +66,38 @@ a {
   position: sticky;
   top: 0;
   z-index: 20;
+  padding: 0;
+  transition: padding 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.topbar[data-nav-state="floating"] {
   padding: 16px 0 0;
 }
 .nav-wrap {
   min-height: 68px;
-  padding: 8px 14px;
-  display: flex;
+  padding: 10px clamp(16px, 3vw, 28px);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 24px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border: 0;
+  border-bottom: 1px solid rgba(21, 24, 38, 0.08);
+  outline: none;
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: blur(20px);
+  transition:
+    width 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    padding 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    border-radius 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.52s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.52s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.topbar[data-nav-state="floating"] .nav-wrap {
+  width: min(1240px, calc(100% - 40px));
+  padding: 8px 14px;
   background: linear-gradient(
     180deg,
     rgba(255, 255, 255, 0.94),
@@ -83,7 +107,6 @@ a {
   outline: 1px solid rgba(21, 24, 38, 0.05);
   border-radius: 24px;
   box-shadow: 0 18px 50px rgba(38, 42, 62, 0.12);
-  backdrop-filter: blur(20px);
 }
 .brand {
   display: inline-flex;
@@ -129,7 +152,7 @@ a {
   height: 36px;
 }
 .main-nav {
-  margin-left: auto;
+  justify-self: center;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -642,9 +665,6 @@ h3 {
   .main-nav {
     display: none;
   }
-  .nav-actions {
-    margin-left: auto;
-  }
   .nav-cta {
     display: none;
   }
@@ -667,10 +687,11 @@ h3 {
   .container {
     width: min(100% - 24px, 1240px);
   }
-  .topbar {
+  .topbar[data-nav-state="floating"] {
     padding-top: 8px;
   }
-  .nav-wrap {
+  .topbar[data-nav-state="floating"] .nav-wrap {
+    width: min(100% - 24px, 1240px);
     border-radius: 17px;
   }
   .hero-section {
@@ -934,6 +955,7 @@ main {
   }
 }
 .nav-actions {
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -2582,4 +2604,154 @@ main {
 .alm-select-option[aria-selected="true"] {
   background: rgba(109, 213, 196, 0.22);
   font-weight: 700;
+}
+
+/* Mobile bottom tab bar (small screens only) */
+.bottom-nav {
+  position: fixed;
+  right: 0.65rem;
+  bottom: max(0.65rem, env(safe-area-inset-bottom, 0px));
+  left: 0.65rem;
+  /* Below the full-screen menu (z-index 60) so opening it covers the bar. */
+  z-index: 30;
+  filter: drop-shadow(0 0.7rem 1.4rem rgba(10, 12, 22, 0.22));
+  transition:
+    right 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    bottom 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    left 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.24s ease;
+}
+.bottom-nav[data-docked="true"] {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  filter: none;
+}
+.bottom-nav-list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  border: 1px solid rgba(21, 24, 38, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(150%) blur(18px);
+  transition:
+    border-radius 0.36s cubic-bezier(0.22, 1, 0.36, 1),
+    background 0.24s ease;
+}
+.bottom-nav[data-docked="true"] .bottom-nav-list {
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  background: rgba(255, 255, 255, 0.94);
+}
+.bottom-nav-item {
+  display: flex;
+  min-width: 0;
+}
+.bottom-nav-link,
+.bottom-nav-action {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  min-height: 3.5rem;
+  padding: 0.55rem 0.25rem 0.6rem;
+  color: var(--muted);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color 160ms ease,
+    background-color 160ms ease;
+}
+.bottom-nav-link:active,
+.bottom-nav-action:active {
+  background: rgba(109, 213, 196, 0.12);
+}
+.bottom-nav-link:focus-visible,
+.bottom-nav-action:focus-visible {
+  outline: 3px solid rgba(109, 213, 196, 0.55);
+  outline-offset: -3px;
+}
+.bottom-nav-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  flex-shrink: 0;
+  transition: transform 160ms ease;
+}
+.bottom-nav-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.bottom-nav-link[data-active="true"],
+.bottom-nav-action[data-active="true"] {
+  color: var(--ink);
+}
+.bottom-nav-link[data-active="true"] .bottom-nav-icon {
+  color: #2f9c8c;
+}
+/* Lit cap on the current tab, drawn on the bar's own top rule. */
+.bottom-nav-link[data-active="true"]::before,
+.bottom-nav-action[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 1.75rem;
+  height: 2px;
+  transform: translateX(-50%);
+  border-radius: 0 0 2px 2px;
+  background: var(--mint);
+}
+/* The join slot is the conversion target — a mint wash separates it from the
+   four navigational tabs without stealing a whole row. */
+.bottom-nav-action .bottom-nav-icon {
+  color: #2f9c8c;
+}
+.bottom-nav-action::after {
+  content: "";
+  position: absolute;
+  inset: 0.4rem 0.3rem;
+  z-index: -1;
+  border-radius: 999px;
+  background: rgba(109, 213, 196, 0.18);
+  transition: background 160ms ease;
+}
+.bottom-nav-action[data-active="true"]::after {
+  background: rgba(109, 213, 196, 0.38);
+}
+@media (min-width: 1050px) {
+  .bottom-nav {
+    display: none;
+  }
+}
+/* Keep the footer's bottom edge clear of the floating bar on small screens. */
+@media (max-width: 1049px) {
+  .footer {
+    padding-bottom: 96px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bottom-nav,
+  .bottom-nav-list,
+  .topbar,
+  .nav-wrap {
+    transition: none;
+  }
 }
