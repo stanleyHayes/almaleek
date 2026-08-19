@@ -687,6 +687,11 @@ h3 {
   .container {
     width: min(100% - 24px, 1240px);
   }
+  /* The .container shrink above must not inset the docked header bar —
+     it stays full-bleed; only the floating pill gets side gaps. */
+  .topbar .nav-wrap {
+    width: 100%;
+  }
   .topbar[data-nav-state="floating"] {
     padding-top: 8px;
   }
