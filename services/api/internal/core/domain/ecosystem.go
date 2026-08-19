@@ -77,6 +77,7 @@ type SiteSettings struct {
 	AboutIntroduction string          `json:"about_introduction" bson:"about_introduction"`
 	AboutStory        string          `json:"about_story" bson:"about_story"`
 	AboutMission      string          `json:"about_mission" bson:"about_mission"`
+	AboutStats        []HomeStat      `json:"about_stats" bson:"about_stats"`
 	FounderName       string          `json:"founder_name" bson:"founder_name"`
 	FounderRole       string          `json:"founder_role" bson:"founder_role"`
 	Brands            []BrandProfile  `json:"brands" bson:"brands"`
@@ -174,6 +175,8 @@ type WorkWithPageContent struct {
 	MutedPoints  []string       `json:"muted_points" bson:"muted_points"`
 }
 type CommunityPageContent = WorkWithPageContent
+type AcademyPageContent = WorkWithPageContent
+type PartnershipsPageContent = WorkWithPageContent
 type LivePageContent struct {
 	PageContent
 	Events []LiveEvent `json:"events" bson:"events"`
@@ -187,19 +190,20 @@ type MediaPageContent struct {
 	PressEmail   string       `json:"press_email" bson:"press_email"`
 }
 type PageSet struct {
-	Academy      PageContent          `json:"academy" bson:"academy"`
-	Live         LivePageContent      `json:"live" bson:"live"`
-	Community    CommunityPageContent `json:"community" bson:"community"`
-	Media        MediaPageContent     `json:"media" bson:"media"`
-	Partnerships PageContent          `json:"partnerships" bson:"partnerships"`
-	Shop         PageContent          `json:"shop" bson:"shop"`
-	WorkWith     WorkWithPageContent  `json:"work_with" bson:"work_with"`
+	Academy      AcademyPageContent      `json:"academy" bson:"academy"`
+	Live         LivePageContent         `json:"live" bson:"live"`
+	Community    CommunityPageContent    `json:"community" bson:"community"`
+	Media        MediaPageContent        `json:"media" bson:"media"`
+	Partnerships PartnershipsPageContent `json:"partnerships" bson:"partnerships"`
+	Shop         PageContent             `json:"shop" bson:"shop"`
+	WorkWith     WorkWithPageContent     `json:"work_with" bson:"work_with"`
 }
 
 func DefaultSiteSettings() SiteSettings {
 	return SiteSettings{
 		FooterDescription: "The digital home of Al Maleek — Ghanaian comedy creator and storyteller — and the community, shows, and ventures growing around the work.", ContactEmail: "hello@almaleekgh.com", Location: "Accra, Ghana",
 		AboutEyebrow: "The story behind the skits", AboutHeadline: "Al Maleek turns everyday Ghanaian life into comedy the whole timeline quotes.", AboutIntroduction: "Al Maleek is a Ghanaian digital content creator, comedian, and host — the face of Al Maleek & Crew — building community through skits, storytelling, live shows, and ambitious creative ventures.", AboutStory: "What began as short comedy skits in Accra has grown into one of Ghana's most recognisable new comic voices. In 2026, Al Maleek picked up three nominations at the 6th Ghana Comedy Awards — Comedy Skit Act of the Year, Comic Discovery of the Year, and Comic Group of the Year alongside Al Maleek & Crew. The work is grounded in Ghana, shaped by community, and designed to travel — turning laughs into belonging and creative energy into lasting opportunity.", AboutMission: "To create stages, stories, and systems that help African talent be seen, supported, and paid — while giving brands a credible way to participate in the culture.", FounderName: "Al Maleek", FounderRole: "Comedy creator · Host · Culture builder",
+		AboutStats:     []HomeStat{{Value: "3", Label: "2026 Ghana Comedy Awards nominations"}, {Value: "6", Label: "Platforms, one voice"}, {Value: "4", Label: "Live event formats"}, {Value: "100%", Label: "Made in Ghana"}},
 		Brands:         []BrandProfile{{Name: "AL Maleek", Category: "Creator brand", Description: "Comedy skits, culture commentary, hosting, and partnerships built around a distinctive Ghanaian voice.", URL: "/"}, {Name: "City Night Live", Category: "Live experiences", Description: "Live comedy and culture rooms that turn online audiences into a community that shows up.", URL: "/events/live"}, {Name: "AL Maleek Academy", Category: "Learning", Description: "Practical learning, mentorship, and access for the next generation of Ghanaian creators.", URL: "/academy"}},
 		SocialProfiles: []SocialProfile{{Platform: "instagram", Handle: "@almaleekgh", URL: "https://instagram.com/almaleekgh", Audience: "Skits & behind the scenes"}, {Platform: "tiktok", Handle: "@almaleekgh", URL: "https://tiktok.com/@almaleekgh", Audience: "Comedy & culture"}, {Platform: "youtube", Handle: "@almaleekgh", URL: "https://youtube.com/@almaleekgh", Audience: "Skits & long-form"}, {Platform: "x", Handle: "@almaleekgh", URL: "https://x.com/almaleekgh", Audience: "Conversation"}, {Platform: "facebook", Handle: "Al Maleek", URL: "https://facebook.com/almaleekgh", Audience: "Community"}, {Platform: "linkedin", Handle: "AL Maleek", URL: "https://linkedin.com/company/almaleekgh", Audience: "Business & partnerships"}},
 		Home: HomeContent{
@@ -230,12 +234,12 @@ func DefaultSiteSettings() SiteSettings {
 			},
 		},
 		Pages: PageSet{
-			Academy: PageContent{
+			Academy: AcademyPageContent{
 				Hero: PageHero{Eyebrow: "Academy", Headline: "Learn the craft. Build the business. Grow with clarity.", Lede: "AL Maleek Academy is built for aspiring creators, skit makers, and performers who want practical education that translates into real income, stronger positioning, and sustainable creative growth."},
-				Cards: []ContentCard{
-					{Kicker: "Creator growth", Title: "Content strategy", Text: "Build a consistent creator engine without losing your voice, attention, or creative momentum."},
-					{Kicker: "Comedy & performance", Title: "Craft & delivery", Text: "Strengthen stage presence, storytelling, and timing so your ideas land with real audiences."},
-					{Kicker: "Business systems", Title: "Creator operations", Text: "Learn the frameworks behind monetization, partnerships, packaging, and repeatable growth."},
+				Cards: []WorkOffering{
+					{Kicker: "Creator growth", Title: "Content strategy", Text: "Build a consistent creator engine without losing your voice, attention, or creative momentum.", Image: "", Points: []string{"A repeatable content calendar that fits real life", "Hooks and formats that fit your voice", "Reading analytics without losing the joke", "A posting rhythm you can actually sustain"}},
+					{Kicker: "Comedy & performance", Title: "Craft & delivery", Text: "Strengthen stage presence, storytelling, and timing so your ideas land with real audiences.", Image: "", Points: []string{"Writing drills that sharpen every premise", "Stage presence, timing, and delivery practice", "Testing material in front of live audiences", "Feedback that turns jokes into signatures"}},
+					{Kicker: "Business systems", Title: "Creator operations", Text: "Learn the frameworks behind monetization, partnerships, packaging, and repeatable growth.", Image: "", Points: []string{"Pricing and packaging your creative work", "Brand-deal readiness from pitch to payment", "Systems for consistent creator income", "A growth plan that outlives the algorithm"}},
 				},
 				MutedEyebrow: "Why learners stay",
 				MutedHeading: "Actionable education built around real-world creative business.",
@@ -280,12 +284,12 @@ func DefaultSiteSettings() SiteSettings {
 				PressLede:    "Find approved biographies, brand notes, selected photography, and a direct press contact.",
 				PressEmail:   "press@almaleekgh.com",
 			},
-			Partnerships: PageContent{
+			Partnerships: PartnershipsPageContent{
 				Hero: PageHero{Eyebrow: "Partnerships", Headline: "Build campaigns and collaborations around culture, trust, and reach.", Lede: "AL Maleek partnerships are designed to create value for both brands and the community—clear, premium, and structured around real alignment, not superficial promotions."},
-				Cards: []ContentCard{
-					{Kicker: "Campaigns", Title: "Audience-first marketing", Text: "Partnerships designed to integrate naturally into the brand and community experience with intent."},
-					{Kicker: "Sponsorships", Title: "Event & activation support", Text: "Strategic sponsor opportunities tied to live experiences, community moments, and cultural visibility."},
-					{Kicker: "Network", Title: "Creative ecosystem", Text: "Connect with collaborators, talent, and partners building bigger opportunities around the brand."},
+				Cards: []WorkOffering{
+					{Kicker: "Campaigns", Title: "Audience-first marketing", Text: "Partnerships designed to integrate naturally into the brand and community experience with intent.", Image: "", Points: []string{"Skit integrations in a trusted comic voice", "Concepts tailored to Ghanaian and diaspora audiences", "Reach across Instagram, TikTok, YouTube, and X", "Post-campaign reporting with real numbers"}},
+					{Kicker: "Sponsorships", Title: "Event & activation support", Text: "Strategic sponsor opportunities tied to live experiences, community moments, and cultural visibility.", Image: "", Points: []string{"Brand presence inside sold-out rooms", "On-stage mentions and branded segments", "Access to a community that shows up", "Sponsor recap content after every event"}},
+					{Kicker: "Network", Title: "Creative ecosystem", Text: "Connect with collaborators, talent, and partners building bigger opportunities around the brand.", Image: "", Points: []string{"Access to vetted creators and talent", "Co-production opportunities across the slate", "Multi-brand activations around live moments", "Introductions across the wider ecosystem"}},
 				},
 				MutedEyebrow: "Partnership model",
 				MutedHeading: "A structured path from fit assessment to launch.",
@@ -325,6 +329,10 @@ func (s *SiteSettings) Normalize() {
 	s.AboutIntroduction = strings.TrimSpace(s.AboutIntroduction)
 	s.AboutStory = strings.TrimSpace(s.AboutStory)
 	s.AboutMission = strings.TrimSpace(s.AboutMission)
+	for index := range s.AboutStats {
+		s.AboutStats[index].Value = strings.TrimSpace(s.AboutStats[index].Value)
+		s.AboutStats[index].Label = strings.TrimSpace(s.AboutStats[index].Label)
+	}
 	s.FounderName = strings.TrimSpace(s.FounderName)
 	s.FounderRole = strings.TrimSpace(s.FounderRole)
 	for index := range s.Brands {
@@ -340,7 +348,7 @@ func (s *SiteSettings) Normalize() {
 		s.SocialProfiles[index].Audience = strings.TrimSpace(s.SocialProfiles[index].Audience)
 	}
 	normalizeHomeContent(&s.Home)
-	normalizePageContent(&s.Pages.Academy)
+	normalizeWorkWithContent(&s.Pages.Academy)
 	normalizePageContent(&s.Pages.Live.PageContent)
 	for index := range s.Pages.Live.Events {
 		s.Pages.Live.Events[index].Date = strings.TrimSpace(s.Pages.Live.Events[index].Date)
@@ -360,7 +368,7 @@ func (s *SiteSettings) Normalize() {
 	s.Pages.Media.PressHeading = strings.TrimSpace(s.Pages.Media.PressHeading)
 	s.Pages.Media.PressLede = strings.TrimSpace(s.Pages.Media.PressLede)
 	s.Pages.Media.PressEmail = strings.ToLower(strings.TrimSpace(s.Pages.Media.PressEmail))
-	normalizePageContent(&s.Pages.Partnerships)
+	normalizeWorkWithContent(&s.Pages.Partnerships)
 	normalizePageContent(&s.Pages.Shop)
 	normalizeWorkWithContent(&s.Pages.WorkWith)
 }

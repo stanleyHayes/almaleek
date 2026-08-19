@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Audience-first marketing: a megaphone, a phone playing a branded skit and audience reaction hearts">
+  <defs>
+    <pattern id="pc-dots" width="38" height="38" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="3" fill="#f8f8f3" opacity="0.07"/>
+    </pattern>
+    <radialGradient id="pc-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#6dd5c4" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6dd5c4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#151826"/>
+  <rect x="890" y="60" width="250" height="190" fill="url(#pc-dots)"/>
+  <circle cx="120" cy="660" r="240" fill="none" stroke="#f8f8f3" stroke-opacity="0.08" stroke-width="2.5"/>
+  <circle cx="120" cy="660" r="300" fill="none" stroke="#f8f8f3" stroke-opacity="0.05" stroke-width="2"/>
+  <ellipse cx="560" cy="450" rx="440" ry="300" fill="url(#pc-glow)"/>
+
+  <!-- header -->
+  <text x="70" y="96" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="9" fill="#6dd5c4">PARTNERS · AUDIENCE-FIRST MARKETING</text>
+  <text x="72" y="134" font-family="Outfit, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="5" fill="#8a8fa3">BRAND STORIES INSIDE THE SKITS</text>
+
+  <!-- megaphone -->
+  <g transform="translate(330,480) rotate(-12)">
+    <rect x="-132" y="46" width="36" height="118" rx="17" fill="#65697a" transform="rotate(14 -114 46)"/>
+    <path d="M -150 -54 L 82 -124 L 82 124 L -150 54 Z" fill="#f8f8f3"/>
+    <rect x="-192" y="-54" width="46" height="108" rx="20" fill="#65697a"/>
+    <path d="M -116 -40 L 40 -86" stroke="#6dd5c4" stroke-width="12" stroke-linecap="round" opacity="0.9"/>
+    <ellipse cx="88" cy="0" rx="26" ry="126" fill="#6dd5c4" stroke="#151826" stroke-width="6"/>
+    <ellipse cx="88" cy="0" rx="11" ry="76" fill="#151826"/>
+  </g>
+
+  <!-- sound arcs -->
+  <path d="M 488 320 A 132 132 0 0 1 536 490" fill="none" stroke="#6dd5c4" stroke-width="10" stroke-linecap="round"/>
+  <path d="M 542 292 A 196 196 0 0 1 612 518" fill="none" stroke="#f8f8f3" stroke-opacity="0.4" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 598 266 A 262 262 0 0 1 692 548" fill="none" stroke="#ffd3b6" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- phone with branded skit -->
+  <g transform="translate(880,510) rotate(6)">
+    <rect x="-104" y="-188" width="208" height="376" rx="40" fill="#0c0e18" stroke="#2a2f45" stroke-width="5"/>
+    <rect x="-84" y="-166" width="168" height="332" rx="28" fill="#151826"/>
+    <rect x="-30" y="-156" width="60" height="12" rx="6" fill="#2a2f45"/>
+    <!-- skit card -->
+    <rect x="-66" y="-126" width="132" height="112" rx="16" fill="#e7d8ff"/>
+    <circle cx="-22" cy="-94" r="17" fill="#151826"/>
+    <ellipse cx="-22" cy="-89" rx="7" ry="5" fill="#ffd3b6"/>
+    <path d="M -40 -18 L -40 -48 A 18 18 0 0 1 -4 -48 L -4 -18 Z" fill="#151826"/>
+    <circle cx="34" cy="-62" r="17" fill="#6dd5c4" stroke="#151826" stroke-width="4"/>
+    <path d="M 29 -70 L 43 -62 L 29 -54 Z" fill="#151826"/>
+    <!-- brand chip -->
+    <g transform="translate(-66,4)">
+      <rect x="0" y="0" width="104" height="34" rx="17" fill="#ffd3b6"/>
+      <text x="52" y="24" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="17" font-weight="800" letter-spacing="2" fill="#151826">BRAND</text>
+    </g>
+    <rect x="-66" y="52" width="132" height="10" rx="5" fill="#2a2f45"/>
+    <rect x="-66" y="74" width="92" height="10" rx="5" fill="#2a2f45"/>
+    <rect x="-66" y="96" width="110" height="10" rx="5" fill="#6dd5c4"/>
+    <!-- reactions -->
+    <path d="M -52 130 C -52 122 -64 122 -64 131 C -64 137 -52 143 -52 146 C -52 143 -40 137 -40 131 C -40 122 -52 122 -52 130 Z" fill="#ffd3b6" transform="translate(14,6)"/>
+    <rect x="-14" y="132" width="80" height="10" rx="5" fill="#2a2f45"/>
+  </g>
+
+  <!-- floating hearts -->
+  <path d="M 0 8 C 0 -4 -18 -4 -18 7 C -18 15 0 23 0 28 C 0 23 18 15 18 7 C 18 -4 0 -4 0 8 Z" fill="#ffd3b6" transform="translate(668,220)"/>
+  <path d="M 0 6 C 0 -3 -14 -3 -14 5 C -14 11 0 17 0 21 C 0 17 14 11 14 5 C 14 -3 0 -3 0 6 Z" fill="#b8c0ff" transform="translate(1030,300) rotate(12)"/>
+  <circle cx="700" cy="620" r="11" fill="#6dd5c4"/>
+  <circle cx="210" cy="250" r="9" fill="#b8c0ff"/>
+</svg>

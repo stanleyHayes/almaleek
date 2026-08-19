@@ -537,7 +537,7 @@ type HomeContent = {
   }>;
 };
 type PagesContent = {
-  academy: PageContent;
+  academy: WorkWithPageContent;
   live: PageContent & {
     events: Array<{ date: string; title: string; text: string; image: string }>;
   };
@@ -554,7 +554,7 @@ type PagesContent = {
     press_lede: string;
     press_email: string;
   };
-  partnerships: PageContent;
+  partnerships: WorkWithPageContent;
   shop: PageContent;
   work_with: WorkWithPageContent;
 };
@@ -593,6 +593,7 @@ type SiteSettings = {
   about_introduction: string;
   about_story: string;
   about_mission: string;
+  about_stats: Array<{ value: string; label: string }>;
   founder_name: string;
   founder_role: string;
   brands: Array<{
@@ -637,9 +638,25 @@ export function SettingsOperations() {
           throw new Error(body.error || "Unable to load CMS settings");
         setSite({
           ...body,
+          about_stats: body.about_stats ?? [],
           home: mergeHome(body.home),
           pages: {
-            academy: mergePage(body.pages?.academy),
+            academy: {
+              ...mergePage(body.pages?.academy),
+              cards: (body.pages?.academy?.cards ?? []).map(
+                (card: {
+                  kicker: string;
+                  title: string;
+                  text: string;
+                  image?: string;
+                  points?: string[];
+                }) => ({
+                  ...card,
+                  image: card.image ?? "",
+                  points: card.points ?? [],
+                }),
+              ),
+            },
             live: {
               ...mergePage(body.pages?.live),
               events: (body.pages?.live?.events ?? []).map(
@@ -682,7 +699,22 @@ export function SettingsOperations() {
               press_lede: body.pages?.media?.press_lede ?? "",
               press_email: body.pages?.media?.press_email ?? "",
             },
-            partnerships: mergePage(body.pages?.partnerships),
+            partnerships: {
+              ...mergePage(body.pages?.partnerships),
+              cards: (body.pages?.partnerships?.cards ?? []).map(
+                (card: {
+                  kicker: string;
+                  title: string;
+                  text: string;
+                  image?: string;
+                  points?: string[];
+                }) => ({
+                  ...card,
+                  image: card.image ?? "",
+                  points: card.points ?? [],
+                }),
+              ),
+            },
             shop: mergePage(body.pages?.shop),
             work_with: {
               ...mergePage(body.pages?.work_with),
@@ -725,7 +757,7 @@ export function SettingsOperations() {
         setError(body.error || "Unable to publish site settings");
         return;
       }
-      setSite(body);
+      setSite({ ...body, about_stats: body.about_stats ?? [] });
       setNotice("All public page copy and site settings published.");
     } finally {
       setSaving(false);
@@ -808,16 +840,16 @@ export function SettingsOperations() {
         </label>
       </div>
       <div className="cms-repeaters">
-        {page === "work_with"
-          ? site.pages.work_with.cards.map((card, index) => (
-              <article key={`work-with-card-${index}`}>
+        {page !== "shop"
+          ? site.pages[page].cards.map((card, index) => (
+              <article key={`${page}-card-${index}`}>
                 <label>
                   Kicker
                   <input
                     value={card.kicker}
                     onChange={(e) =>
-                      updatePage("work_with", {
-                        cards: site.pages.work_with.cards.map((item, i) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
                           i === index
                             ? { ...item, kicker: e.target.value }
                             : item,
@@ -831,8 +863,8 @@ export function SettingsOperations() {
                   <input
                     value={card.title}
                     onChange={(e) =>
-                      updatePage("work_with", {
-                        cards: site.pages.work_with.cards.map((item, i) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
                           i === index
                             ? { ...item, title: e.target.value }
                             : item,
@@ -847,8 +879,8 @@ export function SettingsOperations() {
                     rows={3}
                     value={card.text}
                     onChange={(e) =>
-                      updatePage("work_with", {
-                        cards: site.pages.work_with.cards.map((item, i) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
                           i === index
                             ? { ...item, text: e.target.value }
                             : item,
@@ -863,8 +895,8 @@ export function SettingsOperations() {
                     type="url"
                     value={card.image}
                     onChange={(e) =>
-                      updatePage("work_with", {
-                        cards: site.pages.work_with.cards.map((item, i) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
                           i === index
                             ? { ...item, image: e.target.value }
                             : item,
@@ -876,13 +908,17 @@ export function SettingsOperations() {
                   <small>Leave blank to use the branded artwork</small>
                 </label>
                 <label className="full-field">
-                  What you get (one per line)
+                  {page === "academy"
+                    ? "What you walk away with (one per line)"
+                    : page === "partnerships"
+                      ? "What partners get (one per line)"
+                      : "What you get (one per line)"}
                   <textarea
                     rows={4}
                     value={card.points.join("\n")}
                     onChange={(e) =>
-                      updatePage("work_with", {
-                        cards: site.pages.work_with.cards.map((item, i) =>
+                      updatePage(page, {
+                        cards: site.pages[page].cards.map((item, i) =>
                           i === index
                             ? {
                                 ...item,
@@ -897,8 +933,8 @@ export function SettingsOperations() {
                 <button
                   type="button"
                   onClick={() =>
-                    updatePage("work_with", {
-                      cards: site.pages.work_with.cards.filter(
+                    updatePage(page, {
+                      cards: site.pages[page].cards.filter(
                         (_, i) => i !== index,
                       ),
                     })
@@ -974,10 +1010,10 @@ export function SettingsOperations() {
           type="button"
           className="button button-soft"
           onClick={() =>
-            page === "work_with"
-              ? updatePage("work_with", {
+            page !== "shop"
+              ? updatePage(page, {
                   cards: [
-                    ...site.pages.work_with.cards,
+                    ...site.pages[page].cards,
                     {
                       kicker: "New",
                       title: "New card",
@@ -1126,6 +1162,71 @@ export function SettingsOperations() {
                 required
               />
             </label>
+          </div>
+          <div className="cms-repeaters">
+            <p>
+              About stats — the numbers band under the About hero. Use real,
+              verifiable figures only.
+            </p>
+            {site.about_stats.map((stat, index) => (
+              <article key={`about-stat-${index}`}>
+                <label>
+                  Value
+                  <input
+                    value={stat.value}
+                    onChange={(e) =>
+                      update(
+                        "about_stats",
+                        site.about_stats.map((item, i) =>
+                          i === index
+                            ? { ...item, value: e.target.value }
+                            : item,
+                        ),
+                      )
+                    }
+                  />
+                </label>
+                <label>
+                  Label
+                  <input
+                    value={stat.label}
+                    onChange={(e) =>
+                      update(
+                        "about_stats",
+                        site.about_stats.map((item, i) =>
+                          i === index
+                            ? { ...item, label: e.target.value }
+                            : item,
+                        ),
+                      )
+                    }
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={() =>
+                    update(
+                      "about_stats",
+                      site.about_stats.filter((_, i) => i !== index),
+                    )
+                  }
+                >
+                  Remove stat
+                </button>
+              </article>
+            ))}
+            <button
+              type="button"
+              className="button button-soft"
+              onClick={() =>
+                update("about_stats", [
+                  ...site.about_stats,
+                  { value: "", label: "New stat" },
+                ])
+              }
+            >
+              + Add stat
+            </button>
           </div>
         </section>
         <section className="panel-card cms-section">

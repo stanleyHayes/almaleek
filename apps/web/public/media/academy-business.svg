@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Business systems track: a signed brand deal contract with seal, stacks of cedi coins and an operations gear">
+  <defs>
+    <pattern id="ab-dots" width="38" height="38" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="3" fill="#f8f8f3" opacity="0.07"/>
+    </pattern>
+    <radialGradient id="ab-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd3b6" stop-opacity="0.26"/>
+      <stop offset="1" stop-color="#ffd3b6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="#151826"/>
+  <rect x="60" y="560" width="240" height="180" fill="url(#ab-dots)"/>
+  <circle cx="110" cy="130" r="210" fill="none" stroke="#f8f8f3" stroke-opacity="0.08" stroke-width="2.5"/>
+  <circle cx="110" cy="130" r="270" fill="none" stroke="#f8f8f3" stroke-opacity="0.05" stroke-width="2"/>
+  <ellipse cx="780" cy="480" rx="400" ry="280" fill="url(#ab-glow)"/>
+
+  <!-- header -->
+  <text x="70" y="96" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="9" fill="#6dd5c4">ACADEMY · BUSINESS SYSTEMS</text>
+  <text x="72" y="134" font-family="Outfit, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="5" fill="#8a8fa3">MONETIZATION · BRAND DEALS · OPERATIONS</text>
+
+  <!-- contract card -->
+  <g transform="translate(420,470) rotate(-4)">
+    <rect x="-160" y="-200" width="320" height="400" rx="24" fill="#f8f8f3"/>
+    <rect x="-160" y="-200" width="320" height="400" rx="24" fill="none" stroke="#6dd5c4" stroke-width="5"/>
+    <text x="-120" y="-144" font-family="Outfit, Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="3" fill="#151826">BRAND DEAL</text>
+    <rect x="60" y="-168" width="64" height="26" rx="13" fill="#6dd5c4"/>
+    <rect x="-120" y="-108" width="240" height="12" rx="6" fill="#151826" opacity="0.7"/>
+    <rect x="-120" y="-80" width="200" height="12" rx="6" fill="#151826" opacity="0.4"/>
+    <rect x="-120" y="-52" width="224" height="12" rx="6" fill="#151826" opacity="0.4"/>
+    <rect x="-120" y="-24" width="168" height="12" rx="6" fill="#151826" opacity="0.4"/>
+    <rect x="-120" y="16" width="110" height="14" rx="7" fill="#b8c0ff"/>
+    <!-- signature -->
+    <path d="M -118 128 C -96 96 -84 148 -60 120 C -44 100 -34 140 -8 116 C 6 102 14 126 34 118" fill="none" stroke="#151826" stroke-width="6" stroke-linecap="round"/>
+    <line x1="-120" y1="152" x2="40" y2="152" stroke="#151826" stroke-width="3" opacity="0.3"/>
+    <!-- seal -->
+    <g transform="translate(88,104)">
+      <circle cx="0" cy="0" r="40" fill="#ffd3b6" stroke="#151826" stroke-width="5"/>
+      <circle cx="0" cy="0" r="52" fill="none" stroke="#151826" stroke-opacity="0.25" stroke-width="3" stroke-dasharray="2 12"/>
+      <path d="M 0 -18 L 5 -6 18 -5 8 4 11 17 0 10 -11 17 -8 4 -18 -5 -5 -6 Z" fill="#151826"/>
+    </g>
+  </g>
+
+  <!-- coin stacks -->
+  <g transform="translate(880,560)">
+    <!-- back stack -->
+    <g transform="translate(96,-30)">
+      <rect x="-58" y="-118" width="116" height="118" fill="#d9a06e"/>
+      <ellipse cx="0" cy="0" rx="58" ry="16" fill="#b9834f"/>
+      <ellipse cx="0" cy="-118" rx="58" ry="16" fill="#ffd3b6" stroke="#151826" stroke-width="4"/>
+    </g>
+    <!-- front stack -->
+    <g>
+      <rect x="-66" y="-150" width="132" height="150" fill="#d9a06e"/>
+      <ellipse cx="0" cy="0" rx="66" ry="18" fill="#b9834f"/>
+      <ellipse cx="0" cy="-50" rx="66" ry="16" fill="none" stroke="#151826" stroke-opacity="0.25" stroke-width="3"/>
+      <ellipse cx="0" cy="-100" rx="66" ry="16" fill="none" stroke="#151826" stroke-opacity="0.25" stroke-width="3"/>
+      <ellipse cx="0" cy="-150" rx="66" ry="18" fill="#ffd3b6" stroke="#151826" stroke-width="5"/>
+      <!-- cedi sign -->
+      <g transform="translate(0,-152)" stroke="#151826" stroke-width="6" stroke-linecap="round" fill="none">
+        <path d="M 10 -10 A 14 14 0 1 0 10 10"/>
+        <line x1="-2" y1="-16" x2="-2" y2="16"/>
+        <line x1="6" y1="-16" x2="6" y2="16"/>
+      </g>
+    </g>
+    <!-- single coin leaning -->
+    <g transform="translate(-110,-14) rotate(-18)">
+      <ellipse cx="0" cy="0" rx="46" ry="46" fill="#ffd3b6" stroke="#151826" stroke-width="5"/>
+      <ellipse cx="0" cy="0" rx="30" ry="30" fill="none" stroke="#151826" stroke-width="4" opacity="0.5"/>
+    </g>
+  </g>
+
+  <!-- operations gear -->
+  <g transform="translate(900,250)">
+    <g fill="#6dd5c4">
+      <rect x="-9" y="-72" width="18" height="28" rx="6"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(45)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(90)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(135)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(180)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(225)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(270)"/>
+      <rect x="-9" y="-72" width="18" height="28" rx="6" transform="rotate(315)"/>
+    </g>
+    <circle cx="0" cy="0" r="50" fill="#6dd5c4"/>
+    <circle cx="0" cy="0" r="20" fill="#151826"/>
+  </g>
+
+  <!-- floating accents -->
+  <circle cx="700" cy="250" r="10" fill="#b8c0ff"/>
+  <circle cx="230" cy="300" r="9" fill="#6dd5c4"/>
+  <path d="M 1080 420 l 8 20 20 8 -20 8 -8 20 -8 -20 -20 -8 20 -8 Z" fill="#ffd3b6"/>
+</svg>

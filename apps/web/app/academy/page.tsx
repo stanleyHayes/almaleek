@@ -1,6 +1,12 @@
 import { PublicActionForm } from '@/components/public-action-form';
 import { pageMetadata } from '@/lib/seo';
-import { getSiteContent } from '@/lib/site-content';
+import { DEFAULT_SITE_CONTENT, getSiteContent } from '@/lib/site-content';
+
+const fallbackArt = [
+  '/media/academy-content.svg',
+  '/media/academy-comedy.svg',
+  '/media/academy-business.svg',
+];
 
 export const metadata = pageMetadata({
   title: 'Academy',
@@ -12,6 +18,9 @@ export const metadata = pageMetadata({
 
 export default async function AcademyPage() {
   const { academy } = (await getSiteContent()).pages;
+  const cards = academy.cards.length
+    ? academy.cards
+    : DEFAULT_SITE_CONTENT.pages.academy.cards;
   return (
     <div className="page-shell">
       <header className="page-header">
@@ -34,17 +43,35 @@ export default async function AcademyPage() {
         </div>
       </section>
 
-      <section className="section-block">
-        <div className="container card-grid three-up">
-          {academy.cards.map((card) => (
-            <article className="detail-card" key={card.title}>
-              <span className="card-kicker">{card.kicker}</span>
-              <h3>{card.title}</h3>
-              <p>{card.text}</p>
-            </article>
-          ))}
-        </div>
-      </section>
+      {cards.map((card, index) => {
+        const points = card.points?.length
+          ? card.points
+          : DEFAULT_SITE_CONTENT.pages.academy.cards[index]?.points ?? [];
+        const image = card.image || fallbackArt[index % fallbackArt.length];
+        return (
+          <section className="section-block" key={card.title}>
+            <div
+              className={`container offering-grid${index % 2 === 1 ? ' offering-flip' : ''}`}
+            >
+              <div className="offering-media">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image} alt="" loading="lazy" />
+              </div>
+              <div className="offering-copy">
+                <span className="card-kicker">{card.kicker}</span>
+                <h2>{card.title}</h2>
+                <p>{card.text}</p>
+                <p className="offering-points-label">What you walk away with</p>
+                <ul className="detail-list">
+                  {points.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </section>
+        );
+      })}
 
       <section className="section-block muted-block">
         <div className="container detail-grid">

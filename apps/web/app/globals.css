@@ -2512,3 +2512,91 @@ main {
   margin: 14px 0 0;
   font-size: 0.7rem;
 }
+
+/* Brand-styled select (replaces native OS dropdowns) */
+.alm-select {
+  position: relative;
+  width: 100%;
+}
+.alm-select-trigger {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.alm-select-trigger:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.32);
+}
+.alm-select-trigger:focus-visible {
+  outline: none;
+  border-color: var(--mint);
+  box-shadow: 0 0 0 3px rgba(109, 213, 196, 0.15);
+}
+.alm-select-trigger:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.alm-select-trigger span[data-empty="true"] {
+  color: #8a8fa3;
+  font-weight: 500;
+}
+.alm-select-chevron {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-right: 2px solid var(--mint);
+  border-bottom: 2px solid var(--mint);
+  transform: rotate(45deg) translateY(-0.1rem);
+  transition: transform 160ms ease;
+}
+.alm-select[data-open="true"] .alm-select-chevron {
+  transform: rotate(225deg) translateY(-0.05rem);
+}
+.alm-select-list {
+  position: fixed;
+  z-index: 95;
+  margin: 0;
+  width: max-content;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 13px;
+  padding: 0.35rem;
+  background: #1e2334;
+  box-shadow: 0 24px 70px rgba(10, 12, 22, 0.5);
+  list-style: none;
+}
+.alm-select-list:focus {
+  outline: none;
+}
+.alm-select-option {
+  border-radius: 9px;
+  padding: 0.65rem 0.75rem;
+  color: white;
+  font-size: 0.92rem;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.alm-select-option[data-active="true"],
+.alm-select-option:hover {
+  background: rgba(109, 213, 196, 0.14);
+}
+.alm-select-option[aria-selected="true"] {
+  background: rgba(109, 213, 196, 0.22);
+  font-weight: 700;
+}

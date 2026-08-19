@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { LoadingDots } from "./state-primitives";
+import { Select } from "./select";
 
 type Kind = "academy" | "shop" | "partnership" | "work" | "ticket";
 const apiUrl = (
@@ -71,14 +72,17 @@ function Fields({ kind }: { kind: Kind }) {
         </label>
         <label className="field">
           <span>Focus area</span>
-          <select name="focus" required defaultValue="">
-            <option value="" disabled>
-              Choose a track
-            </option>
-            <option>Content strategy</option>
-            <option>Comedy & performance</option>
-            <option>Business systems</option>
-          </select>
+          <Select
+            aria-label="Focus area"
+            name="focus"
+            required
+            placeholder="Choose a track"
+            options={[
+              { value: "Content strategy", label: "Content strategy" },
+              { value: "Comedy & performance", label: "Comedy & performance" },
+              { value: "Business systems", label: "Business systems" },
+            ]}
+          />
         </label>
       </>
     );
@@ -107,25 +111,34 @@ function Fields({ kind }: { kind: Kind }) {
       </label>
       <label className="field">
         <span>Event</span>
-        <select name="event" required defaultValue="">
-          <option value="" disabled>
-            Choose an event
-          </option>
-          <option>City Night Live</option>
-          <option>Campus Comedy Jam</option>
-          <option>Creator Circle Showcase</option>
-        </select>
+        <Select
+          aria-label="Event"
+          name="event"
+          required
+          placeholder="Choose an event"
+          options={[
+            { value: "City Night Live", label: "City Night Live" },
+            { value: "Campus Comedy Jam", label: "Campus Comedy Jam" },
+            {
+              value: "Creator Circle Showcase",
+              label: "Creator Circle Showcase",
+            },
+          ]}
+        />
       </label>
       <label className="field">
         <span>Ticket type</span>
-        <select name="tier" required defaultValue="">
-          <option value="" disabled>
-            Select tier
-          </option>
-          <option>General admission</option>
-          <option>VIP</option>
-          <option>Table package</option>
-        </select>
+        <Select
+          aria-label="Ticket type"
+          name="tier"
+          required
+          placeholder="Select tier"
+          options={[
+            { value: "General admission", label: "General admission" },
+            { value: "VIP", label: "VIP" },
+            { value: "Table package", label: "Table package" },
+          ]}
+        />
       </label>
     </>
   );
@@ -278,6 +291,9 @@ function SteppedEnquiry({ kind }: { kind: EnquiryKind }) {
     ) =>
       setValues((current) => ({ ...current, [name]: event.target.value }));
 
+  const choose = (name: keyof EnquiryValues) => (value: string) =>
+    setValues((current) => ({ ...current, [name]: value }));
+
   const goNext = () => {
     if (!stepIsValid(step, values)) {
       setError("Complete the required fields before continuing.");
@@ -388,35 +404,31 @@ function SteppedEnquiry({ kind }: { kind: EnquiryKind }) {
           <>
             <label className="field">
               <span>Opportunity type</span>
-              <select
+              <Select
                 aria-label="Opportunity type"
                 required
+                placeholder="Choose a category"
                 value={values.type}
-                onChange={update("type")}
-              >
-                <option value="" disabled>
-                  Choose a category
-                </option>
-                {OPPORTUNITY_TYPES[kind].map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
+                onChange={choose("type")}
+                options={OPPORTUNITY_TYPES[kind].map((option) => ({
+                  value: option,
+                  label: option,
+                }))}
+              />
             </label>
             <label className="field">
               <span>How did you hear about us?</span>
-              <select
+              <Select
                 aria-label="How did you hear about us?"
                 required
+                placeholder="Choose one"
                 value={values.source}
-                onChange={update("source")}
-              >
-                <option value="" disabled>
-                  Choose one
-                </option>
-                {SOURCE_OPTIONS.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
+                onChange={choose("source")}
+                options={SOURCE_OPTIONS.map((option) => ({
+                  value: option,
+                  label: option,
+                }))}
+              />
             </label>
           </>
         )}
@@ -435,19 +447,17 @@ function SteppedEnquiry({ kind }: { kind: EnquiryKind }) {
             </label>
             <label className="field">
               <span>Budget range</span>
-              <select
+              <Select
                 aria-label="Budget range"
                 required
+                placeholder="Choose a range"
                 value={values.budget}
-                onChange={update("budget")}
-              >
-                <option value="" disabled>
-                  Choose a range
-                </option>
-                {BUDGET_OPTIONS.map((option) => (
-                  <option key={option}>{option}</option>
-                ))}
-              </select>
+                onChange={choose("budget")}
+                options={BUDGET_OPTIONS.map((option) => ({
+                  value: option,
+                  label: option,
+                }))}
+              />
             </label>
             <label className="field">
               <span>Timeline (optional)</span>

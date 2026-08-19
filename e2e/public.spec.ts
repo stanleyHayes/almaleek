@@ -23,9 +23,8 @@ test.describe("public website", () => {
       .locator("..");
     await form.getByLabel("Name").fill("E2E Learner");
     await form.getByLabel("Email").fill("learner@example.test");
-    await form
-      .getByLabel("Focus area")
-      .selectOption({ label: "Content strategy" });
+    await form.getByLabel("Focus area").click();
+    await page.getByRole("option", { name: "Content strategy" }).click();
     await form.getByRole("button", { name: "Get access info" }).click();
     await expect(page.getByRole("status")).toContainText("Academy list");
   });

@@ -23,9 +23,8 @@ test("public intake appears in the live admin Community queue", async ({
     .locator("..");
   await form.getByLabel("Name").fill(name);
   await form.getByLabel("Email").fill(email);
-  await form
-    .getByLabel("Focus area")
-    .selectOption({ label: "Content strategy" });
+  await form.getByLabel("Focus area").click();
+  await page.getByRole("option", { name: "Content strategy" }).click();
   await form.getByRole("button", { name: "Get access info" }).click();
   await expect(page.getByRole("status")).toContainText("Academy list");
   await signInAdmin(page);

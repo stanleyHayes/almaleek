@@ -11,6 +11,7 @@ type Settings = {
   about_introduction: string;
   about_story: string;
   about_mission: string;
+  about_stats?: Array<{ value: string; label: string }>;
   founder_name: string;
   founder_role: string;
   brands: Array<{
@@ -26,6 +27,13 @@ type Settings = {
     audience: string;
   }>;
 };
+
+const DEFAULT_ABOUT_STATS = [
+  { value: "3", label: "2026 Ghana Comedy Awards nominations" },
+  { value: "6", label: "Platforms, one voice" },
+  { value: "4", label: "Live event formats" },
+  { value: "100%", label: "Made in Ghana" },
+];
 
 export function AboutExperience() {
   const [content, setContent] = useState<Settings | null>(null),
@@ -92,6 +100,19 @@ export function AboutExperience() {
           />
         </div>
       </header>
+      <section className="stats-bar">
+        <div className="container stats-grid">
+          {(content.about_stats?.length
+            ? content.about_stats
+            : DEFAULT_ABOUT_STATS
+          ).map((stat) => (
+            <div key={stat.label}>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
       <section className="section-block">
         <div className="container about-story-grid">
           <article>

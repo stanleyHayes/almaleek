@@ -62,11 +62,11 @@ export type SiteContent = {
   location: string;
   home: HomeContent;
   pages: {
-    academy: PageContent;
+    academy: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
     live: LivePageContent;
     community: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
     media: MediaPageContent;
-    partnerships: PageContent;
+    partnerships: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
     shop: PageContent;
     work_with: Omit<PageContent, "cards"> & { cards: WorkWithCard[] };
   };
@@ -175,16 +175,37 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
           kicker: "Creator growth",
           title: "Content strategy",
           text: "Build a consistent creator engine without losing your voice, attention, or creative momentum.",
+          image: "",
+          points: [
+            "A repeatable content calendar that fits real life",
+            "Hooks and formats that fit your voice",
+            "Reading analytics without losing the joke",
+            "A posting rhythm you can actually sustain",
+          ],
         },
         {
           kicker: "Comedy & performance",
           title: "Craft & delivery",
           text: "Strengthen stage presence, storytelling, and timing so your ideas land with real audiences.",
+          image: "",
+          points: [
+            "Writing drills that sharpen every premise",
+            "Stage presence, timing, and delivery practice",
+            "Testing material in front of live audiences",
+            "Feedback that turns jokes into signatures",
+          ],
         },
         {
           kicker: "Business systems",
           title: "Creator operations",
           text: "Learn the frameworks behind monetization, partnerships, packaging, and repeatable growth.",
+          image: "",
+          points: [
+            "Pricing and packaging your creative work",
+            "Brand-deal readiness from pitch to payment",
+            "Systems for consistent creator income",
+            "A growth plan that outlives the algorithm",
+          ],
         },
       ],
       muted_eyebrow: "Why learners stay",
@@ -346,16 +367,37 @@ export const DEFAULT_SITE_CONTENT: SiteContent = {
           kicker: "Campaigns",
           title: "Audience-first marketing",
           text: "Partnerships designed to integrate naturally into the brand and community experience with intent.",
+          image: "",
+          points: [
+            "Skit integrations in a trusted comic voice",
+            "Concepts tailored to Ghanaian and diaspora audiences",
+            "Reach across Instagram, TikTok, YouTube, and X",
+            "Post-campaign reporting with real numbers",
+          ],
         },
         {
           kicker: "Sponsorships",
           title: "Event & activation support",
           text: "Strategic sponsor opportunities tied to live experiences, community moments, and cultural visibility.",
+          image: "",
+          points: [
+            "Brand presence inside sold-out rooms",
+            "On-stage mentions and branded segments",
+            "Access to a community that shows up",
+            "Sponsor recap content after every event",
+          ],
         },
         {
           kicker: "Network",
           title: "Creative ecosystem",
           text: "Connect with collaborators, talent, and partners building bigger opportunities around the brand.",
+          image: "",
+          points: [
+            "Access to vetted creators and talent",
+            "Co-production opportunities across the slate",
+            "Multi-brand activations around live moments",
+            "Introductions across the wider ecosystem",
+          ],
         },
       ],
       muted_eyebrow: "Partnership model",
