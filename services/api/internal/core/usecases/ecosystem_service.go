@@ -38,6 +38,16 @@ var legacySeedSocialProfiles = []domain.SocialProfile{
 	{Platform: "linkedin", Handle: "AL Maleek", URL: "https://linkedin.com/company/almaleekgh", Audience: "Business & partnerships"},
 }
 
+// The first production seed used an even older set of guessed handles.
+var legacySeedSocialProfilesOriginal = []domain.SocialProfile{
+	{Platform: "instagram", Handle: "@almaleek", URL: "https://instagram.com/almaleek", Audience: "Stories & community"},
+	{Platform: "tiktok", Handle: "@almaleek", URL: "https://tiktok.com/@almaleek", Audience: "Comedy & culture"},
+	{Platform: "youtube", Handle: "@almaleek", URL: "https://youtube.com/@almaleek", Audience: "Shows & long-form"},
+	{Platform: "x", Handle: "@almaleek", URL: "https://x.com/almaleek", Audience: "Conversation"},
+	{Platform: "facebook", Handle: "AL Maleek", URL: "https://facebook.com/almaleek", Audience: "Community"},
+	{Platform: "linkedin", Handle: "AL Maleek", URL: "https://linkedin.com/company/almaleek", Audience: "Business & partnerships"},
+}
+
 type ValidationError struct{ Err error }
 
 func (e ValidationError) Error() string { return e.Err.Error() }
@@ -68,13 +78,15 @@ func (s *EcosystemService) GetSiteSettings(ctx context.Context) (domain.SiteSett
 	settings, err := s.settings.GetSiteSettings(ctx)
 	if err == nil {
 		defaults := domain.DefaultSiteSettings()
-		// Seed migration: the first seed shipped placeholder stats and guessed
+		// Seed migration: the first seeds shipped placeholder stats and guessed
 		// social handles. Installations still carrying those exact seed values
-		// get the verified audience numbers; admin-customised values win.
-		if slices.Equal(settings.AboutStats, legacySeedAboutStats) {
+		// (or no stats at all) get the verified audience numbers; admin-
+		// customised values win.
+		if len(settings.AboutStats) == 0 || slices.Equal(settings.AboutStats, legacySeedAboutStats) {
 			settings.AboutStats = defaults.AboutStats
 		}
-		if slices.Equal(settings.SocialProfiles, legacySeedSocialProfiles) {
+		if slices.Equal(settings.SocialProfiles, legacySeedSocialProfiles) ||
+			slices.Equal(settings.SocialProfiles, legacySeedSocialProfilesOriginal) {
 			settings.SocialProfiles = defaults.SocialProfiles
 		}
 		if settings.Home.Hero.Headline == "" {

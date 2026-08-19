@@ -70,3 +70,24 @@ func TestLegacySeedStatsAreMigrated(t *testing.T) {
 		t.Fatalf("admin-customised stats were overwritten: %#v", reloaded.AboutStats)
 	}
 }
+
+func TestOriginalSeedAndEmptyStatsAreMigrated(t *testing.T) {
+	service := NewEcosystemService(memory.NewRepository())
+	seeded := domain.DefaultSiteSettings()
+	seeded.AboutStats = nil
+	seeded.SocialProfiles = legacySeedSocialProfilesOriginal
+	if _, err := service.SaveSiteSettings(context.Background(), seeded); err != nil {
+		t.Fatalf("SaveSiteSettings returned error: %v", err)
+	}
+	loaded, err := service.GetSiteSettings(context.Background())
+	if err != nil {
+		t.Fatalf("GetSiteSettings returned error: %v", err)
+	}
+	defaults := domain.DefaultSiteSettings()
+	if !slices.Equal(loaded.AboutStats, defaults.AboutStats) {
+		t.Fatalf("empty stats were not back-filled: %#v", loaded.AboutStats)
+	}
+	if !slices.Equal(loaded.SocialProfiles, defaults.SocialProfiles) {
+		t.Fatalf("original seed social profiles were not migrated: %#v", loaded.SocialProfiles)
+	}
+}
