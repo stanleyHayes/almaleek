@@ -501,7 +501,14 @@ function mergeSection<T extends { hero: { headline: string } }>(
   fallback: T,
 ): T {
   if (!fetched || fetched.hero?.headline === "") return fallback;
-  return fetched;
+  const merged = { ...fallback, ...fetched };
+  // Older CMS documents predate newer fields (cards, points, stats) and the
+  // API serializes them as null — restore the defaults for anything missing
+  // so pages never render against null collections.
+  for (const key of Object.keys(fallback) as (keyof T)[]) {
+    if (merged[key] == null) merged[key] = fallback[key];
+  }
+  return merged;
 }
 
 export async function getSiteContent(): Promise<SiteContent> {
