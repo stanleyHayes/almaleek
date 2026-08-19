@@ -691,8 +691,8 @@ h3 {
     padding-top: 8px;
   }
   .topbar[data-nav-state="floating"] .nav-wrap {
-    /* Full-bleed capsule on phones: no side gaps, fully rounded ends. */
-    width: 100%;
+    /* Pill floats with breathing room on phones; docked stays full-bleed. */
+    width: calc(100% - 24px);
     border-radius: 999px;
   }
   .hero-section {
