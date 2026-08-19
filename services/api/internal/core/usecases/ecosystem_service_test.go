@@ -91,3 +91,53 @@ func TestOriginalSeedAndEmptyStatsAreMigrated(t *testing.T) {
 		t.Fatalf("original seed social profiles were not migrated: %#v", loaded.SocialProfiles)
 	}
 }
+
+type recordingSender struct {
+	emails []string
+	urls   []string
+}
+
+func (s *recordingSender) SendWelcomeEmail(context.Context, string, string) error { return nil }
+
+func (s *recordingSender) SendInvitationEmail(_ context.Context, invitation domain.Invitation, inviteURL string) error {
+	s.emails = append(s.emails, invitation.Email)
+	s.urls = append(s.urls, inviteURL)
+	return nil
+}
+
+func TestIssueInvitationSendsEmail(t *testing.T) {
+	service := NewEcosystemService(memory.NewRepository())
+	sender := &recordingSender{}
+	service.WithInvitationSender(sender, "https://circle.almaleekgh.com/")
+	invitation, err := service.IssueInvitation(context.Background(), domain.Invitation{
+		Name: "Kofi Mensah", Email: "kofi@example.com", Role: "creator",
+	})
+	if err != nil {
+		t.Fatalf("IssueInvitation returned error: %v", err)
+	}
+	if len(sender.emails) != 1 || sender.emails[0] != "kofi@example.com" {
+		t.Fatalf("invitation email not sent: %#v", sender.emails)
+	}
+	wantURL := "https://circle.almaleekgh.com/invite/" + invitation.Token
+	if sender.urls[0] != wantURL {
+		t.Fatalf("invite URL = %q, want %q", sender.urls[0], wantURL)
+	}
+}
+
+func TestIssueInvitationReportsEmailFailureAfterPersistence(t *testing.T) {
+	service := NewEcosystemService(memory.NewRepository()).WithInvitationSender(&failingSender{}, "https://circle.almaleekgh.com")
+	invitation, err := service.IssueInvitation(context.Background(), domain.Invitation{
+		Name: "Kofi Mensah", Email: "kofi@example.com", Role: "creator",
+	})
+	var postCommit PostCommitError
+	if !errors.As(err, &postCommit) {
+		t.Fatalf("error = %v, want PostCommitError", err)
+	}
+	if invitation.ID == "" {
+		t.Fatalf("invitation was not persisted before email failure: %#v", invitation)
+	}
+	listed, err := service.ListInvitations(context.Background())
+	if err != nil || len(listed) != 1 {
+		t.Fatalf("invitation missing after email failure: %v %#v", err, listed)
+	}
+}

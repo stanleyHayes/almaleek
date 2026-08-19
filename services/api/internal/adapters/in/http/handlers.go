@@ -260,6 +260,12 @@ func (h *Handler) InvitationsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		created, err := h.ecosystem.IssueInvitation(r.Context(), invitation)
 		if err != nil {
+			var postCommit usecases.PostCommitError
+			if errors.As(err, &postCommit) {
+				w.Header().Set("Warning", `199 almaleek "invitation saved; invitation email pending"`)
+				writeJSON(w, http.StatusCreated, created)
+				return
+			}
 			writeServiceError(w, err, "unable to issue invitation")
 			return
 		}

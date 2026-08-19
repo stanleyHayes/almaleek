@@ -54,13 +54,15 @@ func (e ValidationError) Error() string { return e.Err.Error() }
 func (e ValidationError) Unwrap() error { return e.Err }
 
 type EcosystemService struct {
-	invitations ports.InvitationRepository
-	events      ports.EventRepository
-	intakes     ports.IntakeRepository
-	members     ports.CommunityMemberRepository
-	plans       ports.MembershipPlanRepository
-	settings    ports.SiteSettingsRepository
-	now         func() time.Time
+	invitations   ports.InvitationRepository
+	events        ports.EventRepository
+	intakes       ports.IntakeRepository
+	members       ports.CommunityMemberRepository
+	plans         ports.MembershipPlanRepository
+	settings      ports.SiteSettingsRepository
+	sender        ports.EmailSender
+	inviteBaseURL string
+	now           func() time.Time
 }
 
 func NewEcosystemService(repo interface {
@@ -72,6 +74,14 @@ func NewEcosystemService(repo interface {
 	ports.SiteSettingsRepository
 }) *EcosystemService {
 	return &EcosystemService{invitations: repo, events: repo, intakes: repo, members: repo, plans: repo, settings: repo, now: time.Now}
+}
+
+// WithInvitationSender enables invitation emails. baseURL is the public client
+// origin invitations link to, e.g. https://circle.almaleekgh.com.
+func (s *EcosystemService) WithInvitationSender(sender ports.EmailSender, baseURL string) *EcosystemService {
+	s.sender = sender
+	s.inviteBaseURL = strings.TrimRight(strings.TrimSpace(baseURL), "/")
+	return s
 }
 
 func (s *EcosystemService) GetSiteSettings(ctx context.Context) (domain.SiteSettings, error) {
@@ -238,6 +248,12 @@ func (s *EcosystemService) IssueInvitation(ctx context.Context, invitation domai
 	invitation.UpdatedAt = now
 	if err := s.invitations.SaveInvitation(ctx, invitation); err != nil {
 		return domain.Invitation{}, err
+	}
+	if s.sender != nil && s.inviteBaseURL != "" {
+		inviteURL := s.inviteBaseURL + "/invite/" + invitation.Token
+		if err := s.sender.SendInvitationEmail(ctx, invitation, inviteURL); err != nil {
+			return invitation, PostCommitError{Err: err}
+		}
 	}
 	return invitation, nil
 }

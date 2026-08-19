@@ -48,7 +48,7 @@ func New(cfg config.Config, repo ports.CreatorRepository, sender ports.EmailSend
 		ecosystemRepo = memory.NewRepository()
 	}
 	creatorService := usecases.NewCreatorService(repo, sender)
-	ecosystemService := usecases.NewEcosystemService(ecosystemRepo)
+	ecosystemService := usecases.NewEcosystemService(ecosystemRepo).WithInvitationSender(sender, cfg.ClientBaseURL)
 	handler := httpadapter.NewHandler(creatorService, ecosystemService, cfg.AdminAPIKey, cfg.AllowedOrigins).Route()
 
 	return &App{handler: handler}

@@ -35,6 +35,10 @@ func (s *failingEmailSender) SendWelcomeEmail(context.Context, string, string) e
 	return errors.New("email unavailable")
 }
 
+func (s *failingEmailSender) SendInvitationEmail(context.Context, domain.Invitation, string) error {
+	return errors.New("email unavailable")
+}
+
 func (r *creatorRepository) Save(_ context.Context, creator domain.Creator) error {
 	r.items = append(r.items, creator)
 	return nil

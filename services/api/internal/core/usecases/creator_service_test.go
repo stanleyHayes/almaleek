@@ -27,9 +27,17 @@ func (s *stubSender) SendWelcomeEmail(_ context.Context, _, _ string) error {
 	return nil
 }
 
+func (s *stubSender) SendInvitationEmail(_ context.Context, _ domain.Invitation, _ string) error {
+	return nil
+}
+
 type failingSender struct{}
 
 func (s *failingSender) SendWelcomeEmail(_ context.Context, _, _ string) error {
+	return errors.New("mail unavailable")
+}
+
+func (s *failingSender) SendInvitationEmail(_ context.Context, _ domain.Invitation, _ string) error {
 	return errors.New("mail unavailable")
 }
 

@@ -105,7 +105,11 @@ export function AdminShell({ children }: { children: ReactNode }) {
       .then((body) => {
         if (!body.authenticated) router.replace("/sign-in");
       })
-      .catch(() => router.replace("/sign-in"));
+      // StrictMode double-mount aborts the first effect's fetch — that abort
+      // is expected cleanup, not a failed session check.
+      .catch((reason) => {
+        if (reason?.name !== "AbortError") router.replace("/sign-in");
+      });
     return () => controller.abort();
   }, [pathname, router]);
 

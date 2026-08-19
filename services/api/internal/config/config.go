@@ -12,6 +12,7 @@ type Config struct {
 	AppEnv          string
 	Port            string
 	BaseURL         string
+	ClientBaseURL   string
 	MongoDBURI      string
 	MongoDBDatabase string
 	CloudName       string
@@ -34,6 +35,7 @@ func Load() Config {
 		AppEnv:          appEnv,
 		Port:            strings.TrimSpace(getEnv("PORT", "8080")),
 		BaseURL:         strings.TrimSpace(getEnv("BASE_URL", "http://localhost:8080")),
+		ClientBaseURL:   strings.TrimSpace(getEnv("CLIENT_BASE_URL", "http://localhost:3102")),
 		MongoDBURI:      strings.TrimSpace(getEnv("MONGODB_URI", "mongodb://localhost:27017/almaleek")),
 		MongoDBDatabase: strings.TrimSpace(getEnv("MONGODB_DATABASE", defaultMongoDatabase(appEnv))),
 		CloudName:       strings.TrimSpace(getEnv("CLOUDINARY_CLOUD_NAME", "almaleek")),

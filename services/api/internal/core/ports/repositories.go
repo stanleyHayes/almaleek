@@ -52,6 +52,7 @@ type SiteSettingsRepository interface {
 
 type EmailSender interface {
 	SendWelcomeEmail(ctx context.Context, email, name string) error
+	SendInvitationEmail(ctx context.Context, invitation domain.Invitation, inviteURL string) error
 }
 
 type MediaStorage interface {
