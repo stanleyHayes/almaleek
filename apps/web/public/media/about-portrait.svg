@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1100" role="img" aria-label="Stylized flat portrait of AL Maleek with cap and microphone">
+  <defs>
+    <pattern id="speckle" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="4" fill="#151826" opacity="0.12"/>
+      <circle cx="27" cy="27" r="2.5" fill="#151826" opacity="0.09"/>
+    </pattern>
+    <pattern id="dotgrid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <circle cx="7" cy="7" r="4.5" fill="#151826" opacity="0.14"/>
+    </pattern>
+    <linearGradient id="backdrop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff0e3"/>
+      <stop offset="1" stop-color="#ffd3b6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="900" height="1100" fill="url(#backdrop)"/>
+
+  <!-- arch backdrop -->
+  <path d="M 170 950 L 170 480 A 280 280 0 0 1 730 480 L 730 950 Z" fill="#e7d8ff"/>
+  <path d="M 130 950 L 130 470 A 320 320 0 0 1 770 470 L 770 950" fill="none" stroke="#151826" stroke-opacity="0.16" stroke-width="3"/>
+  <path d="M 96 950 L 96 462 A 354 354 0 0 1 804 462 L 804 950" fill="none" stroke="#151826" stroke-opacity="0.09" stroke-width="2.5"/>
+
+  <rect x="650" y="740" width="180" height="180" fill="url(#speckle)"/>
+  <rect x="80" y="720" width="200" height="200" fill="url(#dotgrid)"/>
+  <circle cx="120" cy="330" r="22" fill="#6dd5c4"/>
+  <circle cx="800" cy="600" r="16" fill="#b8c0ff"/>
+
+  <!-- wordmark -->
+  <text x="450" y="92" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="48" font-weight="800" letter-spacing="18" fill="#151826">AL MALEEK</text>
+  <text x="450" y="132" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="20" font-weight="600" letter-spacing="7" fill="#65697a">COMEDY CREATOR · ACCRA, GHANA</text>
+
+  <!-- figure -->
+  <g>
+    <!-- torso -->
+    <path d="M 250 1100 L 250 800 A 200 190 0 0 1 650 800 L 650 1100 Z" fill="#151826"/>
+    <!-- collar accent -->
+    <path d="M 380 800 A 90 70 0 0 0 520 800 L 450 880 Z" fill="#6dd5c4"/>
+    <!-- head -->
+    <circle cx="450" cy="470" r="130" fill="#151826"/>
+    <!-- smile -->
+    <path d="M 392 522 A 62 62 0 0 0 508 522" fill="none" stroke="#f8f8f3" stroke-width="11" stroke-linecap="round"/>
+    <!-- eyes -->
+    <path d="M 372 452 A 16 16 0 0 1 404 452" fill="none" stroke="#f8f8f3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 496 452 A 16 16 0 0 1 528 452" fill="none" stroke="#f8f8f3" stroke-width="8" stroke-linecap="round"/>
+    <!-- earring -->
+    <circle cx="322" cy="500" r="9" fill="#6dd5c4"/>
+    <!-- cap -->
+    <path d="M 320 452 A 130 130 0 0 1 580 452 Z" fill="#6dd5c4"/>
+    <path d="M 320 452 A 130 130 0 0 1 580 452" fill="none" stroke="#151826" stroke-opacity="0.25" stroke-width="5"/>
+    <rect x="520" y="432" width="150" height="38" rx="19" fill="#6dd5c4"/>
+    <circle cx="450" cy="346" r="14" fill="#151826"/>
+    <!-- raised arm holding mic -->
+    <g transform="rotate(-32 620 780)">
+      <rect x="592" y="560" width="56" height="230" rx="28" fill="#151826"/>
+    </g>
+    <circle cx="716" cy="556" r="30" fill="#151826"/>
+    <!-- mic -->
+    <g transform="rotate(-32 724 506)">
+      <rect x="710" y="500" width="28" height="70" rx="14" fill="#65697a"/>
+      <circle cx="724" cy="486" r="34" fill="#65697a"/>
+      <path d="M 694 478 L 754 478" stroke="#dff6f0" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 692 490 L 756 490" stroke="#dff6f0" stroke-width="4" stroke-linecap="round"/>
+      <path d="M 696 502 L 752 502" stroke="#dff6f0" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    <!-- sound arcs off the mic -->
+    <path d="M 780 420 A 90 90 0 0 1 820 510" fill="none" stroke="#b8c0ff" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 806 396 A 130 130 0 0 1 862 528" fill="none" stroke="#151826" stroke-opacity="0.35" stroke-width="4" stroke-linecap="round"/>
+  </g>
+</svg>

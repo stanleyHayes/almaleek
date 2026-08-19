@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 960" role="img" aria-label="Watching an AL Maleek skit on a phone with laugh bursts and reaction bubbles">
+  <defs>
+    <pattern id="dots" width="34" height="34" patternUnits="userSpaceOnUse">
+      <circle cx="8" cy="8" r="4.5" fill="#151826" opacity="0.16"/>
+    </pattern>
+    <linearGradient id="screenGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e7d8ff"/>
+      <stop offset="1" stop-color="#b8c0ff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="960" fill="#dff6f0"/>
+
+  <!-- background geometry -->
+  <circle cx="1050" cy="140" r="300" fill="#6dd5c4"/>
+  <circle cx="1050" cy="140" r="372" fill="none" stroke="#151826" stroke-opacity="0.13" stroke-width="2.5"/>
+  <circle cx="1050" cy="140" r="432" fill="none" stroke="#151826" stroke-opacity="0.08" stroke-width="2"/>
+  <path d="M -80 700 A 430 430 0 0 1 350 270" fill="none" stroke="#ffd3b6" stroke-width="28" stroke-linecap="round"/>
+  <path d="M -50 762 A 500 500 0 0 1 450 262" fill="none" stroke="#151826" stroke-opacity="0.16" stroke-width="4"/>
+  <rect x="70" y="640" width="330" height="260" fill="url(#dots)"/>
+  <circle cx="220" cy="180" r="150" fill="url(#glow)"/>
+  <circle cx="1120" cy="560" r="26" fill="#ffd3b6"/>
+  <circle cx="90" cy="470" r="18" fill="#b8c0ff"/>
+
+  <!-- header tag -->
+  <text x="70" y="105" font-family="Outfit, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="9" fill="#4a7069">AL MALEEK &amp; CREW</text>
+  <text x="72" y="150" font-family="Outfit, Arial, sans-serif" font-size="22" font-weight="600" letter-spacing="5" fill="#65697a">FRESH SKIT · ON REPEAT</text>
+
+  <!-- phone -->
+  <g transform="translate(455,520) rotate(-5)">
+    <rect x="-175" y="-320" width="350" height="640" rx="60" fill="#151826"/>
+    <rect x="-150" y="-294" width="300" height="588" rx="44" fill="url(#screenGrad)"/>
+    <rect x="-58" y="-278" width="116" height="20" rx="10" fill="#151826"/>
+
+    <!-- screen scene -->
+    <circle cx="70" cy="-190" r="92" fill="#e7d8ff" opacity="0.7"/>
+    <circle cx="-92" cy="-34" r="30" fill="#ffd3b6" opacity="0.85"/>
+
+    <!-- performer silhouette -->
+    <circle cx="-18" cy="-128" r="62" fill="#151826"/>
+    <!-- laughing open mouth -->
+    <ellipse cx="-18" cy="-108" rx="27" ry="19" fill="#ffd3b6"/>
+    <!-- happy closed eyes -->
+    <path d="M -52 -142 A 12 12 0 0 1 -28 -142" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <path d="M -8 -142 A 12 12 0 0 1 16 -142" fill="none" stroke="#f8f8f3" stroke-width="6" stroke-linecap="round"/>
+    <!-- torso -->
+    <path d="M -100 210 L -100 20 A 82 82 0 0 1 64 20 L 64 210 Z" fill="#151826"/>
+    <!-- raised arm with mic -->
+    <g transform="rotate(28 60 -30)">
+      <rect x="44" y="-150" width="36" height="190" rx="18" fill="#151826"/>
+    </g>
+    <circle cx="118" cy="-148" r="24" fill="#65697a"/>
+    <path d="M 100 -148 A 18 18 0 0 1 136 -148" fill="none" stroke="#dff6f0" stroke-width="4" stroke-linecap="round"/>
+    <rect x="110" y="-126" width="16" height="34" rx="8" fill="#65697a" transform="rotate(24 118 -109)"/>
+
+    <!-- laugh sound arcs -->
+    <path d="M 66 -196 A 74 74 0 0 1 120 -120" fill="none" stroke="#ffd3b6" stroke-width="9" stroke-linecap="round"/>
+    <path d="M 92 -226 A 116 116 0 0 1 158 -92" fill="none" stroke="#151826" stroke-opacity="0.5" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- play button -->
+    <circle cx="0" cy="168" r="54" fill="#6dd5c4" stroke="#151826" stroke-width="6"/>
+    <path d="M -15 145 L 26 168 L -15 191 Z" fill="#151826"/>
+  </g>
+
+  <!-- HA HA burst -->
+  <g transform="translate(852,238) rotate(-9)">
+    <circle cx="0" cy="0" r="86" fill="#ffd3b6"/>
+    <circle cx="0" cy="0" r="104" fill="none" stroke="#151826" stroke-opacity="0.25" stroke-width="3" stroke-dasharray="2 14"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="46" font-weight="800" fill="#151826">HA</text>
+    <text x="0" y="46" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="46" font-weight="800" fill="#151826">HA</text>
+  </g>
+
+  <!-- comment bubble -->
+  <g transform="translate(810,430) rotate(4)">
+    <rect x="0" y="0" width="210" height="118" rx="30" fill="#ffffff" stroke="#151826" stroke-width="5"/>
+    <path d="M 40 116 L 24 154 L 78 118 Z" fill="#ffffff" stroke="#151826" stroke-width="5" stroke-linejoin="round"/>
+    <rect x="28" y="32" width="130" height="12" rx="6" fill="#151826" opacity="0.75"/>
+    <rect x="28" y="58" width="154" height="12" rx="6" fill="#151826" opacity="0.4"/>
+    <rect x="28" y="84" width="92" height="12" rx="6" fill="#6dd5c4"/>
+  </g>
+
+  <!-- heart bubble -->
+  <g transform="translate(1002,608)">
+    <circle cx="0" cy="0" r="60" fill="#ffd3b6" stroke="#151826" stroke-width="5"/>
+    <path d="M 0 26 C -34 2 -30 -26 -12 -26 C -4 -26 0 -20 0 -14 C 0 -20 4 -26 12 -26 C 30 -26 34 2 0 26 Z" fill="#151826"/>
+  </g>
+
+  <!-- AM badge -->
+  <g transform="translate(836,736) rotate(9)">
+    <rect x="-64" y="-64" width="128" height="128" rx="36" fill="#151826"/>
+    <text x="0" y="24" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-3" fill="#6dd5c4">AM</text>
+  </g>
+</svg>

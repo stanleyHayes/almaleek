@@ -24,8 +24,15 @@ export default async function ShopPage() {
 
       <section className="section-block">
         <div className="container card-grid three-up">
-          {shop.cards.map((card) => (
-            <article className="detail-card" key={card.title}>
+          {shop.cards.map((card, index) => (
+            <article className="detail-card media-card" key={card.title}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                className="media-thumb"
+                src={`/media/shop-${['tee', 'cap', 'hoodie'][index % 3]}.svg`}
+                alt=""
+                loading="lazy"
+              />
               <span className="card-kicker">{card.kicker}</span>
               <h3>{card.title}</h3>
               <p>{card.text}</p>

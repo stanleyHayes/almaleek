@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Lilac AL Maleek crew hoodie product mockup on peach backdrop">
+  <defs>
+    <pattern id="speckle" width="36" height="36" patternUnits="userSpaceOnUse">
+      <circle cx="9" cy="9" r="4" fill="#151826" opacity="0.1"/>
+      <circle cx="27" cy="27" r="2.5" fill="#151826" opacity="0.07"/>
+    </pattern>
+    <radialGradient id="soft" cx="0.5" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" fill="#fff0e3"/>
+  <circle cx="600" cy="450" r="340" fill="#ffd3b6" opacity="0.55"/>
+  <circle cx="600" cy="450" r="412" fill="none" stroke="#151826" stroke-opacity="0.09" stroke-width="2.5"/>
+  <path d="M 980 -40 A 300 300 0 0 1 1280 260" fill="none" stroke="#a7c4a0" stroke-width="28" stroke-linecap="round"/>
+  <rect x="70" y="90" width="220" height="180" fill="url(#speckle)"/>
+  <circle cx="160" cy="700" r="190" fill="url(#soft)"/>
+  <circle cx="1040" cy="680" r="24" fill="#b8c0ff"/>
+  <circle cx="180" cy="360" r="16" fill="#6dd5c4"/>
+
+  <!-- back-print hint behind hoodie -->
+  <g transform="translate(742,220) rotate(8)" opacity="0.5">
+    <rect x="0" y="0" width="250" height="250" rx="30" fill="none" stroke="#151826" stroke-width="4" stroke-dasharray="10 12"/>
+    <text x="125" y="150" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="86" font-weight="800" letter-spacing="-4" fill="#151826">AM</text>
+  </g>
+
+  <!-- shadow -->
+  <ellipse cx="600" cy="800" rx="280" ry="28" fill="#151826" opacity="0.09"/>
+
+  <!-- hoodie -->
+  <g>
+    <!-- hood behind neck -->
+    <path d="M 452 336 A 148 128 0 0 1 748 336 L 748 372 L 452 372 Z" fill="#d6c2f5"/>
+    <path d="M 512 372 A 88 60 0 0 1 688 372 L 688 372 L 512 372 Z" fill="#c3abe9"/>
+    <!-- sleeves -->
+    <path d="M 452 372 L 366 420 L 322 640 A 30 30 0 0 0 372 664 L 452 560 Z" fill="#e7d8ff"/>
+    <path d="M 748 372 L 834 420 L 878 640 A 30 30 0 0 1 828 664 L 748 560 Z" fill="#e7d8ff"/>
+    <!-- cuffs -->
+    <rect x="318" y="620" width="66" height="52" rx="20" fill="#d6c2f5" transform="rotate(-14 351 646)"/>
+    <rect x="816" y="620" width="66" height="52" rx="20" fill="#d6c2f5" transform="rotate(14 849 646)"/>
+    <!-- torso -->
+    <path d="M 452 360 L 748 360 L 748 726 A 26 26 0 0 1 722 752 L 478 752 A 26 26 0 0 1 452 726 Z" fill="#e7d8ff"/>
+    <!-- hood opening -->
+    <path d="M 500 366 A 100 76 0 0 0 700 366 L 676 420 A 72 50 0 0 1 524 420 Z" fill="#151826" opacity="0.85"/>
+    <!-- drawstrings -->
+    <path d="M 548 402 L 540 486" stroke="#f8f8f3" stroke-width="8" stroke-linecap="round"/>
+    <path d="M 652 402 L 660 486" stroke="#f8f8f3" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="540" cy="494" r="8" fill="#151826"/>
+    <circle cx="660" cy="494" r="8" fill="#151826"/>
+    <!-- kangaroo pocket -->
+    <path d="M 494 610 L 706 610 L 730 726 A 20 20 0 0 1 710 746 L 490 746 A 20 20 0 0 1 470 726 Z" fill="#d6c2f5"/>
+    <path d="M 494 610 L 706 610" stroke="#151826" stroke-opacity="0.2" stroke-width="5" stroke-linecap="round"/>
+    <!-- hem rib -->
+    <path d="M 470 720 L 730 720" stroke="#151826" stroke-opacity="0.18" stroke-width="5" stroke-dasharray="4 12" stroke-linecap="round"/>
+
+    <!-- chest print -->
+    <text x="600" y="530" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="34" font-weight="800" letter-spacing="16" fill="#151826">CREW</text>
+    <path d="M 528 552 L 672 552" stroke="#6dd5c4" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <text x="80" y="112" font-family="Outfit, Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="8" fill="#8a5a33">THE SHOP</text>
+  <text x="82" y="152" font-family="Outfit, Arial, sans-serif" font-size="19" font-weight="600" letter-spacing="4" fill="#65697a">CREW HOODIE · LILAC</text>
+</svg>

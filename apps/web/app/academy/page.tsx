@@ -23,6 +23,18 @@ export default async function AcademyPage() {
       </header>
 
       <section className="section-block">
+        <div className="container">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="section-art"
+            src="/media/academy-workshop.svg"
+            alt="Illustration of an Al Maleek Academy workshop"
+            loading="lazy"
+          />
+        </div>
+      </section>
+
+      <section className="section-block">
         <div className="container card-grid three-up">
           {academy.cards.map((card) => (
             <article className="detail-card" key={card.title}>

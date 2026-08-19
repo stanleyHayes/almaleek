@@ -2189,3 +2189,50 @@ main {
 .detail-card.media-card:hover {
   transform: translateY(-6px) rotate(-0.3deg);
 }
+
+/* Branded artwork placements */
+.hero-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 5 / 4;
+  object-fit: cover;
+  margin: 0 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+.about-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
+  gap: 56px;
+  align-items: end;
+}
+.about-portrait {
+  display: block;
+  width: 100%;
+  max-width: 340px;
+  aspect-ratio: 9 / 11;
+  object-fit: cover;
+  justify-self: end;
+  border: 1px solid var(--line);
+  border-radius: 28px 28px 8px 28px;
+  box-shadow: var(--shadow);
+}
+.section-art {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+  margin-bottom: 32px;
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+}
+@media (max-width: 900px) {
+  .about-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-portrait {
+    justify-self: start;
+  }
+}

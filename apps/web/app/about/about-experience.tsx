@@ -72,16 +72,24 @@ export function AboutExperience() {
   return (
     <div className="about-page">
       <header className="about-hero">
-        <div className="container">
-          <p className="eyebrow">{content.about_eyebrow}</p>
-          <h1>{content.about_headline}</h1>
-          <div className="about-intro">
-            <p>{content.about_introduction}</p>
-            <span>
-              <strong>{content.founder_name}</strong>
-              <small>{content.founder_role}</small>
-            </span>
+        <div className="container about-hero-grid">
+          <div>
+            <p className="eyebrow">{content.about_eyebrow}</p>
+            <h1>{content.about_headline}</h1>
+            <div className="about-intro">
+              <p>{content.about_introduction}</p>
+              <span>
+                <strong>{content.founder_name}</strong>
+                <small>{content.founder_role}</small>
+              </span>
+            </div>
           </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="about-portrait"
+            src="/media/about-portrait.svg"
+            alt="Illustrated portrait of Al Maleek"
+          />
         </div>
       </header>
       <section className="section-block">

@@ -47,8 +47,16 @@ export function CommunityExperience({
   return (
     <>
       <section className="section-block">
-        <div className="container tier-grid">
-          {plans.map((plan) => (
+        <div className="container">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="section-art"
+            src="/media/community-crowd.svg"
+            alt="Illustration of the Al Maleek community at a live show"
+            loading="lazy"
+          />
+          <div className="tier-grid">
+            {plans.map((plan) => (
             <article className="tier-card" key={plan.code}>
               <span className="card-kicker">{plan.kicker}</span>
               <h3>{plan.name}</h3>
@@ -91,6 +99,7 @@ export function CommunityExperience({
               </button>
             </div>
           ) : null}
+          </div>
         </div>
       </section>
       <section className="section-block muted-block">

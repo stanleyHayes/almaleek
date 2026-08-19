@@ -21,14 +21,22 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="hero-card">
-            <span className="pill">{home.hero_card_pill}</span>
-            <h3>{home.hero_card_title}</h3>
-            <ul>
-              {home.hero_card_points.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
+          <div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              className="hero-art"
+              src="/media/hero-skits.svg"
+              alt="Illustration of an Al Maleek skit on a phone screen"
+            />
+            <div className="hero-card">
+              <span className="pill">{home.hero_card_pill}</span>
+              <h3>{home.hero_card_title}</h3>
+              <ul>
+                {home.hero_card_points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </section>
