@@ -15,9 +15,143 @@ const primaryLinks = [
   { href: "/media", label: "Media" },
 ];
 
+/* Lower-frequency pages that sit behind the desktop "More" dropdown. */
+const moreLinks = [
+  {
+    href: "/shop",
+    label: "Shop",
+    description: "Merch, drops & digital goods",
+    icon: "bag",
+  },
+  {
+    href: "/academy",
+    label: "Academy",
+    description: "Learn the craft & the business",
+    icon: "book",
+  },
+  {
+    href: "/partnerships",
+    label: "Partnerships",
+    description: "Brand collaborations that fit",
+    icon: "arrow",
+  },
+  {
+    href: "/work-with-al-maleek",
+    label: "Work with us",
+    description: "Bookings, skits & campaigns",
+    icon: "mail",
+  },
+] as const;
+
 function linkIsActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/**
+ * Desktop-only "More" menu holding the lower-frequency pages (patterned on
+ * the Joe Kuntani header groups). Pointer users get hover; keyboard and touch
+ * users get the click toggle; Escape and outside pointer close it. The
+ * trigger announces `aria-current="true"` while a child page is active.
+ */
+function NavDropdown({ pathname }: { pathname: string }) {
+  const [open, setOpen] = useState(false);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  /* True while the pointer is hovering — a click in that state pins the menu
+     open instead of toggling the hover state straight back off. */
+  const hoverOpen = useRef(false);
+  const childActive = moreLinks.some((link) => linkIsActive(pathname, link.href));
+
+  useEffect(() => {
+    if (!open) return;
+    const onPointerDown = (event: PointerEvent) => {
+      if (!wrapRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [open]);
+
+  return (
+    <div
+      ref={wrapRef}
+      className="nav-dropdown-wrap"
+      onMouseEnter={() => {
+        hoverOpen.current = true;
+        setOpen(true);
+      }}
+      onMouseLeave={() => {
+        hoverOpen.current = false;
+        setOpen(false);
+      }}
+    >
+      <button
+        type="button"
+        className={`nav-link nav-trigger${childActive ? " active" : ""}`}
+        aria-expanded={open}
+        aria-haspopup="true"
+        aria-current={childActive ? "true" : undefined}
+        onClick={() => {
+          if (hoverOpen.current) {
+            hoverOpen.current = false;
+            return;
+          }
+          setOpen((value) => !value);
+        }}
+      >
+        More
+        <svg
+          aria-hidden="true"
+          className="nav-chevron"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2.2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      <ul className="nav-dropdown" data-open={open} aria-label="More pages">
+        {moreLinks.map((link) => {
+          const active = linkIsActive(pathname, link.href);
+          const titleID = `nav-more-${link.label.toLowerCase().replace(/[^a-z]+/g, "-")}-title`;
+          const descriptionID = `${titleID}-description`;
+          return (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                className="nav-dropdown-link"
+                aria-labelledby={titleID}
+                aria-describedby={descriptionID}
+                aria-current={active ? "page" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                <span className="nav-dropdown-icon" aria-hidden="true">
+                  <Icon name={link.icon} />
+                </span>
+                <span className="nav-dropdown-copy">
+                  <span className="nav-dropdown-title" id={titleID}>
+                    {link.label}
+                  </span>
+                  <span className="nav-dropdown-desc" id={descriptionID}>
+                    {link.description}
+                  </span>
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
 }
 
 /* Footer link with active-route indication, mirroring the main nav. */
@@ -481,6 +615,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                 </Link>
               );
             })}
+            <NavDropdown pathname={pathname} />
           </nav>
           <div className="nav-actions">
             <button
