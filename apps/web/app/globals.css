@@ -772,6 +772,20 @@ h3 {
   color: var(--mint);
   transform: translateX(3px);
 }
+.footer-grid li a.active {
+  color: var(--mint);
+}
+.footer-grid li a.active .line-icon {
+  color: var(--mint);
+}
+.footer-grid li a.active::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--mint);
+  margin-left: auto;
+}
 .footer-grid .line-icon {
   width: 17px;
   height: 17px;

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type ReactNode } from "react";
 import { getApiBaseUrl } from "@/lib/api";
 import { InlineSkeleton } from "./state-primitives";
 
@@ -18,6 +18,30 @@ const primaryLinks = [
 function linkIsActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/* Footer link with active-route indication, mirroring the main nav. */
+function FooterNavLink({
+  href,
+  icon,
+  children,
+}: {
+  href: string;
+  icon: ComponentProps<typeof Icon>["name"];
+  children: ReactNode;
+}) {
+  const pathname = usePathname();
+  const active = linkIsActive(pathname, href);
+  return (
+    <Link
+      href={href}
+      className={active ? "active" : undefined}
+      aria-current={active ? "page" : undefined}
+    >
+      <Icon name={icon} />
+      {children}
+    </Link>
+  );
 }
 
 /* Route icons for the mobile drawer, keyed by top-level path segment. */
@@ -545,28 +569,24 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <h4>Experience</h4>
               <ul>
                 <li>
-                  <Link href="/about">
-                    <Icon name="people" />
+                  <FooterNavLink href="/about" icon="people">
                     About AL Maleek
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/events/live">
-                    <Icon name="calendar" />
+                  <FooterNavLink href="/events/live" icon="calendar">
                     Live events
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/media">
-                    <Icon name="play" />
+                  <FooterNavLink href="/media" icon="play">
                     Media & stories
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/community">
-                    <Icon name="people" />
+                  <FooterNavLink href="/community" icon="people">
                     Community
-                  </Link>
+                  </FooterNavLink>
                 </li>
               </ul>
             </div>
@@ -574,28 +594,24 @@ export function SiteShell({ children }: { children: ReactNode }) {
               <h4>Build</h4>
               <ul>
                 <li>
-                  <Link href="/shop">
-                    <Icon name="bag" />
+                  <FooterNavLink href="/shop" icon="bag">
                     Shop
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/academy">
-                    <Icon name="book" />
+                  <FooterNavLink href="/academy" icon="book">
                     Academy
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/partnerships">
-                    <Icon name="arrow" />
+                  <FooterNavLink href="/partnerships" icon="arrow">
                     Partnerships
-                  </Link>
+                  </FooterNavLink>
                 </li>
                 <li>
-                  <Link href="/work-with-al-maleek">
-                    <Icon name="arrow" />
+                  <FooterNavLink href="/work-with-al-maleek" icon="arrow">
                     Work with us
-                  </Link>
+                  </FooterNavLink>
                 </li>
               </ul>
             </div>
